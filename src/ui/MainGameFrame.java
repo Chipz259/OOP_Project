@@ -1,5 +1,6 @@
 package ui;
 
+import system.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -18,14 +19,14 @@ public class MainGameFrame extends JFrame {
 
     public MainGameFrame() {
         desktopPane = new JDesktopPane();
-        imageBg = new ImageBackground("res/Menu.png");
+        imageBg = new ImageBackground("src/res/Menu.png");
         contentPanel = new JPanel(new GridLayout(1, 2));
         buttonPanel = new JPanel();
         buttonStart = new JButton("Start");
         buttonNewGame = new JButton("New Game");
         buttonExit = new JButton("Exit");
         picture = new JLabel();
-        icon = new ImageIcon("res/Front Menu Right.png");
+        icon = new ImageIcon("src/res/Front Menu Right.png");
 
         this.setUndecorated(true);
         imageBg.setLayout(new BorderLayout());
