@@ -7,54 +7,67 @@ public abstract class GameObject {
     private BufferedImage sprite;
     private boolean isVisible;
     private String objectId;
-    public GameObject(String id, int x, int y, int width, int height){
 
+    public GameObject(String id, int x, int y, int width, int height){
+        this.objectId = id;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.isVisible = true;
+        this.hitbox = new Rectangle(x, y, width, height);
     }
+
     public int getX() {
-        return 0; //ใส่ไว้ก่อน กัน error
+        return this.x;
     }
     public void setX(int x) {
-
+        this.x = x;
+        this.hitbox.setLocation(this.x, this.y);
     }
     public int getY() {
-        return 0; //ใส่ไว้ก่อน กัน error
+        return this.y;
     }
     public void setY(int y) {
-
+        this.y = y;
+        this.hitbox.setLocation(this.x, this.y);
     }
     public int getWidth() {
-        return 0; //ใส่ไว้ก่อน กัน error
+        return this.width;
     }
     public void setWidth(int width) {
-
+        this.width = width;
+        this.hitbox.setSize(this.width, this.height);
     }
     public int getHeight() {
-        return 0; //ใส่ไว้ก่อน กัน error
+        return this.height;
     }
     public void setHeight(int height) {
-
+        this.height = height;
+        this.hitbox.setSize(this.width, this.height);
     }
     public Rectangle getHitbox() {
-        return hitbox; //ใส่ไว้ก่อน กัน error
+        return this.hitbox;
     }
     public BufferedImage getSprite() {
-        return sprite; //ใส่ไว้ก่อน กัน error
+        return this.sprite;
     }
     public void setSprite(BufferedImage sprite) {
-
+        this.sprite = sprite;
     }
     public boolean isVisible() {
-        return true; //ใส่ไว้ก่อน กัน error
+        return isVisible; //ใส่ไว้ก่อน กัน error
     }
     public void setVisible(boolean visible) {
-
+        isVisible = visible;
     }
     public String getObjectId() {
-        return "0"; //ใส่ไว้ก่อน กัน error
+        return this.objectId;
     }
     public void setObjectId(String objectId) {
-
+        this.objectId = objectId;
     }
+
     public abstract void update();
     public abstract void render(Graphics2D g2d);
 }
