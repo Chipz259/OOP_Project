@@ -1,17 +1,30 @@
 import javax.swing.*;
 import java.awt.*;
-public class MainGameFrame extends JFrame {
+import java.awt.event.*;
 
+public class MainGameFrame extends JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainGameFrame.class.getName());
+    private JDesktopPane desktopPane;
+    private JButton jButton1;
+    private ImageBackground imageBg;
 
     /**
      * Creates new form MainGameFrame
      */
     public MainGameFrame() {
-        setUndecorated(true);
+        imageBg = new ImageBackground("img/Menu.png");
+
+        this.setUndecorated(true);
         initComponents();
-        setTitle("Phawang.com");
+
+        imageBg.setLayout(new BorderLayout());
+        desktopPane.setOpaque(false);
+        imageBg.add(desktopPane, BorderLayout.CENTER);
+        this.setContentPane(imageBg);
+
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setTitle("Phawang");
+//        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
     }
 
     /**
@@ -23,48 +36,48 @@ public class MainGameFrame extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
-        desktopPane = new javax.swing.JDesktopPane();
-        jButton1 = new javax.swing.JButton();
+        desktopPane = new JDesktopPane();
+        jButton1 = new JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         jButton1.setText("Start Game");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        desktopPane.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktopPane.setLayer(jButton1, JLayeredPane.DEFAULT_LAYER);
 
-        javax.swing.GroupLayout desktopPaneLayout = new javax.swing.GroupLayout(desktopPane);
+        GroupLayout desktopPaneLayout = new GroupLayout(desktopPane);
         desktopPane.setLayout(desktopPaneLayout);
         desktopPaneLayout.setHorizontalGroup(
-                desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                desktopPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(desktopPaneLayout.createSequentialGroup()
                                 .addGap(157, 157, 157)
                                 .addComponent(jButton1)
                                 .addContainerGap(155, Short.MAX_VALUE))
         );
         desktopPaneLayout.setVerticalGroup(
-                desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                desktopPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(desktopPaneLayout.createSequentialGroup()
                                 .addGap(134, 134, 134)
                                 .addComponent(jButton1)
                                 .addContainerGap(143, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(desktopPane, GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(desktopPane)
         );
 
         pack();
     }// </editor-fold>
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton1ActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
         GameWindow gameWin = new GameWindow();
         GamePanel gamePanel = new GamePanel();
@@ -78,29 +91,8 @@ public class MainGameFrame extends JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new MainGameFrame().setVisible(true));
     }
-
-    // Variables declaration - do not modify
-    private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JButton jButton1;
-    // End of variables declaration
 }
