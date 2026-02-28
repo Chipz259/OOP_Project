@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>RotateYan.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cba6f7;}
+.s1 { color: #cdd6f4;}
+.s2 { color: #9399b2;}
+.s3 { color: #89dceb;}
+.s4 { color: #a6e3a1;}
+.s5 { color: #fab387;}
+.s6 { color: #9399b2; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#1e1e2e">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RotateYan.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">MinigameRotateYan</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s3">*</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.</span><span class="s3">*</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">RotateYan </span><span class="s2">{</span>
+    <span class="s0">private </span><span class="s1">JFrame mainFrame</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">JPanel sup</span><span class="s2">,</span><span class="s1">panel1</span><span class="s2">,</span><span class="s1">panel2</span><span class="s2">,</span><span class="s1">panel3</span><span class="s2">,</span><span class="s1">panel4</span><span class="s2">,</span><span class="s1">panel5</span><span class="s2">,</span><span class="s1">panel6</span><span class="s2">,</span><span class="s1">panel7</span><span class="s2">,</span><span class="s1">panel8</span><span class="s2">,</span><span class="s1">panel9</span><span class="s2">,</span><span class="s1">panel10</span><span class="s2">,</span><span class="s1">panel11</span><span class="s2">,</span><span class="s1">panel12</span><span class="s2">;</span>
+    <span class="s0">public </span><span class="s1">RotateYan</span><span class="s2">(){</span>
+        <span class="s1">mainFrame </span><span class="s3">= </span><span class="s0">new </span><span class="s1">JFrame</span><span class="s2">();</span>
+        <span class="s1">sup </span><span class="s3">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+        <span class="s1">panel1 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan1.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel2 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan2.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel3 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan3.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel4 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan4.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel5 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan5.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel6 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan6.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel7 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan7.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel8 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan8.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel9 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan9.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel10 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan10.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel11 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan11.png&quot;</span><span class="s2">);</span>
+        <span class="s1">panel12 </span><span class="s3">= </span><span class="s0">new </span><span class="s1">ImagePanel</span><span class="s2">(</span><span class="s4">&quot;YanImage/yan12.png&quot;</span><span class="s2">);</span>
+
+        <span class="s1">panel1</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel2</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel3</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel4</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel5</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel6</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel7</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel8</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel9</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel10</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel11</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">panel12</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">RotateListener</span><span class="s2">());</span>
+        <span class="s1">sup</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Color</span><span class="s2">(</span><span class="s5">255</span><span class="s2">,</span><span class="s5">255</span><span class="s2">,</span><span class="s5">255</span><span class="s2">,</span><span class="s5">0</span><span class="s2">));</span>
+        <span class="s1">mainFrame</span><span class="s2">.</span><span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Color</span><span class="s2">(</span><span class="s5">255</span><span class="s2">, </span><span class="s5">255</span><span class="s2">, </span><span class="s5">255</span><span class="s2">, </span><span class="s5">100</span><span class="s2">));</span>
+
+        <span class="s1">sup</span><span class="s2">.</span><span class="s1">setSize</span><span class="s2">(</span><span class="s5">1204</span><span class="s2">, </span><span class="s5">900</span><span class="s2">);</span>
+        <span class="s1">sup</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">GridLayout</span><span class="s2">(</span><span class="s5">3</span><span class="s2">,</span><span class="s5">4</span><span class="s2">,</span><span class="s5">10</span><span class="s2">,</span><span class="s5">10</span><span class="s2">));</span>
+
+        <span class="s1">mainFrame</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BorderLayout</span><span class="s2">());</span>
+        <span class="s2">((</span><span class="s1">JComponent</span><span class="s2">) </span><span class="s1">mainFrame</span><span class="s2">.</span><span class="s1">getContentPane</span><span class="s2">()).</span><span class="s1">setBorder</span><span class="s2">(</span><span class="s1">BorderFactory</span><span class="s2">.</span><span class="s1">createEmptyBorder</span><span class="s2">(</span><span class="s5">40</span><span class="s2">,</span><span class="s5">240</span><span class="s2">,</span><span class="s5">40</span><span class="s2">,</span><span class="s5">240</span><span class="s2">));</span>
+<span class="s6">//        mainFrame.setUndecorated(true);</span>
+        <span class="s1">mainFrame</span><span class="s2">.</span><span class="s1">setResizable</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+
+        <span class="s1">GraphicsDevice gd </span><span class="s3">= </span><span class="s1">GraphicsEnvironment</span><span class="s2">.</span><span class="s1">getLocalGraphicsEnvironment</span><span class="s2">().</span><span class="s1">getDefaultScreenDevice</span><span class="s2">();</span>
+        <span class="s1">gd</span><span class="s2">.</span><span class="s1">setFullScreenWindow</span><span class="s2">(</span><span class="s1">mainFrame</span><span class="s2">);</span>
+
+
+        <span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel1</span><span class="s2">); </span><span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel2</span><span class="s2">);</span>
+        <span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel3</span><span class="s2">); </span><span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel4</span><span class="s2">);</span>
+        <span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel5</span><span class="s2">); </span><span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel6</span><span class="s2">);</span>
+        <span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel7</span><span class="s2">); </span><span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel8</span><span class="s2">);</span>
+        <span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel9</span><span class="s2">); </span><span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel10</span><span class="s2">);</span>
+        <span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel11</span><span class="s2">); </span><span class="s1">sup</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel12</span><span class="s2">);</span>
+        <span class="s1">mainFrame</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">sup</span><span class="s2">, </span><span class="s1">BorderLayout</span><span class="s2">.</span><span class="s1">CENTER</span><span class="s2">);</span>
+        <span class="s1">mainFrame</span><span class="s2">.</span><span class="s1">setDefaultCloseOperation</span><span class="s2">(</span><span class="s1">JFrame</span><span class="s2">.</span><span class="s1">EXIT_ON_CLOSE</span><span class="s2">);</span>
+        <span class="s1">mainFrame</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
