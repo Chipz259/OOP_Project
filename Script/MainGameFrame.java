@@ -8,12 +8,10 @@ public class MainGameFrame extends JFrame {
      * Creates new form MainGameFrame
      */
     public MainGameFrame() {
+        setUndecorated(true);
         initComponents();
         setTitle("Phawang.com");
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setSize(1920,1080);
-        setLocation(0,0);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     /**
