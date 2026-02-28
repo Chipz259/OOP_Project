@@ -9,9 +9,11 @@ public class MainGameFrame extends JFrame {
      */
     public MainGameFrame() {
         initComponents();
-        setTitle("น้ำตาลสั่งลุย");
+        setTitle("Phawang.com");
         setResizable(false);
         setLocationRelativeTo(null);
+        setSize(1920,1080);
+        setLocation(0,0);
     }
 
     /**
