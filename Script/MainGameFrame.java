@@ -12,6 +12,8 @@ public class MainGameFrame extends JFrame {
         setTitle("น้ำตาลสั่งลุย");
         setResizable(false);
         setLocationRelativeTo(null);
+        setSize(1920,1080);
+        setLocation(0,0);
     }
 
     /**
