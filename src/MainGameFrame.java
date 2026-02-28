@@ -11,21 +11,25 @@ public class MainGameFrame extends JFrame {
     private JButton buttonStart, buttonNewGame, buttonExit;
     private JLabel titleGame, picture;
     private JPanel contentPanel, buttonPanel;
+    private ImageIcon icon;
+    private Image scaled;
+    private MenuActionHandler action;
 
     public MainGameFrame() {
         desktopPane = new JDesktopPane();
-        imageBg = new ImageBackground("src/Menu.png");
+        imageBg = new ImageBackground("res/Menu.png");
         contentPanel = new JPanel(new GridLayout(1, 2));
         buttonPanel = new JPanel();
         buttonStart = new JButton("Start");
         buttonNewGame = new JButton("New Game");
         buttonExit = new JButton("Exit");
         picture = new JLabel();
+        icon = new ImageIcon("res/Front Menu Right.png");
 
         this.setUndecorated(true);
         imageBg.setLayout(new BorderLayout());
         imageBg.setLayout(new BorderLayout(50, 50));
-        imageBg.setBorder(new EmptyBorder(50, 100, 50, 100));
+        imageBg.setBorder(new EmptyBorder(50, 100, 0, 0));
         desktopPane.setOpaque(false);
         imageBg.add(desktopPane, BorderLayout.CENTER);
         this.setContentPane(imageBg);
@@ -45,21 +49,31 @@ public class MainGameFrame extends JFrame {
         customizeButton(buttonNewGame);
         customizeButton(buttonExit);
         buttonPanel.add(buttonStart);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0, 50)));
         buttonPanel.add(buttonNewGame);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0, 50)));
         buttonPanel.add(buttonExit);
         buttonPanel.add(Box.createVerticalGlue());
 
-        picture.setOpaque(true);     //Add Picture Right Menu
+        picture.setOpaque(false);     //Add Picture Right Menu
+        scaled = icon.getImage().getScaledInstance(700, 1000, Image.SCALE_SMOOTH);
+        picture.setHorizontalAlignment(JLabel.RIGHT);
+        picture.setVerticalAlignment(JLabel.BOTTOM);
+        picture.setIcon(new ImageIcon(scaled));
+        picture.setText("");
 
         contentPanel.add(buttonPanel);
         contentPanel.add(picture);
         imageBg.add(contentPanel, BorderLayout.CENTER);
 
+        action = new MenuActionHandler(this);
+        buttonStart.addActionListener(action);
+        buttonNewGame.addActionListener(action);
+        buttonExit.addActionListener(action);
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setTitle("Phawang");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
     }
 
     /**
@@ -81,7 +95,7 @@ public class MainGameFrame extends JFrame {
     }
 
     private void customizeButton(JButton btn) {
-        btn.setFont(new Font("Arial", Font.PLAIN, 100)); // ปรับขนาดฟอนต์ให้ใหญ่ขึ้น
+        btn.setFont(new Font("Arial", Font.PLAIN, 150)); // ปรับขนาดฟอนต์ให้ใหญ่ขึ้น
         btn.setAlignmentX(Component.LEFT_ALIGNMENT); // ชิดซ้ายตามใน mockup
         btn.setFocusable(false); // เอาเส้นประตอนเลือกออก
     }
