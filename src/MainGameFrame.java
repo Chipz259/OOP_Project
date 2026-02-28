@@ -84,16 +84,6 @@ public class MainGameFrame extends JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
 
-    private void jButton1ActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-        GameWindow gameWin = new GameWindow();
-        GamePanel gamePanel = new GamePanel();
-        gameWin.add(gamePanel);
-        gameWin.pack();
-        desktopPane.add(gameWin);
-        gameWin.setVisible(true);
-    }
-
     private void customizeButton(JButton btn) {
         btn.setFont(new Font("Arial", Font.PLAIN, 150)); // ปรับขนาดฟอนต์ให้ใหญ่ขึ้น
         btn.setAlignmentX(Component.LEFT_ALIGNMENT); // ชิดซ้ายตามใน mockup
