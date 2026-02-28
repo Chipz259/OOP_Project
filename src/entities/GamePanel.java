@@ -2,48 +2,74 @@ package entities;
 
 import scenes.SceneManager;
 import system.KeyHandler;
-import system.QTEManager;
+// import system.QTEManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
-import java.awt.event.KeyAdapter;
+import java.awt.event.MouseEvent;;
+// import java.awt.event.KeyAdapter;
+
 public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
     private boolean isRunning;
-    private int fps;
+    // private int fps;
     private Player mainPlayer;
     private SceneManager sceneManager;
-    private QTEManager qteManager;
-    private MouseAdapter mouseHandler;
-    private KeyAdapter keyHandler;
+    // private QTEManager qteManager;
+    // private MouseAdapter mouseHandler;
+    // private KeyAdapter keyHandler;
+
     KeyHandler keyH = new KeyHandler();
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
+        this.setDoubleBuffered(true); // ลดอาการภาพกะพริบ
         this.addKeyListener(keyH);
         this.setFocusable(true);
+
         mainPlayer = new Player("player", 350, 550, 128, 128);
         sceneManager = new SceneManager();
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (sceneManager.getCurrentScene() != null) {
+                    for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
+                        // เช็คว่าคลิกโดนกรอบ Hitbox ของ Object ไหนบ้าง
+                        if (obj.getHitbox().contains(e.getPoint()) && obj instanceof Interactable) {
+                            ((Interactable) obj).onInteract(mainPlayer);
+                            break; // คลิกโดนแล้วหยุดทำงาน
+                        }
+                    }
+                }
+            }
+        });
     }
+
     public void startGameThread() {
         gameThread = new Thread(this);
         isRunning = true;
         gameThread.start();
     }
-    public void stopGameThread() {
 
+    public void stopGameThread() {
+        isRunning = false;
+        gameThread = null;
     }
+
     public void run() {
         double drawInterval = 1000000000 / 60;
         double nextDrawTime = System.nanoTime() + drawInterval;
 
-        while(gameThread != null && isRunning) {
+        while (gameThread != null && isRunning) {
             update();
             repaint();
             try {
                 double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;
-                if(remainingTime < 0) remainingTime = 0;
+                if (remainingTime < 0)
+                    remainingTime = 0;
                 Thread.sleep((long) remainingTime);
                 nextDrawTime += drawInterval;
             } catch (InterruptedException e) {
@@ -51,7 +77,10 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
+
     public void update() {
+        sceneManager.update();
+
         int speed = 5;
         if (keyH.left) {
             if (mainPlayer.getX() - speed >= 0) {
@@ -68,12 +97,22 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        sceneManager.render(g2d);
+
         if (mainPlayer != null) {
             mainPlayer.render(g2d);
+
+            if (mainPlayer.getSprite() == null){
+                g2d.setColor(Color.WHITE);
+                g2d.fillRect(mainPlayer.getX(), mainPlayer.getY(), mainPlayer.getWidth(), mainPlayer.getHeight());
+            }
         }
+
     }
 }
