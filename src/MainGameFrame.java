@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -7,23 +8,57 @@ public class MainGameFrame extends JFrame {
     private JDesktopPane desktopPane;
     private JButton jButton1;
     private ImageBackground imageBg;
+    private JButton buttonStart, buttonNewGame, buttonExit;
+    private JLabel titleGame, picture;
+    private JPanel contentPanel, buttonPanel;
 
-    /**
-     * Creates new form MainGameFrame
-     */
     public MainGameFrame() {
-        imageBg = new ImageBackground("img/Menu.png");
+        desktopPane = new JDesktopPane();
+        imageBg = new ImageBackground("src/Menu.png");
+        contentPanel = new JPanel(new GridLayout(1, 2));
+        buttonPanel = new JPanel();
+        buttonStart = new JButton("Start");
+        buttonNewGame = new JButton("New Game");
+        buttonExit = new JButton("Exit");
+        picture = new JLabel();
 
         this.setUndecorated(true);
-        initComponents();
-
         imageBg.setLayout(new BorderLayout());
+        imageBg.setLayout(new BorderLayout(50, 50));
+        imageBg.setBorder(new EmptyBorder(50, 100, 50, 100));
         desktopPane.setOpaque(false);
         imageBg.add(desktopPane, BorderLayout.CENTER);
         this.setContentPane(imageBg);
 
+        //Title Game Name
+        titleGame = new JLabel("Phawang", SwingConstants.CENTER);
+        titleGame.setFont(new Font("Arial", Font.BOLD, 200));
+        imageBg.add(titleGame, BorderLayout.NORTH);
+
+        //Content button + picture
+        contentPanel.setOpaque(false);
+
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));   //Add Button Left Menu
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(Box.createVerticalGlue());
+        customizeButton(buttonStart);
+        customizeButton(buttonNewGame);
+        customizeButton(buttonExit);
+        buttonPanel.add(buttonStart);
+        buttonPanel.add(buttonNewGame);
+        buttonPanel.add(buttonExit);
+        buttonPanel.add(Box.createVerticalGlue());
+
+        picture.setOpaque(true);     //Add Picture Right Menu
+
+        contentPanel.add(buttonPanel);
+        contentPanel.add(picture);
+        imageBg.add(contentPanel, BorderLayout.CENTER);
+
+
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setTitle("Phawang");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
     }
 
@@ -34,48 +69,6 @@ public class MainGameFrame extends JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    private void initComponents() {
-
-        desktopPane = new JDesktopPane();
-        jButton1 = new JButton();
-
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        jButton1.setText("Start Game");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
-
-        desktopPane.setLayer(jButton1, JLayeredPane.DEFAULT_LAYER);
-
-        GroupLayout desktopPaneLayout = new GroupLayout(desktopPane);
-        desktopPane.setLayout(desktopPaneLayout);
-        desktopPaneLayout.setHorizontalGroup(
-                desktopPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(desktopPaneLayout.createSequentialGroup()
-                                .addGap(157, 157, 157)
-                                .addComponent(jButton1)
-                                .addContainerGap(155, Short.MAX_VALUE))
-        );
-        desktopPaneLayout.setVerticalGroup(
-                desktopPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(desktopPaneLayout.createSequentialGroup()
-                                .addGap(134, 134, 134)
-                                .addComponent(jButton1)
-                                .addContainerGap(143, Short.MAX_VALUE))
-        );
-
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(desktopPane, GroupLayout.Alignment.TRAILING)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(desktopPane)
-        );
-
-        pack();
-    }// </editor-fold>
 
     private void jButton1ActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
@@ -87,10 +80,22 @@ public class MainGameFrame extends JFrame {
         gameWin.setVisible(true);
     }
 
+    private void customizeButton(JButton btn) {
+        btn.setFont(new Font("Arial", Font.PLAIN, 100)); // ปรับขนาดฟอนต์ให้ใหญ่ขึ้น
+        btn.setAlignmentX(Component.LEFT_ALIGNMENT); // ชิดซ้ายตามใน mockup
+        btn.setFocusable(false); // เอาเส้นประตอนเลือกออก
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        try {
+            // ตั้งค่า Look And Feel ให้เหมือน OS
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new MainGameFrame().setVisible(true));
