@@ -1,5 +1,8 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
 public abstract class GameObject {
     private int x, y;
     private int width, height;
@@ -17,7 +20,13 @@ public abstract class GameObject {
         this.isVisible = true;
         this.hitbox = new Rectangle(x, y, width, height);
     }
-
+    public GameObject(String id, int x, int y, int width, int height, String spriteName){
+        this.objectId = id;
+        this.x = x;
+        this.y = y;
+        this.isVisible = true;
+        URL spriteURL = this.getClass().getResource(spriteName);
+    }
     public int getX() {
         return this.x;
     }
