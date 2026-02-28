@@ -1,3 +1,5 @@
+import entities.GamePanel;
+
 import javax.swing.*;
 public class TestRunner {
     public static void main(String[] args) {
