@@ -7,7 +7,7 @@ public class Player extends GameObject {
     private  boolean isMoving;
     private  boolean isAlive;
     public Player(String id, int x, int y, int width, int height) {
-        super(id, x, y, width, height);
+        super(id, x, y, width, height, "testPlayer.png");
     }
     public Inventory getInventory() {
         return inventory; //ใส่ไว้ก่อน กัน error
@@ -50,7 +50,12 @@ public class Player extends GameObject {
 
     }
     public void render(Graphics2D g2d) {
-
+        if (getSprite() != null) {
+            g2d.drawImage(getSprite(), getX(), getY(), getWidth(), getWidth(), null);
+        } else {
+            g2d.setColor(Color.BLUE);
+            g2d.fillRect(getX(), getY(), getWidth(), getHeight());
+        }
     }
     public void moveTo(int x, int y) {
 

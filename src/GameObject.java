@@ -2,7 +2,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
-import java.net.URL;
+import java.io.File;
+
 public abstract class GameObject {
     private int x, y;
     private int width, height;
@@ -24,8 +25,20 @@ public abstract class GameObject {
         this.objectId = id;
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
         this.isVisible = true;
-        URL spriteURL = this.getClass().getResource(spriteName);
+        File file = new File("res/" + spriteName);
+        try {
+            if (file.exists()) {
+                this.sprite = ImageIO.read(file);
+            } else {
+                System.err.println("หาไฟล์ไม่เจอที่: " + file.getAbsolutePath());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.hitbox = new Rectangle(x, y, width, height);
     }
     public int getX() {
         return this.x;
