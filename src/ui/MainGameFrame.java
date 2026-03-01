@@ -44,6 +44,7 @@ public class MainGameFrame extends JFrame {
         this.revalidate();
         this.repaint();
 
+        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }

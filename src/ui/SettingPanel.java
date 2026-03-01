@@ -1,7 +1,8 @@
 package ui;
 
+import system.AudioManager;
+
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
 
@@ -10,7 +11,7 @@ public class SettingPanel extends JPanel {
     private JLabel settingTitle, bgmLabel, sfxLabel;
     private GridBagConstraints gbc;
     private JSlider slider, bgmSlider, sfxSlider;
-    private Graphics2D g2d;
+    private Graphics2D g2d, g2;
 
     public SettingPanel(MainGameFrame parent) {
         settingTitle = new JLabel("Settings");
@@ -35,16 +36,21 @@ public class SettingPanel extends JPanel {
         add(bgmLabel, gbc);
 
         bgmSlider = createCustomSlider(0, 100, AudioManager.bgmVolume);
-        bgmSlider.addChangeListener(e -> AudioManager.setBgmVolume(bgmSlider.getValue()));
+        sfxSlider = createCustomSlider(0, 100, AudioManager.sfxVolume);
+        bgmSlider.addChangeListener(e -> {
+            AudioManager.setBgmVolume(bgmSlider.getValue());
+        });
         gbc.gridx = 1; gbc.gridy = 1;
         add(bgmSlider, gbc);
 
         // Adjust SFX
         sfxLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+        sfxSlider.addChangeListener(e -> {
+            AudioManager.setSfxVolume(sfxSlider.getValue());
+        });
         gbc.gridx = 0; gbc.gridy = 2;
         add(sfxLabel, gbc);
 
-        sfxSlider = createCustomSlider(0, 100, AudioManager.sfxVolume);
         gbc.gridx = 1; gbc.gridy = 2;
         add(sfxSlider, gbc);
 
@@ -57,8 +63,9 @@ public class SettingPanel extends JPanel {
 
     private JSlider createCustomSlider(int min, int max, int value) {
         slider = new JSlider(min, max, value);
-        slider.setPreferredSize(new Dimension(400, 50));
+        slider.setPreferredSize(new Dimension(500, 80));
         slider.setOpaque(false);
+        slider.setFocusable(false);
 
         slider.setUI(new BasicSliderUI(slider) {
             @Override
@@ -75,15 +82,20 @@ public class SettingPanel extends JPanel {
             }
             @Override
             protected Dimension getThumbSize() {
-                return new Dimension(40, 40); // ปรับขนาดปุ่มเลื่อนเป็น 40x40
+                return new Dimension(45, 45); // ปรับขนาดปุ่มเลื่อน
             }
         });
         return slider;
     }
 
     protected void paintComponent(Graphics g){
-        g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setColor(getBackground());
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);
+
+        g2.dispose();
         super.paintComponent(g);
     }
 }
