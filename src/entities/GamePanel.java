@@ -36,7 +36,8 @@ public class GamePanel extends JPanel implements Runnable {
         mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
 
-        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png","CandleStroke.png");
+        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png",
+                "CandleStroke.png");
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -48,7 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
                 if (sceneManager.getCurrentScene() != null) {
                     for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
 
-                        if (obj.getHitbox().contains(e.getPoint()) && obj instanceof Interactable
+                        if (obj.getHitbox().contains(e.getPoint()) && obj.isVisible() && obj instanceof Interactable
                                 && ((Interactable) obj).isInteractable()) {
 
                             int playerCenter = mainPlayer.getX() + (mainPlayer.getWidth() / 2);
@@ -56,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
 
                             int distance = Math.abs(playerCenter - objCenter);
 
-                            if (distance < 350) {
+                            if (distance < 250) {
                                 ((Interactable) obj).onInteract(mainPlayer);
                                 break;
                             } else {
@@ -160,9 +161,25 @@ public class GamePanel extends JPanel implements Runnable {
             if (mainPlayer != null) {
                 mainPlayer.setMoving(isWalking);
             }
-        }
-        else {
-            //ถ้ากำลังเปลี่ยนฉากอยู่ บังคับตัวละครหยุดเดิน
+
+            if (sceneManager.getCurrentScene() != null && mainPlayer != null) {
+                for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
+                    if (obj instanceof scenes.Door) {
+
+                        int playerCenter = mainPlayer.getX() + (mainPlayer.getWidth() / 2);
+                        int objCenter = obj.getX() + (obj.getWidth() / 2);
+                        int distance = Math.abs(playerCenter - objCenter);
+
+                        if (distance < 250) {
+                            obj.setVisible(true);
+                        } else {
+                            obj.setVisible(false);
+                        }
+                    }
+                }
+            }
+        } else {
+            // ถ้ากำลังเปลี่ยนฉากอยู่ บังคับตัวละครหยุดเดิน
             if (mainPlayer != null) {
                 mainPlayer.setMoving(false);
             }
