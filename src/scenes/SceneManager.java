@@ -106,12 +106,20 @@ public class SceneManager {
         Scene scene = scenes.get(targetSceneId);
 
         if (leftDestId != null) {
-            Door leftArrow = new Door("left_" + targetSceneId, 50, 250, 50, 10, leftDestId, this, imgLeft);
+            int leftWidth = imgLeft.getWidth();
+            int leftHeight = imgLeft.getHeight();
+
+            Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftDestId, this, imgLeft);
             scene.addGameObject(leftArrow);
         }
 
         if (rightDestId != null) {
-            Door rightArrow = new Door("right_" + targetSceneId, 1770, 250, 50, 10, rightDestId, this, imgRight);
+            int rightWidth = imgRight.getWidth();
+            int rightHeight = imgRight.getHeight();
+
+            int rightX = 1920 - rightWidth - 50;
+
+            Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightDestId, this, imgRight);
             scene.addGameObject(rightArrow);
         }
     }
