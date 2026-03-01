@@ -54,7 +54,7 @@ public class Door extends GameObject implements Interactable {
     @Override
     public void render(Graphics2D g2d) {
         if (getSprite() != null && isVisible()){
-            g2d.drawImage(getSprite(), this.getX(), this.getY(), this.getSpawnX(), this.getSpawnY(), null);
+            g2d.drawImage(getSprite(), this.getX(), this.getY(), null);
         }
     }
 
