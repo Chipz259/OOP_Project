@@ -12,7 +12,7 @@ public class MainGameFrame extends JFrame {
      * Creates new form MainGameFrame
      */
     public MainGameFrame() {
-        imageBg = new ImageBackground("img/Menu.png");
+        imageBg = new ImageBackground("res/Menu.png");
 
         this.setUndecorated(true);
         initComponents();
@@ -81,7 +81,7 @@ public class MainGameFrame extends JFrame {
         // TODO add your handling code here:
         GameWindow gameWin = new GameWindow();
         GamePanel gamePanel = new GamePanel();
-        gameWin.add(gamePanel);
+        gameWin.setContentPane(gamePanel);
         gameWin.pack();
         desktopPane.add(gameWin);
         gameWin.setVisible(true);
