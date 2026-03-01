@@ -1,6 +1,7 @@
 package scenes;
 
 import entities.Item;
+import entities.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,6 +10,14 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 public class SceneManager {
+
+    private float fade = 0;
+    private boolean fadingOut = false, fadingIn = false;
+
+    private String nextSceneId;
+    private Player pendingPlayer;
+    private int spawnX, spawnY;
+
     private HashMap<String, Scene> scenes;
     private Scene currentScene;
 
@@ -50,18 +59,15 @@ public class SceneManager {
             String sceneId = "scene_" + i;
             Scene newScene = new Scene(sceneId);
 
-            try { 
+            try {
                 BufferedImage bgImage = ImageIO.read(getClass().getResource("/res/bg_" + i + ".png"));
                 newScene.setBackgroundImage(bgImage);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.err.println("หารูปไม่เจอ");
             }
 
             scenes.put(sceneId, newScene);
         }
-
-
 
         // กำหนดลูกศรซ้าย-ขวา
         setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow);
@@ -79,7 +85,8 @@ public class SceneManager {
     }
 
     public void setupSpecificObjects() {
-        Item Candle = new Item("candle", 900, 400, 500, 500, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png", "CandleStroke.png");
+        Item Candle = new Item("candle", 900, 400, 500, 500, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png",
+                "CandleStroke.png");
         Scene scene_2 = scenes.get("scene_2");
         if (scene_2 != null) {
             scene_2.addGameObject(Candle);
@@ -110,7 +117,8 @@ public class SceneManager {
             int leftWidth = imgLeft.getWidth();
             int leftHeight = imgLeft.getHeight();
 
-            Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftDestId, this, imgLeft, 1650, 550);
+            Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftDestId, this,
+                    imgLeft, 1650, 550);
             scene.addGameObject(leftArrow);
         }
 
@@ -120,14 +128,52 @@ public class SceneManager {
 
             int rightX = 1920 - rightWidth - 50;
 
-            Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightDestId, this, imgRight, 150, 550);
+            Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightDestId,
+                    this, imgRight, 150, 550);
             scene.addGameObject(rightArrow);
         }
     }
 
+    public boolean isTransition() {
+        return fadingOut || fadingIn;
+    }
+
+    public void startTransition(String targetScene, Player p, int spawnX, int spawnY) {
+        if (!isTransition()) {
+            this.nextSceneId = targetScene;
+            this.pendingPlayer = p;
+            this.spawnX = spawnX;
+            this.spawnY = spawnY;
+            this.fadingOut = true; // สั่งให้มืด
+        }
+    }
+
     public void update() {
-        if (getCurrentScene() != null) {
-            currentScene.update();
+
+        if (fadingOut) {
+            fade += 0.05; // ความเร็วตอนมืดลง (ยิ่งเยอะยิ่งมืดไว)
+            if (fade >= 1) {
+                fade = 1;
+                fadingOut = false;
+
+                loadScene(nextSceneId);
+                if (pendingPlayer != null) {
+                    pendingPlayer.setX(spawnX);
+                    pendingPlayer.setY(spawnY);
+                }
+
+                fadingIn = true;
+            }
+        } else if (fadingIn) {
+            fade -= 0.05;
+            if (fade <= 0) {
+                fade = 0;
+                fadingIn = false;
+            }
+        } else {
+            if (getCurrentScene() != null) {
+                currentScene.update();
+            }
         }
 
     }
@@ -135,6 +181,13 @@ public class SceneManager {
     public void render(Graphics2D g2d) {
         if (getCurrentScene() != null) {
             currentScene.render(g2d);
+        }
+
+        if (fade > 0){
+            float safe = Math.max(0, Math.min(1, fade));
+
+            g2d.setColor(new Color(0, 0, 0, safe));
+            g2d.fillRect(0, 0, 1920, 1080);
         }
     }
 

@@ -1,4 +1,5 @@
 package entities;
+
 import entities.Item;
 import entities.GameObject;
 
@@ -8,7 +9,6 @@ import system.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Cursor;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;;
@@ -36,15 +36,20 @@ public class GamePanel extends JPanel implements Runnable {
         mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
 
-        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png", "CandleStroke.png");
+        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png","CandleStroke.png");
 
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                if (sceneManager.isTransition()) {
+                    return;
+                }
+
                 if (sceneManager.getCurrentScene() != null) {
                     for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
 
-                        if (obj.getHitbox().contains(e.getPoint()) && obj instanceof Interactable && ((Interactable) obj).isInteractable()) {
+                        if (obj.getHitbox().contains(e.getPoint()) && obj instanceof Interactable
+                                && ((Interactable) obj).isInteractable()) {
 
                             int playerCenter = mainPlayer.getX() + (mainPlayer.getWidth() / 2);
                             int objCenter = obj.getX() + (obj.getWidth() / 2);
@@ -54,9 +59,8 @@ public class GamePanel extends JPanel implements Runnable {
                             if (distance < 350) {
                                 ((Interactable) obj).onInteract(mainPlayer);
                                 break;
-                            }
-                            else{
-                                //ถ้าคลิกไกลเกินจะแสดงการแจ้งเตือน
+                            } else {
+                                // ถ้าคลิกไกลเกินจะแสดงการแจ้งเตือน
                                 System.out.println("ระบบ: อยู่ไกลเกินไอเวร");
                             }
                         }
@@ -95,8 +99,6 @@ public class GamePanel extends JPanel implements Runnable {
         });
     }
 
-
-
     public void startGameThread() {
         gameThread = new Thread(this);
         isRunning = true;
@@ -129,33 +131,41 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         sceneManager.update();
-        if (mainPlayer != null) {
-            mainPlayer.update();
-        }
 
-        int speed = 5;
-        boolean isWalking = false; // สร้างตัวแปรมาเช็คว่าเฟรมนี้ได้ก้าวขาไหม
-
-        if (keyH.left) {
-            if (mainPlayer.getX() - speed >= 0) {
-                mainPlayer.setX(mainPlayer.getX() - speed);
-            } else {
-                mainPlayer.setX(0);
+        if (!sceneManager.isTransition()) {
+            if (mainPlayer != null) {
+                mainPlayer.update();
             }
-            isWalking = true; // โดนกดปุ่ม = เดินอยู่
-        }
-        if (keyH.right) {
-            if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
-                mainPlayer.setX(mainPlayer.getX() + speed);
-            } else {
-                mainPlayer.setX(this.getWidth() - mainPlayer.getWidth());
-            }
-            isWalking = true; // โดนกดปุ่ม = เดินอยู่
-        }
 
-        // 🌟 ส่งสถานะเดินไปบอก Player เพื่อให้ render สลับรูปได้ถูก
-        if (mainPlayer != null) {
-            mainPlayer.setMoving(isWalking);
+            int speed = 5;
+            boolean isWalking = false; // สร้างตัวแปรมาเช็คว่าเฟรมนี้ได้ก้าวขาไหม
+
+            if (keyH.left) {
+                if (mainPlayer.getX() - speed >= 0) {
+                    mainPlayer.setX(mainPlayer.getX() - speed);
+                } else {
+                    mainPlayer.setX(0);
+                }
+                isWalking = true; // โดนกดปุ่ม = เดินอยู่
+            }
+            if (keyH.right) {
+                if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
+                    mainPlayer.setX(mainPlayer.getX() + speed);
+                } else {
+                    mainPlayer.setX(this.getWidth() - mainPlayer.getWidth());
+                }
+                isWalking = true; // โดนกดปุ่ม = เดินอยู่
+            }
+            // 🌟 ส่งสถานะเดินไปบอก Player เพื่อให้ render สลับรูปได้ถูก
+            if (mainPlayer != null) {
+                mainPlayer.setMoving(isWalking);
+            }
+        }
+        else {
+            //ถ้ากำลังเปลี่ยนฉากอยู่ บังคับตัวละครหยุดเดิน
+            if (mainPlayer != null) {
+                mainPlayer.setMoving(false);
+            }
         }
     }
 
@@ -169,7 +179,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (mainPlayer != null) {
             mainPlayer.render(g2d);
 
-            if (mainPlayer.getSprite() == null){
+            if (mainPlayer.getSprite() == null) {
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(mainPlayer.getX(), mainPlayer.getY(), mainPlayer.getWidth(), mainPlayer.getHeight());
             }

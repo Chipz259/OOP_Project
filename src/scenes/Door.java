@@ -62,9 +62,7 @@ public class Door extends GameObject implements Interactable {
     public void onInteract(Player p) {
         System.out.println("ผู้เล่นคลิกลูกศร: เปลี่ยนไปฉาก " + this.getNextSceneId());
         if (sceneM != null) {
-            sceneM.loadScene(this.getNextSceneId());
-            p.setX(this.getSpawnX());
-            p.setY(this.getSpawnY());
+            sceneM.startTransition(this.getNextSceneId(), p, this.getSpawnX(), this.getSpawnY());
         }
     }
 
