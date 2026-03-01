@@ -51,7 +51,7 @@ public class Player extends GameObject {
     }
     public void render(Graphics2D g2d) {
         if (getSprite() != null) {
-            g2d.drawImage(getSprite(), getX(), getY(), getWidth(), getWidth(), null);
+            g2d.drawImage(getSprite(), getX(), getY(), getWidth(), getHeight(), null);
         } else {
             g2d.setColor(Color.BLUE);
             g2d.fillRect(getX(), getY(), getWidth(), getHeight());

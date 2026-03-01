@@ -3,6 +3,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.File;
+import java.net.URL;
 
 public abstract class GameObject {
     private int x, y;
@@ -28,12 +29,17 @@ public abstract class GameObject {
         this.width = width;
         this.height = height;
         this.isVisible = true;
-        File file = new File("res/" + spriteName);
         try {
-            if (file.exists()) {
-                this.sprite = ImageIO.read(file);
+            URL imageUrl = getClass().getResource("/res/" + spriteName);
+            if (imageUrl != null) {
+                // 3. ส่ง imageUrl ให้ ImageIO.read ทำงาน
+                this.sprite = ImageIO.read(imageUrl);
+
+                // ปรับขนาดตามที่คุยกันไว้ (ถ้าอยากให้ตัวเล็กลง ให้ใช้ค่าพารามิเตอร์แทน)
+                this.width = width;
+                this.height = height;
             } else {
-                System.err.println("หาไฟล์ไม่เจอที่: " + file.getAbsolutePath());
+                System.err.println("Error: หาไฟล์ไม่เจอใน Resources: /res/" + spriteName);
             }
         } catch (IOException e) {
             e.printStackTrace();

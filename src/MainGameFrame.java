@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
 
 public class MainGameFrame extends JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainGameFrame.class.getName());
