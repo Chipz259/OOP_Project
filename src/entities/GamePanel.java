@@ -29,14 +29,14 @@ public class GamePanel extends JPanel implements Runnable {
     public GamePanel() {
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
-        this.setDoubleBuffered(true); // ลดอาการภาพกะพริบ
+        this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
-        mainPlayer = new Player("player", 1650, 150, 1024, 1024);
+        mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
 
-        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png", "CandleStroke.png");
+        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนดับดังฟู่ว", "Candle.png", "CandleStroke.png");
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -132,7 +132,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         int speed = 5;
-        boolean isWalking = false; // สร้างตัวแปรมาเช็คว่าเฟรมนี้ได้ก้าวขาไหม
+        boolean isWalking = false;
+        boolean isFacingLeft = false;
 
         if (keyH.left) {
             if (mainPlayer.getX() - speed >= 0) {
@@ -140,7 +141,8 @@ public class GamePanel extends JPanel implements Runnable {
             } else {
                 mainPlayer.setX(0);
             }
-            isWalking = true; // โดนกดปุ่ม = เดินอยู่
+            isWalking = true;
+            mainPlayer.setFacingLeft(true);
         }
         if (keyH.right) {
             if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
@@ -148,7 +150,8 @@ public class GamePanel extends JPanel implements Runnable {
             } else {
                 mainPlayer.setX(this.getWidth() - mainPlayer.getWidth());
             }
-            isWalking = true; // โดนกดปุ่ม = เดินอยู่
+            isWalking = true;
+            mainPlayer.setFacingLeft(false);
         }
 
         // 🌟 ส่งสถานะเดินไปบอก Player เพื่อให้ render สลับรูปได้ถูก
