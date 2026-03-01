@@ -9,7 +9,6 @@ public class Door extends GameObject implements Interactable {
 
     public Door(String id, int x, int y, int width, int height, String nextSceneId, SceneManager sceneM, BufferedImage arrowImage) {
         super(id, x, y, width, height);
-
         this.nextSceneId = nextSceneId;
         this.sceneM = sceneM;
 
