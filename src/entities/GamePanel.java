@@ -33,8 +33,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
-        mainPlayer = new Player("player", 350, 550, 128, 128);
+        mainPlayer = new Player("player", 1650, 550, 128, 128);
         sceneManager = new SceneManager();
+
         Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png", "CandleStroke.png");
 
         this.addMouseListener(new MouseAdapter() {
@@ -42,15 +43,26 @@ public class GamePanel extends JPanel implements Runnable {
             public void mousePressed(MouseEvent e) {
                 if (sceneManager.getCurrentScene() != null) {
                     for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
+
                         if (obj.getHitbox().contains(e.getPoint()) && obj instanceof Interactable && ((Interactable) obj).isInteractable()) {
-                            ((Interactable) obj).onInteract(mainPlayer);
-                            setCursor(Cursor.getDefaultCursor());
-                            break;
+
+                            if (mainPlayer.getHitbox().intersects(obj.getHitbox())) {
+                                ((Interactable) obj).onInteract(mainPlayer);
+                                break;
+                            }
+                            else{
+                                //ถ้าคลิกไกลเกินจะแสดงการแจ้งเตือน
+                                System.out.println("ระบบ: อยู่ไกลเกินไอเวร");
+                            }
+                            // ((Interactable) obj).onInteract(mainPlayer);
+                            // setCursor(Cursor.getDefaultCursor());
+                            // break;
                         }
                     }
                 }
             }
         });
+
         this.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseMoved(MouseEvent e) {
                 boolean isHoveringAnyItem = false;
@@ -80,6 +92,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
         });
     }
+
+
 
     public void startGameThread() {
         gameThread = new Thread(this);
