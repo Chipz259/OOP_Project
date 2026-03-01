@@ -9,22 +9,22 @@ public class Item extends GameObject implements Interactable {
         super(id, x, y, width, height);
     }
     public String getItemName() {
-        return "0"; //ใส่ไว้ก่อน กัน error
+        return itemName;
     }
     public void setItemName(String itemName) {
-
+        this.itemName = itemName;
     }
     public String getDescription() {
-        return "0"; //ใส่ไว้ก่อน กัน error
+        return description;
     }
     public void setDescription(String description) {
-
+        this.description = description;
     }
     public boolean isCollected() {
-        return true; //ใส่ไว้ก่อน กัน error
+        return isCollected;
     }
     public void setCollected(boolean isCollected) {
-
+        this.isCollected = isCollected;
     }
     @Override
     public void update() {
