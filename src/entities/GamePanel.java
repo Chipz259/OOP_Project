@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
-        mainPlayer = new Player("player", 1650, 150, 1024, 1024);
+        mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
 
         Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png", "CandleStroke.png");
