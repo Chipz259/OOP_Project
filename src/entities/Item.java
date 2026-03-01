@@ -54,7 +54,7 @@ public class Item extends GameObject implements Interactable {
     }
     @Override
     public void render(Graphics2D g2d) {
-        if (isVisible() && !isHovered) {
+        if (isVisible() && !isCollected) {
             BufferedImage imageToDraw = (isHovered && hoverSprite != null) ? hoverSprite : getSprite();
             if  (imageToDraw != null) {
                 g2d.drawImage(imageToDraw, getX(), getY(), getWidth(), getHeight(), null);
@@ -72,7 +72,7 @@ public class Item extends GameObject implements Interactable {
     }
     @Override
     public void onInteract(Player p) {
-        if (isCollected) {
+        if (!isCollected) {
             System.out.println("เก็บของ : " + itemName + " ละจั๊ฟ");
             this.isCollected = true;
             this.setVisible(false);

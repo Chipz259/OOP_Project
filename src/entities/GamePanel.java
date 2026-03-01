@@ -49,6 +49,8 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
+        });
+        this.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseMoved(MouseEvent e) {
                 boolean isHoveringAnyItem = false;
 
