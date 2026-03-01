@@ -1,8 +1,7 @@
-package MinigameRotateYan;
+package Minigame.RotateYanPackage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class ImagePanel extends JPanel {
     private Image img;
