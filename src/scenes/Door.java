@@ -2,6 +2,9 @@ package scenes;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import entities.*;
+
 public class Door extends GameObject implements Interactable {
 
     private int spawnX;

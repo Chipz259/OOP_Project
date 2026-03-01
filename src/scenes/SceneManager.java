@@ -37,8 +37,8 @@ public class SceneManager {
 
         // โหลดรูปลูกศร
         try {
-            imgLeftArrow = ImageIO.read(getClass().getResourceAsStream("/res/leftArrow.png"));
-            imgRightArrow = ImageIO.read(getClass().getResourceAsStream("/res/rightArrow.png"));
+            imgLeftArrow = ImageIO.read(getClass().getResource("/res/leftArrow.png"));
+            imgRightArrow = ImageIO.read(getClass().getResource("/res/rightArrow.png"));
         } catch (IOException e) {
             System.err.println("โหลดรูปภาพไม่สำเร็จ");
         }
@@ -46,8 +46,20 @@ public class SceneManager {
         // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
         for (int i = 1; i <= 8; i++) {
             String sceneId = "scene_" + i;
-            scenes.put(sceneId, new Scene(sceneId));
+            Scene newScene = new Scene(sceneId);
+
+            try { 
+                BufferedImage bgImage = ImageIO.read(getClass().getResource("/res/bg_" + i + ".png"));
+                newScene.setBackgroundImage(bgImage);
+            }
+            catch (Exception e) {
+                System.err.println("หารูปไม่เจอ");
+            }
+
+            scenes.put(sceneId, newScene);
         }
+
+
 
         // กำหนดลูกศรซ้าย-ขวา
         setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow);
@@ -64,16 +76,18 @@ public class SceneManager {
         currentScene = scenes.get("scene_2");
     }
 
-    public void setupSpecificObjects(){
+    public void setupSpecificObjects() {
         // //เอาไว้จัดการใส่ entities.Item เข้าไปในฉาก
         // //Ex
         // scenes.Scene scene1 = scenes.get("scene_1");
         // try {
-        //     BufferedImage imgWater = ImageIO.read(getClass().getResourceAsStream("/res/Water.png"));
+        // BufferedImage imgWater =
+        // ImageIO.read(getClass().getResourceAsStream("/res/Water.png"));
 
-        //     if (scene1 != null){
-        //         entities.Item waterBottle = new entities.Item("item_water", 0, 0, 0, 0, null, null);
-        //     }
+        // if (scene1 != null){
+        // entities.Item waterBottle = new entities.Item("item_water", 0, 0, 0, 0, null,
+        // null);
+        // }
         // }
         // catch () {
 
@@ -85,12 +99,12 @@ public class SceneManager {
         Scene scene = scenes.get(targetSceneId);
 
         if (leftDestId != null) {
-            Door leftArrow = new Door("left_" + targetSceneId, 50, 490, 100, 100, leftDestId, this, imgLeft);
+            Door leftArrow = new Door("left_" + targetSceneId, 50, 250, 50, 10, leftDestId, this, imgLeft);
             scene.addGameObject(leftArrow);
         }
 
         if (rightDestId != null) {
-            Door rightArrow = new Door("right_" + targetSceneId, 1770, 490, 100, 100, rightDestId, this, imgRight);
+            Door rightArrow = new Door("right_" + targetSceneId, 1770, 250, 50, 10, rightDestId, this, imgRight);
             scene.addGameObject(rightArrow);
         }
     }
