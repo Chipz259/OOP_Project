@@ -12,7 +12,7 @@ public class Door extends GameObject implements Interactable {
     private String nextSceneId;
     private SceneManager sceneM;
 
-    public Door(String id, int x, int y, int width, int height, String nextSceneId, SceneManager sceneM, BufferedImage arrowImage) {
+    public Door(String id, int x, int y, int width, int height, String nextSceneId, SceneManager sceneM, BufferedImage arrowImage, int spawnX, int spawnY) {
         super(id, x, y, width, height);
         this.nextSceneId = nextSceneId;
         this.sceneM = sceneM;
@@ -21,8 +21,8 @@ public class Door extends GameObject implements Interactable {
         this.setSprite(arrowImage);
 
         //กำหนดจุดเกิดของ entities.Player
-        this.spawnX = 100;
-        this.spawnY = 500;
+        this.spawnX = spawnX;
+        this.spawnY = spawnY;
     }
 
     //Setter กับ Getter
@@ -54,7 +54,7 @@ public class Door extends GameObject implements Interactable {
     @Override
     public void render(Graphics2D g2d) {
         if (getSprite() != null && isVisible()){
-            g2d.drawImage(getSprite(), this.getX(), this.getY(), this.getSpawnX(), this.getSpawnY(), null);
+            g2d.drawImage(getSprite(), this.getX(), this.getY(), null);
         }
     }
 

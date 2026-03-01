@@ -1,5 +1,7 @@
 package scenes;
 
+import entities.Item;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -77,6 +79,11 @@ public class SceneManager {
     }
 
     public void setupSpecificObjects() {
+        Item Candle = new Item("candle", 900, 400, 500, 500, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png", "CandleStroke.png");
+        Scene scene_2 = scenes.get("scene_2");
+        if (scene_2 != null) {
+            scene_2.addGameObject(Candle);
+        }
         // //เอาไว้จัดการใส่ entities.Item เข้าไปในฉาก
         // //Ex
         // scenes.Scene scene1 = scenes.get("scene_1");
@@ -96,15 +103,24 @@ public class SceneManager {
 
     public void setupArrows(String targetSceneId, String leftDestId, String rightDestId, BufferedImage imgLeft,
             BufferedImage imgRight) {
+
         Scene scene = scenes.get(targetSceneId);
 
         if (leftDestId != null) {
-            Door leftArrow = new Door("left_" + targetSceneId, 50, 250, 50, 10, leftDestId, this, imgLeft);
+            int leftWidth = imgLeft.getWidth();
+            int leftHeight = imgLeft.getHeight();
+
+            Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftDestId, this, imgLeft, 1650, 550);
             scene.addGameObject(leftArrow);
         }
 
         if (rightDestId != null) {
-            Door rightArrow = new Door("right_" + targetSceneId, 1770, 250, 50, 10, rightDestId, this, imgRight);
+            int rightWidth = imgRight.getWidth();
+            int rightHeight = imgRight.getHeight();
+
+            int rightX = 1920 - rightWidth - 50;
+
+            Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightDestId, this, imgRight, 150, 550);
             scene.addGameObject(rightArrow);
         }
     }
