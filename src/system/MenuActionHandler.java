@@ -1,7 +1,6 @@
 package system;
 
 import ui.MainGameFrame;
-
 import java.awt.event.*;
 
 public class MenuActionHandler implements ActionListener {
@@ -18,8 +17,8 @@ public class MenuActionHandler implements ActionListener {
         if (scanAction.equals("Start")){
             return;
         }
-        else if (scanAction.equals("New Game")){
-            return;
+        else if (scanAction.equals("Setting")){
+            action.toggleSetting(true);
         }
         else if (scanAction.equals("Exit")){
             System.exit(0);
