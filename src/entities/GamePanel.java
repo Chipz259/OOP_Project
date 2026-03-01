@@ -42,8 +42,9 @@ public class GamePanel extends JPanel implements Runnable {
             public void mousePressed(MouseEvent e) {
                 if (sceneManager.getCurrentScene() != null) {
                     for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
-                        if (obj.getHitbox().contains(e.getPoint()) && obj instanceof Interactable) {
+                        if (obj.getHitbox().contains(e.getPoint()) && obj instanceof Interactable && ((Interactable) obj).isInteractable()) {
                             ((Interactable) obj).onInteract(mainPlayer);
+                            setCursor(Cursor.getDefaultCursor());
                             break;
                         }
                     }
@@ -61,7 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
                         if (obj instanceof Item) {
                             Item item = (Item) obj;
 
-                            if (item.getHitbox().contains(e.getPoint())) {
+                            if (item.getHitbox().contains(e.getPoint()) && item.isInteractable()) {
                                 item.setHovered(true);
                                 isHoveringAnyItem = true;
                             } else {
