@@ -9,14 +9,22 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        if(code == KeyEvent.VK_A) left = true;
-        if(code == KeyEvent.VK_D) right = true;
+        if(code == KeyEvent.VK_A) {
+            left = true;
+        }
+        if(code == KeyEvent.VK_D) {
+            right = true;
+        }
     }
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
-        if(code == KeyEvent.VK_A) left = false;
-        if(code == KeyEvent.VK_D) right = false;
+        if(code == KeyEvent.VK_A) {
+            left = false;
+        }
+        if(code == KeyEvent.VK_D) {
+            right = false;
+        }
     }
     @Override
     public void keyTyped(KeyEvent e) {}

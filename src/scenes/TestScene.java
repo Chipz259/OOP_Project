@@ -9,6 +9,8 @@ public class TestScene {
 
         // 1. สร้างกรอบหน้าต่าง Windows
         JFrame window = new JFrame("My Adventure Game");
+        window.setUndecorated(true);
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false); // ห้ามย่อขยายหน้าจอ
 

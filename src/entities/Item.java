@@ -60,10 +60,10 @@ public class Item extends GameObject implements Interactable {
                 g2d.drawImage(imageToDraw, getX(), getY(), getWidth(), getHeight(), null);
             }
             if (isHovered) {
-                g2d.setFont(new Font("Arial", Font.BOLD, 20));
+                g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
                 // เงาดำ
                 g2d.setColor(Color.BLACK);
-                g2d.drawString(description, getX() + 2, getY() - 8);
+                g2d.drawString(description, getX() + 4, getY() + 12);
                 // ตัวหนังสือขาว
                 g2d.setColor(Color.WHITE);
                 g2d.drawString(description, getX(), getY() + 10);

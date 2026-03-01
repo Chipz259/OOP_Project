@@ -15,6 +15,7 @@ public class Player extends GameObject {
     private BufferedImage[] walkFrames;
     private BufferedImage[] idleFrames;
 
+    private boolean isFacingLeft = false;
     private int spriteCounter = 0;
     private int spriteNum = 0;
     private final int ANIMATION_SPEED = 9;
@@ -70,6 +71,12 @@ public class Player extends GameObject {
     public void setMoving(boolean isMoving) {
         this.isMoving = isMoving;
     }
+    public boolean isFacingLeft() {
+        return this.isFacingLeft;
+    }
+    public void setFacingLeft(boolean isFacingLeft) {
+        this.isFacingLeft = isFacingLeft;
+    }
     public boolean isAlive() {
         return true; //ใส่ไว้ก่อน กัน error
     }
@@ -95,10 +102,18 @@ public class Player extends GameObject {
     }
     public void render(Graphics2D g2d) {
         if (isMoving() && walkFrames != null && spriteNum < walkFrames.length) {
-            g2d.drawImage(walkFrames[spriteNum], getX(), getY(), getWidth(), getHeight(), null);
+            if (isFacingLeft) {
+                g2d.drawImage(walkFrames[spriteNum], getX() + getWidth(), getY(), -getWidth(), getHeight(), null);
+            } else {
+                g2d.drawImage(walkFrames[spriteNum], getX(), getY(), getWidth(), getHeight(), null);
+            }
         }
         else if (!isMoving() && idleFrames != null && spriteNum < idleFrames.length) {
-            g2d.drawImage(idleFrames[spriteNum], getX(), getY(), getWidth(), getHeight(), null);
+            if (isFacingLeft) {
+                g2d.drawImage(idleFrames[spriteNum], getX() + getWidth(), getY(), -getWidth(), getHeight(), null);
+            } else {
+                g2d.drawImage(idleFrames[spriteNum], getX(), getY(), getWidth(), getHeight(), null);
+            }
         }
         else if (getSprite() != null) {
             g2d.drawImage(getSprite(), getX(), getY(), getWidth(), getHeight(), null);
