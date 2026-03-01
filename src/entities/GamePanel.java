@@ -36,8 +36,6 @@ public class GamePanel extends JPanel implements Runnable {
         mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
 
-        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนดับดังฟู่ว", "Candle.png", "CandleStroke.png");
-
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
