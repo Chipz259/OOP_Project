@@ -1,12 +1,31 @@
 package entities;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.net.URL;
+import java.io.IOException;
 public class Item extends GameObject implements Interactable {
     private String itemName;
     private String description;
     private boolean isCollected;
-    public Item(String id, int x, int y, int width, int height, String name, String desc) {
-        super(id, x, y, width, height);
+    private boolean isHovered;
+    private BufferedImage hoverSprite;
+    public Item(String id, int x, int y, int width, int height, String name, String desc, String normalSprite, String hoverSpritePath) {
+        super(id, x, y, width, height, normalSprite);
+        this.itemName = name;
+        this.description = desc;
+        this.isCollected = false;
+        this.isHovered = false;
+
+        try {
+            URL hoverURL = getClass().getResource("/res/" + hoverSpritePath);
+            if  (hoverURL != null) {
+                this.hoverSprite = ImageIO.read(hoverURL);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public String getItemName() {
         return itemName;
@@ -25,6 +44,9 @@ public class Item extends GameObject implements Interactable {
     }
     public void setCollected(boolean isCollected) {
         this.isCollected = isCollected;
+    }
+    public void setHovered(boolean hovered) {
+        this.isHovered = hovered;
     }
     @Override
     public void update() {
