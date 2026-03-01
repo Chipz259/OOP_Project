@@ -103,13 +103,14 @@ public class SceneManager {
 
     public void setupArrows(String targetSceneId, String leftDestId, String rightDestId, BufferedImage imgLeft,
             BufferedImage imgRight) {
+
         Scene scene = scenes.get(targetSceneId);
 
         if (leftDestId != null) {
             int leftWidth = imgLeft.getWidth();
             int leftHeight = imgLeft.getHeight();
 
-            Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftDestId, this, imgLeft);
+            Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftDestId, this, imgLeft, 1650, 550);
             scene.addGameObject(leftArrow);
         }
 
@@ -119,7 +120,7 @@ public class SceneManager {
 
             int rightX = 1920 - rightWidth - 50;
 
-            Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightDestId, this, imgRight);
+            Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightDestId, this, imgRight, 150, 550);
             scene.addGameObject(rightArrow);
         }
     }
