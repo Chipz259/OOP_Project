@@ -1,3 +1,9 @@
+package entities;
+
+import scenes.SceneManager;
+import system.KeyHandler;
+import system.QTEManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;

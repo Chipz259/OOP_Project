@@ -1,3 +1,7 @@
+package system;
+
+import ui.MainGameFrame;
+
 import java.awt.event.*;
 
 public class MenuActionHandler implements ActionListener {

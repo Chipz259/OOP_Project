@@ -1,9 +1,11 @@
-public class DataWindow extends javax.swing.JInternalFrame {
+package ui;
+
+public class GameWindow extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form DataWindow
+     * Creates new form NewJInternalFrame
      */
-    public DataWindow() {
+    public GameWindow() {
         initComponents();
     }
 

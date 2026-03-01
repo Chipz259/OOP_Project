@@ -1,3 +1,5 @@
+package scenes;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -63,14 +65,14 @@ public class SceneManager {
     }
 
     public void setupSpecificObjects(){
-        // //เอาไว้จัดการใส่ Item เข้าไปในฉาก
+        // //เอาไว้จัดการใส่ entities.Item เข้าไปในฉาก
         // //Ex
-        // Scene scene1 = scenes.get("scene_1");
+        // scenes.Scene scene1 = scenes.get("scene_1");
         // try {
         //     BufferedImage imgWater = ImageIO.read(getClass().getResourceAsStream("/res/Water.png"));
 
         //     if (scene1 != null){
-        //         Item waterBottle = new Item("item_water", 0, 0, 0, 0, null, null);
+        //         entities.Item waterBottle = new entities.Item("item_water", 0, 0, 0, 0, null, null);
         //     }
         // }
         // catch () {

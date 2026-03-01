@@ -1,3 +1,5 @@
+package entities;
+
 import java.awt.*;
 public class Player extends GameObject {
     private Inventory inventory;

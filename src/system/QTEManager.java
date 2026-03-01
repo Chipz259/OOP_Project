@@ -1,3 +1,5 @@
+package system;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 public class QTEManager {

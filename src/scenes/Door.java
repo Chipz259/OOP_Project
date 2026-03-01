@@ -1,3 +1,5 @@
+package scenes;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 public class Door extends GameObject implements Interactable {
@@ -15,7 +17,7 @@ public class Door extends GameObject implements Interactable {
         //กำหนดรูปภาพลูกศรให้ตัวแปร sprite
         this.setSprite(arrowImage);
 
-        //กำหนดจุดเกิดของ Player
+        //กำหนดจุดเกิดของ entities.Player
         this.spawnX = 100;
         this.spawnY = 500;
     }

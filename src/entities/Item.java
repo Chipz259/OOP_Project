@@ -1,3 +1,5 @@
+package entities;
+
 import java.awt.*;
 public class Item extends GameObject implements Interactable {
     private String itemName;
