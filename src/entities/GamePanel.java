@@ -46,7 +46,12 @@ public class GamePanel extends JPanel implements Runnable {
 
                         if (obj.getHitbox().contains(e.getPoint()) && obj instanceof Interactable && ((Interactable) obj).isInteractable()) {
 
-                            if (mainPlayer.getHitbox().intersects(obj.getHitbox())) {
+                            int playerCenter = mainPlayer.getX() + (mainPlayer.getWidth() / 2);
+                            int objCenter = obj.getX() + (obj.getWidth() / 2);
+
+                            int distance = Math.abs(playerCenter - objCenter);
+
+                            if (distance < 350) {
                                 ((Interactable) obj).onInteract(mainPlayer);
                                 break;
                             }
@@ -54,9 +59,6 @@ public class GamePanel extends JPanel implements Runnable {
                                 //ถ้าคลิกไกลเกินจะแสดงการแจ้งเตือน
                                 System.out.println("ระบบ: อยู่ไกลเกินไอเวร");
                             }
-                            // ((Interactable) obj).onInteract(mainPlayer);
-                            // setCursor(Cursor.getDefaultCursor());
-                            // break;
                         }
                     }
                 }
