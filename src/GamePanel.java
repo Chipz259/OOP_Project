@@ -19,10 +19,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         mainPlayer = new Player("player", 350, 550, 128, 128);
         sceneManager = new SceneManager();
-        Scene scene1 = new Scene("scene1");
-
-        sceneManager.addScene(scene1);
-        sceneManager.loadScene("scene1");
     }
     public void startGameThread() {
         gameThread = new Thread(this);
