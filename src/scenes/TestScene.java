@@ -6,6 +6,7 @@ import entities.GamePanel;
 public class TestScene {
     public static void main(String[] args) {
         System.setProperty("sun.java2d.uiScale", "1.0");
+
         // 1. สร้างกรอบหน้าต่าง Windows
         JFrame window = new JFrame("My Adventure Game");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

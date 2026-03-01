@@ -21,6 +21,7 @@ public class MainGameFrame extends JFrame {
     private int widthSystem, heightSystem, settingW, settingH;
 
     public MainGameFrame() {
+
         this.setUndecorated(true);
         layeredPane = new JLayeredPane();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -133,6 +134,7 @@ public class MainGameFrame extends JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        System.setProperty("sun.java2d.uiScale", "1.0");
         try {
             // ตั้งค่า Look And Feel ให้เหมือน OS
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
