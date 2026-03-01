@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
-        mainPlayer = new Player("player", 350, 550, 128, 128);
+        mainPlayer = new Player("player", 350, 150, 1024, 1024);
         sceneManager = new SceneManager();
         Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png", "CandleStroke.png");
 
@@ -114,13 +114,20 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         sceneManager.update();
 
+        if (mainPlayer != null) {
+            mainPlayer.update();
+        }
+
         int speed = 5;
+        boolean isWalking = false;
+
         if (keyH.left) {
             if (mainPlayer.getX() - speed >= 0) {
                 mainPlayer.setX(mainPlayer.getX() - speed);
             } else {
                 mainPlayer.setX(0);
             }
+            isWalking = true;
         }
         if (keyH.right) {
             if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
@@ -128,6 +135,11 @@ public class GamePanel extends JPanel implements Runnable {
             } else {
                 mainPlayer.setX(this.getWidth() - mainPlayer.getWidth());
             }
+            isWalking = true;
+        }
+
+        if (mainPlayer != null) {
+            mainPlayer.setMoving(isWalking);
         }
     }
 
