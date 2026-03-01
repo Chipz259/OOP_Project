@@ -130,16 +130,17 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+
     public void update() {
         sceneManager.update();
-
         if (!sceneManager.isTransition()) {
             if (mainPlayer != null) {
                 mainPlayer.update();
             }
 
             int speed = 5;
-            boolean isWalking = false; // สร้างตัวแปรมาเช็คว่าเฟรมนี้ได้ก้าวขาไหม
+            boolean isWalking = false;
+            boolean isFacingLeft = false;
 
             if (keyH.left) {
                 if (mainPlayer.getX() - speed >= 0) {
@@ -147,7 +148,8 @@ public class GamePanel extends JPanel implements Runnable {
                 } else {
                     mainPlayer.setX(0);
                 }
-                isWalking = true; // โดนกดปุ่ม = เดินอยู่
+                isWalking = true;
+                mainPlayer.setFacingLeft(true);
             }
             if (keyH.right) {
                 if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
@@ -155,9 +157,10 @@ public class GamePanel extends JPanel implements Runnable {
                 } else {
                     mainPlayer.setX(this.getWidth() - mainPlayer.getWidth());
                 }
-                isWalking = true; // โดนกดปุ่ม = เดินอยู่
+                isWalking = true;
+                mainPlayer.setFacingLeft(false);
             }
-            // 🌟 ส่งสถานะเดินไปบอก Player เพื่อให้ render สลับรูปได้ถูก
+
             if (mainPlayer != null) {
                 mainPlayer.setMoving(isWalking);
             }
