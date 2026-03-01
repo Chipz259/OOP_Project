@@ -54,18 +54,36 @@ public class Item extends GameObject implements Interactable {
     }
     @Override
     public void render(Graphics2D g2d) {
-
+        if (isVisible() && !isHovered) {
+            BufferedImage imageToDraw = (isHovered && hoverSprite != null) ? hoverSprite : getSprite();
+            if  (imageToDraw != null) {
+                g2d.drawImage(imageToDraw, getX(), getY(), getWidth(), getHeight(), null);
+            }
+            if (isHovered) {
+                g2d.setFont(new Font("Arial", Font.BOLD, 20));
+                // เงาดำ
+                g2d.setColor(Color.BLACK);
+                g2d.drawString(description, getX() + 2, getY() - 8);
+                // ตัวหนังสือขาว
+                g2d.setColor(Color.WHITE);
+                g2d.drawString(description, getX(), getY() + 10);
+            }
+        }
     }
     @Override
     public void onInteract(Player p) {
-
+        if (isCollected) {
+            System.out.println("เก็บของ : " + itemName + " ละจั๊ฟ");
+            this.isCollected = true;
+            this.setVisible(false);
+        }
     }
     @Override
     public void onHover() {
-
+        this.isHovered = true;
     }
     @Override
     public boolean isInteractable() {
-        return true; //ใส่ไว้ก่อน กัน error
+        return !isCollected;
     }
 }

@@ -1,4 +1,6 @@
 package entities;
+import entities.Item;
+import entities.GameObject;
 
 import scenes.SceneManager;
 import system.KeyHandler;
@@ -6,6 +8,8 @@ import system.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Cursor;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;;
 // import java.awt.event.KeyAdapter;
@@ -31,18 +35,44 @@ public class GamePanel extends JPanel implements Runnable {
 
         mainPlayer = new Player("player", 350, 550, 128, 128);
         sceneManager = new SceneManager();
+        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png", "CandleStroke.png");
 
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (sceneManager.getCurrentScene() != null) {
                     for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
-                        // เช็คว่าคลิกโดนกรอบ Hitbox ของ Object ไหนบ้าง
                         if (obj.getHitbox().contains(e.getPoint()) && obj instanceof Interactable) {
                             ((Interactable) obj).onInteract(mainPlayer);
-                            break; // คลิกโดนแล้วหยุดทำงาน
+                            break;
                         }
                     }
+                }
+            }
+            public void mouseMoved(MouseEvent e) {
+                boolean isHoveringAnyItem = false;
+
+                if (sceneManager != null && sceneManager.getCurrentScene() != null) {
+
+                    for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
+
+                        if (obj instanceof Item) {
+                            Item item = (Item) obj;
+
+                            if (item.getHitbox().contains(e.getPoint())) {
+                                item.setHovered(true);
+                                isHoveringAnyItem = true;
+                            } else {
+                                item.setHovered(false);
+                            }
+                        }
+                    }
+                }
+
+                if (isHoveringAnyItem) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                } else {
+                    setCursor(Cursor.getDefaultCursor());
                 }
             }
         });
