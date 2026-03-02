@@ -73,9 +73,14 @@ public class Item extends GameObject implements Interactable {
     @Override
     public void onInteract(Player p) {
         if (!isCollected) {
-            System.out.println("เก็บของ : " + itemName + " ละจั๊ฟ");
-            this.isCollected = true;
-            this.setVisible(false);
+            boolean success = p.getInventory().addItem(this);
+            if (success) {
+                System.out.println("เก็บของ : " + itemName + " ละจั๊ฟ");
+                this.isCollected = true;
+                this.setVisible(false);
+            } else {
+                System.out.println("เป๋าเต็มละเพื่อน");
+            }
         }
     }
     @Override

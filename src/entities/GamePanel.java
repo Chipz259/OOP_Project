@@ -20,7 +20,8 @@ public class GamePanel extends JPanel implements Runnable {
     // private int fps;
     private Player mainPlayer;
     private SceneManager sceneManager;
-    // private QTEManager qteManager;
+    private Inventory inventory;
+    // private QTEManager qetManager;
     // private MouseAdapter mouseHandler;
     // private KeyAdapter keyHandler;
 
@@ -33,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
+        inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
 
@@ -198,11 +200,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         if (mainPlayer != null) {
             mainPlayer.render(g2d);
+        }
 
-            if (mainPlayer.getSprite() == null) {
-                g2d.setColor(Color.WHITE);
-                g2d.fillRect(mainPlayer.getX(), mainPlayer.getY(), mainPlayer.getWidth(), mainPlayer.getHeight());
-            }
+        if (mainPlayer != null && mainPlayer.getInventory() != null) {
+            mainPlayer.getInventory().render(g2d, getWidth(), getHeight());
         }
 
     }
