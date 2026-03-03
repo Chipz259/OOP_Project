@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     private Player mainPlayer;
     private SceneManager sceneManager;
     private Inventory inventory;
+    private Interactable targetinteractable = null;
     // private QTEManager qetManager;
     // private MouseAdapter mouseHandler;
     // private KeyAdapter keyHandler;
@@ -65,6 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
                             } else {
                                 // ถ้าคลิกไกลเกินจะแสดงการแจ้งเตือน
                                 System.out.println("ระบบ: อยู่ไกลเกินไอเวร");
+                                targetinteractable = (Interactable) obj;
                             }
                         }
                     }
@@ -150,6 +152,9 @@ public class GamePanel extends JPanel implements Runnable {
                 } else {
                     mainPlayer.setX(0);
                 }
+//                if (targetinteractable != null) {
+//                    if (mainPlayer.getX() < targetinteractable.) {}
+//                }
                 isWalking = true;
                 mainPlayer.setFacingLeft(true);
             }

@@ -61,7 +61,7 @@ public class Item extends GameObject implements Interactable {
             }
             if (isHovered) {
                 g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
-                // เงาดำ
+                // เงาดำ DIY
                 g2d.setColor(Color.BLACK);
                 g2d.drawString(description, getX() + 4, getY() + 12);
                 // ตัวหนังสือขาว
