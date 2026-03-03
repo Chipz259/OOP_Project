@@ -64,7 +64,6 @@ public class MainGameFrame extends JFrame {
         picture = new JLabel();
         icon = new ImageIcon("src/res/Front Menu Right.png");
 
-
         imageBg.setLayout(new BorderLayout(50, 50));
         imageBg.setBorder(new EmptyBorder(50, 100, 0, 0));
 
@@ -109,13 +108,9 @@ public class MainGameFrame extends JFrame {
     }
 
     private void customizeButton(JButton btn) {
-        btn.setFont(new Font("Arial", Font.PLAIN, 150)); // ปรับขนาดฟอนต์ให้ใหญ่ขึ้น
-        btn.setAlignmentX(Component.LEFT_ALIGNMENT); // ชิดซ้ายตามใน mockup
-        btn.setFocusable(false); // เอาเส้นประตอนเลือกออก
-
-//        btn.setContentAreaFilled(false);
-//        btn.setBorderPainted(false);
-//        btn.setOpaque(false);
+        btn.setFont(new Font("Arial", Font.PLAIN, 150));
+        btn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btn.setFocusable(false);
     }
 
     public void toggleSetting(boolean show) {
