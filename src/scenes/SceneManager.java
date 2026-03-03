@@ -2,6 +2,7 @@ package scenes;
 
 import entities.Item;
 import entities.Player;
+import system.FadeTransition;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,9 +11,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 public class SceneManager {
-
-    private float fade = 0;
-    private boolean fadingOut = false, fadingIn = false;
+    private FadeTransition fadeTransition;
 
     private String nextSceneId;
     private Player pendingPlayer;
@@ -24,6 +23,10 @@ public class SceneManager {
     public SceneManager() {
         scenes = new HashMap<>();
         initScenes(); // สั่งสร้างและประกอบฉากทันทีที่เปิดเกม
+    }
+
+    public void setFadeTransition(FadeTransition fadeTransition) {
+        this.fadeTransition = fadeTransition;
     }
 
     // Setter และ Getter
@@ -137,46 +140,31 @@ public class SceneManager {
         }
     }
 
-    public boolean isTransition() {
-        return fadingOut || fadingIn;
-    }
-
     public void startTransition(String targetScene, Player p, int spawnX, int spawnY) {
-        if (!isTransition()) {
-            this.nextSceneId = targetScene;
-            this.pendingPlayer = p;
-            this.spawnX = spawnX;
-            this.spawnY = spawnY;
-            this.fadingOut = true; // สั่งให้มืด
+        if (fadeTransition != null && !fadeTransition.isFading()) {
+
+            fadeTransition.executeFade(() -> {
+                loadScene(targetScene);
+                if (p != null) {
+                    p.setX(spawnX);
+                    p.setY(spawnY);
+                }
+            });
+
+        }
+        else if (fadeTransition == null) {
+            loadScene(targetScene);
+            if (p != null) {
+                p.setX(spawnX);
+                p.setY(spawnY);
+            }
         }
     }
 
     public void update() {
 
-        if (fadingOut) {
-            fade += 0.05; // ความเร็วตอนมืดลง (ยิ่งเยอะยิ่งมืดไว)
-            if (fade >= 1) {
-                fade = 1;
-                fadingOut = false;
-
-                loadScene(nextSceneId);
-                if (pendingPlayer != null) {
-                    pendingPlayer.setX(spawnX);
-                    pendingPlayer.setY(spawnY);
-                }
-
-                fadingIn = true;
-            }
-        } else if (fadingIn) {
-            fade -= 0.05;
-            if (fade <= 0) {
-                fade = 0;
-                fadingIn = false;
-            }
-        } else {
-            if (getCurrentScene() != null) {
-                currentScene.update();
-            }
+        if (getCurrentScene() != null) {
+            currentScene.update();
         }
 
     }
@@ -185,13 +173,5 @@ public class SceneManager {
         if (getCurrentScene() != null) {
             currentScene.render(g2d);
         }
-
-        if (fade > 0){
-            float safe = Math.max(0, Math.min(1, fade));
-
-            g2d.setColor(new Color(0, 0, 0, safe));
-            g2d.fillRect(0, 0, 1920, 1080);
-        }
     }
-
 }

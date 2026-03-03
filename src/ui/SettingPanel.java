@@ -4,6 +4,7 @@ import system.AudioManager;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
+import java.awt.event.*;
 
 public class SettingPanel extends JPanel {
     private JButton buttonBack;
@@ -14,6 +15,7 @@ public class SettingPanel extends JPanel {
     private Image trackRed, trackGray, scorllingImage, bgImage, titleImg, bgmTextImg, sfxTextImg, backNormalBtnImg, backHoverBtnImg;
     private BasicSliderUI customUI;
     private ImageIcon normalIcon, hoverIcon;
+    private MouseAdapter blocker;
 
     public SettingPanel(MainGameFrame parent) {
         settingTitle = new JLabel();
@@ -87,6 +89,16 @@ public class SettingPanel extends JPanel {
         gbc.insets = new Insets(80, 20, 0, 20);
         gbc.anchor = GridBagConstraints.SOUTH;
         add(buttonBack, gbc);
+
+        blocker = new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) { e.consume(); }
+            @Override public void mousePressed(MouseEvent e) { e.consume(); }
+            @Override public void mouseReleased(MouseEvent e) { e.consume(); }
+            @Override public void mouseEntered(MouseEvent e) { e.consume(); }
+            @Override public void mouseExited(MouseEvent e) { e.consume(); }
+        };
+        this.addMouseListener(blocker);
+        this.addMouseMotionListener(blocker);
     }
 
     private JSlider createCustomSlider(int min, int max, int value) {
@@ -138,7 +150,7 @@ public class SettingPanel extends JPanel {
             @Override
             protected Dimension getThumbSize() {
                 // ปรับขนาดพื้นที่ปุ่มเลื่อนให้พอดีกับรูปภาพของคุณ (ลองปรับ 20, 45 ดูนะจ๊ะ)
-                return new Dimension(30, 55);
+                return new Dimension(20, 45);
             }
         };
 
@@ -155,6 +167,9 @@ public class SettingPanel extends JPanel {
         super.paintComponent(g);
         g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setColor(new Color(30, 30, 30, 127));
+        g2.fillRect(0, 0, getWidth(), getHeight());
 
         if (bgImage != null) {
             // วาดรูปพื้นหลังให้อยู่กึ่งกลางเสมอโดยไม่ยืดภาพจนสัดส่วนเพี้ยน

@@ -4,7 +4,6 @@ import system.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-
 import entities.GamePanel;
 
 public class MainGameFrame extends JFrame {
@@ -13,15 +12,14 @@ public class MainGameFrame extends JFrame {
     private ImageBackground imageBg;
     private JButton buttonStart, buttonSetting, buttonExit;
     private JLabel titleGame, picture;
-    private JPanel contentPanel, buttonPanel;
-    private ImageIcon icon;
+    private JPanel leftPanel, groupButtonPanel;
+    private ImageIcon logoIcon, startIcon, settingIcon, exitIcon;
     private Image scaled;
     private MenuActionHandler action;
     private SettingPanel settingPanel;
     private JLayeredPane layeredPane;
     private Dimension screenSize;
     private int widthSystem, heightSystem, settingW, settingH;
-
     private CardLayout cardLayout;
     private JPanel mainCardPanel;
     private CutscenePanel cutscenePanel;
@@ -33,6 +31,8 @@ public class MainGameFrame extends JFrame {
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         widthSystem = (int) screenSize.getWidth();
         heightSystem = (int) screenSize.getHeight();
+        settingPanel = new SettingPanel(this);
+        settingPanel.setVisible(false);
 
         initMenuPanel();
 
@@ -56,7 +56,7 @@ public class MainGameFrame extends JFrame {
 
         settingW = 1200;
         settingH = 800;
-        settingPanel.setBounds((widthSystem - settingW) / 2, (heightSystem - settingH) / 2, settingW, settingH);
+        settingPanel.setBounds(0, 0, widthSystem, heightSystem);
         layeredPane.add(settingPanel, JLayeredPane.PALETTE_LAYER);
 
         cardLayout.show(mainCardPanel, "MENU");
@@ -78,51 +78,55 @@ public class MainGameFrame extends JFrame {
     // @SuppressWarnings("unchecked")
 
     private void initMenuPanel() {
-        imageBg = new ImageBackground("src/res/Menu.png");
-        contentPanel = new JPanel(new GridLayout(1, 2));
-        buttonPanel = new JPanel();
-        buttonStart = new JButton("Start");
-        buttonSetting = new JButton("Setting");
-        buttonExit = new JButton("Exit");
-        picture = new JLabel();
-        icon = new ImageIcon("src/res/Front Menu Right.png");
+        imageBg = new ImageBackground("src/res/MenuBackground.png");
+        leftPanel = new JPanel();
+        groupButtonPanel = new JPanel();
+        startIcon = new ImageIcon(new ImageIcon("src/res/MenuStartBtn.png").getImage().getScaledInstance(144, 51, Image.SCALE_SMOOTH));
+        settingIcon = new ImageIcon(new ImageIcon("src/res/MenuSettingBtn.png").getImage().getScaledInstance(109, 51, Image.SCALE_SMOOTH));
+        exitIcon = new ImageIcon(new ImageIcon("src/res/MenuExitBtn.png").getImage().getScaledInstance(236, 24, Image.SCALE_SMOOTH));
+        buttonStart = new JButton(startIcon);
+        buttonSetting = new JButton(settingIcon);
+        buttonExit = new JButton(exitIcon);
 
-        imageBg.setLayout(new BorderLayout(50, 50));
-        imageBg.setBorder(new EmptyBorder(50, 100, 0, 0));
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setOpaque(false);
+        leftPanel.setBorder(new EmptyBorder(300, 0, 0, 0));
+
+        imageBg.setLayout(new BorderLayout());
+        imageBg.setBorder(new EmptyBorder(50, 80, 50, 0));
 
         // Title Game Name
-        titleGame = new JLabel("Phawang", SwingConstants.CENTER);
-        titleGame.setFont(new Font("Arial", Font.BOLD, 200));
-        imageBg.add(titleGame, BorderLayout.NORTH);
+        titleGame = new JLabel();
+        logoIcon = new ImageIcon(new ImageIcon("src/res/MenuLogo.png").getImage().getScaledInstance(500, 250, Image.SCALE_SMOOTH));
+        titleGame.setIcon(logoIcon);
+        titleGame.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Content button + picture
-        contentPanel.setOpaque(false);
+        // Content button
+        groupButtonPanel.setLayout(new BoxLayout(groupButtonPanel, BoxLayout.Y_AXIS));
+        groupButtonPanel.setOpaque(false);
+        groupButtonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS)); // Add Button Left Menu
-        buttonPanel.setOpaque(false);
-        buttonPanel.add(Box.createVerticalGlue());
-        customizeButton(buttonStart);
-        customizeButton(buttonSetting);
-        customizeButton(buttonExit);
-        buttonPanel.add(buttonStart);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, 50)));
-        buttonPanel.add(buttonSetting);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, 50)));
-        buttonPanel.add(buttonExit);
-        buttonPanel.add(Box.createVerticalGlue());
+        setupButtonCenter(buttonStart);
+        setupButtonCenter(buttonSetting);
+        setupButtonCenter(buttonExit);
 
-        picture.setOpaque(false); // Add Picture Right Menu
-        scaled = icon.getImage().getScaledInstance(700, 1000, Image.SCALE_SMOOTH);
-        picture.setHorizontalAlignment(JLabel.RIGHT);
-        picture.setVerticalAlignment(JLabel.BOTTOM);
-        picture.setIcon(new ImageIcon(scaled));
-        picture.setText("");
+        groupButtonPanel.add(buttonStart);
+        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        groupButtonPanel.add(buttonSetting);
+        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 35)));
+        groupButtonPanel.add(buttonExit);
 
-        contentPanel.add(buttonPanel);
-        contentPanel.add(picture);
-        imageBg.add(contentPanel, BorderLayout.CENTER);
+        leftPanel.add(titleGame);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+        leftPanel.add(groupButtonPanel);
+
+        imageBg.setLayout(new BorderLayout());
+        imageBg.add(leftPanel, BorderLayout.WEST);
 
         action = new MenuActionHandler(this);
+        buttonStart.setActionCommand("Start");
+        buttonSetting.setActionCommand("Setting");
+        buttonExit.setActionCommand("Exit");
         buttonStart.addActionListener(action);
         buttonSetting.addActionListener(action);
         buttonExit.addActionListener(action);
@@ -131,14 +135,21 @@ public class MainGameFrame extends JFrame {
     }
 
     private void customizeButton(JButton btn) {
-        btn.setFont(new Font("Arial", Font.PLAIN, 150));
+        btn.setContentAreaFilled(false); // ลบพื้นหลังปุ่ม
+        btn.setBorderPainted(false);     // ลบขอบปุ่ม
+        btn.setFocusPainted(false);      // ลบเส้นประเวลาคลิก
+        btn.setOpaque(false);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR)); // เปลี่ยนเมาส์เป็นรูปมือ
         btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btn.setFocusable(false);
+    }
+
+    private void setupButtonCenter(JButton btn) {
+        customizeButton(btn); // เรียกใช้ฟังก์ชันทำให้ปุ่มใสที่คุณมีอยู่แล้ว
+        btn.setAlignmentX(Component.CENTER_ALIGNMENT); // บังคับปุ่มเกาะเส้นกึ่งกลาง
     }
 
     public void toggleSetting(boolean show) {
         settingPanel.setVisible(show);
-        buttonPanel.setVisible(!show);
         layeredPane.revalidate();
         layeredPane.repaint();
     }
