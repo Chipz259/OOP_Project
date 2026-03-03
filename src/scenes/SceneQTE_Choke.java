@@ -21,6 +21,7 @@ public class SceneQTE_Choke extends Scene {
     private int buttonScale = 100;
     private int fadeAlpha = 0;
     private BufferedImage bgImage;
+    private BufferedImage btnImage;
     private boolean hasStarted = false;
     private Player player;
     public SceneQTE_Choke(String sceneId, SceneManager sm, Player p) {
@@ -31,6 +32,14 @@ public class SceneQTE_Choke extends Scene {
             URL bgImgURL = getClass().getResource("/res/pLork.png");
             if (bgImgURL != null) {
                 this.bgImage = ImageIO.read(bgImgURL);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            URL btnImgURL = getClass().getResource("/res/eButton.png");
+            if (btnImgURL != null) {
+                this.btnImage = ImageIO.read(btnImgURL);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,11 +110,12 @@ public class SceneQTE_Choke extends Scene {
         }
         super.render(g2d);
         g2d.translate(-renderOffsetX, -renderOffsetY);
-        if (isQteActive) {
+        if (isQteActive && btnImage != null) {
             int centerX = 1920 / 2;
             int centerY =  1080 / 2;
-            g2d.setColor(Color.RED);
-            g2d.fillRect(centerX - (buttonScale / 2), centerY - (buttonScale / 2), buttonScale, buttonScale);
+            int width = buttonScale;
+            int height = buttonScale;
+            g2d.drawImage(btnImage, 1500, 300, width, height, null);
         }
         if (isWinningFade) {
             g2d.setColor(new Color(255, 255, 255, (int)fadeAlpha));
