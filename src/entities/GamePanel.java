@@ -3,6 +3,7 @@ package entities;
 import entities.Item;
 import entities.GameObject;
 
+import system.FadeTransition;
 import scenes.SceneManager;
 import system.KeyHandler;
 // import system.QTEManager;
@@ -30,7 +31,10 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     private GameObject targetItem = null;
 
-    public GamePanel() {
+    private FadeTransition fadeTransition;
+
+    public GamePanel(FadeTransition fadeTransition) {
+        this.fadeTransition = fadeTransition;
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
@@ -40,13 +44,13 @@ public class GamePanel extends JPanel implements Runnable {
         inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
-
+        sceneManager.setFadeTransition(this.fadeTransition);
         loadCustomFont();
 
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (sceneManager.isTransition()) {
+                if (fadeTransition != null && fadeTransition.isFading()) {
                     return;
                 }
                 if (mainPlayer != null && mainPlayer.getInventory() != null) {
@@ -157,7 +161,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         sceneManager.update();
-        if (!sceneManager.isTransition()) {
+
+        if (fadeTransition == null || !fadeTransition.isFading()) {
             if (mainPlayer != null) {
                 mainPlayer.update();
             }

@@ -1,29 +1,47 @@
-package scenes;
-
-import javax.swing.JFrame;
-import entities.GamePanel;
-
-public class TestScene {
-    public static void main(String[] args) {
-        System.setProperty("sun.java2d.uiScale", "1.0");
-
-        // 1. สร้างกรอบหน้าต่าง Windows
-        JFrame window = new JFrame("My Adventure Game");
-        window.setUndecorated(true);
-        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false); // ห้ามย่อขยายหน้าจอ
-
-        // 2. เรียก GamePanel เข้ามา
-        GamePanel gamePanel = new GamePanel();
-        window.add(gamePanel);
-
-        // 3. จัดหน้าจอให้พอดีและแสดงผล
-        window.pack();
-        window.setLocationRelativeTo(null); // เด้งหน้าต่างขึ้นมาตรงกลางจอ
-        window.setVisible(true);
-
-        // 4. สั่งให้ Game Loop (Thread) เริ่มทำงาน
-        gamePanel.startGameThread();
-    }
-}
+//import entities.GamePanel;
+//import system.FadeTransition; // 🌟 1. อย่าลืม import คลาสฟิล์มดำเข้ามาด้วยนะครับ
+//
+//import javax.swing.*;
+//import java.awt.*;
+//
+//public class TextScene {
+//    public static void main(String[] args) {
+//        System.setProperty("sun.java2d.uiScale", "1.0");
+//        JFrame window = new JFrame();
+//
+//        window.setUndecorated(true);
+//        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//        // ==========================================
+//        // 🌟 2. จำลองการสร้างแผ่น Fade เหมือนใน MainGameFrame
+//        // ==========================================
+//        FadeTransition fadeTransition = new FadeTransition();
+//        // ดึงขนาดจอคอมปัจจุบันมาตั้งค่าให้ฟิล์มดำคลุมมิด
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        fadeTransition.setBounds(0, 0, (int)screenSize.getWidth(), (int)screenSize.getHeight());
+//
+//        // 🌟 3. ส่งแผ่น Fade เข้าไปให้ GamePanel รู้จัก
+//        GamePanel gamePanel = new GamePanel(fadeTransition);
+//        gamePanel.setBounds(0, 0, (int)screenSize.getWidth(), (int)screenSize.getHeight());
+//
+//        // 🌟 4. ต้องใช้ JLayeredPane เพื่อซ้อนฟิล์มดำไว้ "บนสุด" (เหนือ GamePanel)
+//        JLayeredPane layeredPane = new JLayeredPane();
+//        layeredPane.setPreferredSize(screenSize);
+//
+//        layeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);   // เกมอยู่ชั้นล่าง
+//        layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER); // ฟิล์มดำอยู่ชั้นบนสุด
+//
+//        // เอา LayeredPane ไปแปะในหน้าต่าง
+//        window.setContentPane(layeredPane);
+//        // ==========================================
+//
+//        window.pack();
+//        window.setLocationRelativeTo(null);
+//        window.setVisible(true);
+//
+//        // บังคับให้หน้าต่างรับค่าคีย์บอร์ด (ไม่งั้นตัวละครจะเดินไม่ได้เวลาเทสต์)
+//        gamePanel.requestFocusInWindow();
+//        gamePanel.startGameThread();
+//    }
+//}
