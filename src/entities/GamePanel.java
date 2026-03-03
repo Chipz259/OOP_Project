@@ -43,14 +43,17 @@ public class GamePanel extends JPanel implements Runnable {
 
         loadCustomFont();
 
-        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png",
-                "CandleStroke.png");
-
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (sceneManager.isTransition()) {
                     return;
+                }
+                if (mainPlayer != null && mainPlayer.getInventory() != null) {
+                    boolean clickedInventory = mainPlayer.getInventory().handleClick(e.getX(), e.getY(), getWidth(), getHeight());
+                    if (clickedInventory) {
+                        return; // คลิกโดน = หยุดการทำงาน
+                    }
                 }
 
                 if (sceneManager.getCurrentScene() != null) {
