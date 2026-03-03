@@ -1,5 +1,6 @@
 package system;
 
+import ui.CutscenePanel;
 import ui.MainGameFrame;
 import java.awt.event.*;
 
@@ -15,7 +16,7 @@ public class MenuActionHandler implements ActionListener {
         String scanAction = e.getActionCommand();
 
         if (scanAction.equals("Start")){
-            mainFrame.startCutscene();
+            action.startCutscene();
         }
         else if (scanAction.equals("Setting")){
             action.toggleSetting(true);
