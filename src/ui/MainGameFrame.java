@@ -13,8 +13,7 @@ public class MainGameFrame extends JFrame {
     private JButton buttonStart, buttonSetting, buttonExit;
     private JLabel titleGame, picture;
     private JPanel leftPanel, groupButtonPanel;
-    private ImageIcon logoIcon, startIcon, settingIcon, exitIcon;
-    private Image scaled;
+    private ImageIcon logoIcon, startNormalIcon, settingNormalIcon, exitNormalIcon, startHoverIcon, settingHoverIcon, exitHoverIcon;
     private MenuActionHandler action;
     private SettingPanel settingPanel;
     private JLayeredPane layeredPane;
@@ -76,12 +75,18 @@ public class MainGameFrame extends JFrame {
         imageBg = new ImageBackground("src/res/MenuBackground.png");
         leftPanel = new JPanel();
         groupButtonPanel = new JPanel();
-        startIcon = new ImageIcon(new ImageIcon("src/res/MenuStartBtn.png").getImage().getScaledInstance(239, 84, Image.SCALE_SMOOTH));
-        settingIcon = new ImageIcon(new ImageIcon("src/res/MenuSettingBtn.png").getImage().getScaledInstance(181, 84, Image.SCALE_SMOOTH));
-        exitIcon = new ImageIcon(new ImageIcon("src/res/MenuExitBtn.png").getImage().getScaledInstance(376, 38, Image.SCALE_SMOOTH));
-        buttonStart = new JButton(startIcon);
-        buttonSetting = new JButton(settingIcon);
-        buttonExit = new JButton(exitIcon);
+        startNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuStartNormalBtn.png").getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
+        settingNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuSettingNormalBtn.png").getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
+        exitNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuExitNormalBtn.png").getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
+        startHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuStartHoverBtn.png").getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
+        settingHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuSettingHoverBtn.png").getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
+        exitHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuExitHoverBtn.png").getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
+        buttonStart = new JButton(startNormalIcon);
+        buttonSetting = new JButton(settingNormalIcon);
+        buttonExit = new JButton(exitNormalIcon);
+        buttonStart.setRolloverIcon(startHoverIcon);
+        buttonSetting.setRolloverIcon(settingHoverIcon);
+        buttonExit.setRolloverIcon(exitHoverIcon);
 
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.setOpaque(false);
