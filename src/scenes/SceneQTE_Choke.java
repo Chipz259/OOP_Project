@@ -111,11 +111,13 @@ public class SceneQTE_Choke extends Scene {
         super.render(g2d);
         g2d.translate(-renderOffsetX, -renderOffsetY);
         if (isQteActive && btnImage != null) {
-            int centerX = 1920 / 2;
-            int centerY =  1080 / 2;
             int width = buttonScale;
             int height = buttonScale;
-            g2d.drawImage(btnImage, 1500, 300, width, height, null);
+            int centerX = 1550;
+            int centerY = 350;
+            int drawX = centerX - (width / 2);
+            int drawY = centerY - (height / 2);
+            g2d.drawImage(btnImage, drawX, drawY, width, height, null);
         }
         if (isWinningFade) {
             g2d.setColor(new Color(255, 255, 255, (int)fadeAlpha));
