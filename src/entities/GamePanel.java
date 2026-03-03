@@ -11,7 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;;
+import java.awt.event.MouseEvent;
+import java.io.InputStream;
 // import java.awt.event.KeyAdapter;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -21,6 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
     private Player mainPlayer;
     private SceneManager sceneManager;
     private Inventory inventory;
+    public static Font customFont;
     // private QTEManager qetManager;
     // private MouseAdapter mouseHandler;
     // private KeyAdapter keyHandler;
@@ -37,6 +39,8 @@ public class GamePanel extends JPanel implements Runnable {
         inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
+
+        loadCustomFont();
 
         Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png",
                 "CandleStroke.png");
@@ -102,6 +106,18 @@ public class GamePanel extends JPanel implements Runnable {
         });
     }
 
+    public void loadCustomFont(){
+        try {
+            InputStream is = getClass().getResourceAsStream("/res/Font/DSNSM__.TTF");
+            customFont = Font.createFont(Font.TRUETYPE_FONT, is);
+        }
+        catch (Exception e) {
+            System.err.println("ระบบ: โหลดฟอนต์ไม่ได้");
+            e.printStackTrace();
+            customFont = new Font("Arial", Font.PLAIN, 24);
+        }   
+    }
+
     public void startGameThread() {
         gameThread = new Thread(this);
         isRunning = true;
@@ -131,7 +147,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
-
 
     public void update() {
         sceneManager.update();
