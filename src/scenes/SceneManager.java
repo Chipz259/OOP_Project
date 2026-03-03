@@ -85,12 +85,14 @@ public class SceneManager {
     }
 
     public void setupSpecificObjects() {
-        Item Candle = new Item("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png", "CandleStroke.png");
-        Item Candle2 = new Item("candle2", 300, 700, 100, 100, "เทียนไข2", "เทียนไขที่ยังไม่จุด2", "Candle.png", "CandleStroke.png");
+        Item Candle = new Item("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
+        Item Water = new Item("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "CandleStroke.png");
+        Item Candle2 = new Item("candle2", 600, 700, 100, 100, "เทียนไข2", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
         Scene scene_2 = scenes.get("scene_2");
         if (scene_2 != null) {
             scene_2.addGameObject(Candle);
             scene_2.addGameObject(Candle2);
+            scene_2.addGameObject(Water);
         }
         // //เอาไว้จัดการใส่ entities.Item เข้าไปในฉาก
         // //Ex
