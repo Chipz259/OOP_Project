@@ -12,33 +12,39 @@ public class SettingPanel extends JPanel {
     private GridBagConstraints gbc;
     private JSlider slider, bgmSlider, sfxSlider;
     private Graphics2D g2d, g2;
-    private Image trackRed, trackGray, scorllingImage, bgImage;
+    private Image trackRed, trackGray, scorllingImage, bgImage, titleImg, bgmTextImg, sfxTextImg, backBtnImg;
     private BasicSliderUI customUI;
 
     public SettingPanel(MainGameFrame parent) {
-        settingTitle = new JLabel("Settings");
+        settingTitle = new JLabel();
+        bgmLabel = new JLabel();
+        sfxLabel = new JLabel();
         buttonBack = new JButton("Back to Menu");
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 20, 20, 20); // ระยะห่างแต่ละช่อง
-        bgmLabel = new JLabel("BGM Volume");
-        sfxLabel = new JLabel("SFX Volume");
         trackRed = new ImageIcon("src/res/trackRed.png").getImage();
         trackGray = new ImageIcon("src/res/trackGrey.png").getImage();
         scorllingImage = new ImageIcon("src/res/Scrolling.png").getImage();
         bgImage = new ImageIcon("src/res/SettingMenuBG.png").getImage();
+        titleImg = new ImageIcon("src/res/SettingTitle.png").getImage();
+        bgmTextImg = new ImageIcon("src/res/BGMText.png").getImage();
+        sfxTextImg = new ImageIcon("src/res/SFXText.png").getImage();
+
 
         setBackground(new Color(232, 94, 94, 200));
         setLayout(new GridBagLayout());
         setOpaque(false);
 
         // Title: Settings
-        settingTitle.setFont(new Font("Arial", Font.BOLD, 80));
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
+        settingTitle.setIcon(new ImageIcon(titleImg.getScaledInstance(400, 100, Image.SCALE_SMOOTH)));
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2; // อยู่แถวแรก ยึด 2 คอลัมน์
+        gbc.anchor = GridBagConstraints.CENTER;
         add(settingTitle, gbc);
 
         // Adjust BGM
-        bgmLabel.setFont(new Font("Arial", Font.PLAIN, 40));
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1;
+        bgmLabel.setIcon(new ImageIcon(bgmTextImg.getScaledInstance(200, 40, Image.SCALE_SMOOTH)));
+        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1; // คอลัมน์ซ้าย แถวที่ 2
+        gbc.anchor = GridBagConstraints.EAST; // ชิดขวามาหาหลอด
         add(bgmLabel, gbc);
 
         bgmSlider = createCustomSlider(0, 100, AudioManager.bgmVolume);
@@ -46,24 +52,29 @@ public class SettingPanel extends JPanel {
         bgmSlider.addChangeListener(e -> {
             AudioManager.setBgmVolume(bgmSlider.getValue());
         });
-        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.gridx = 1; gbc.gridy = 1; // คอลัมน์ขวา แถวที่ 2
+        gbc.anchor = GridBagConstraints.WEST; // ชิดซ้ายมาหาข้อความ
         add(bgmSlider, gbc);
 
         // Adjust SFX
-        sfxLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+        sfxLabel.setIcon(new ImageIcon(sfxTextImg.getScaledInstance(200, 40, Image.SCALE_SMOOTH)));
+        gbc.gridx = 0; gbc.gridy = 2; // คอลัมน์ซ้าย แถวที่ 3
+        gbc.anchor = GridBagConstraints.EAST;
+        add(sfxLabel, gbc);
+
+        sfxSlider = createCustomSlider(0, 100, AudioManager.sfxVolume);
         sfxSlider.addChangeListener(e -> {
             AudioManager.setSfxVolume(sfxSlider.getValue());
         });
-        gbc.gridx = 0; gbc.gridy = 2;
-        add(sfxLabel, gbc);
-
-        gbc.gridx = 1; gbc.gridy = 2;
+        gbc.gridx = 1; gbc.gridy = 2; // คอลัมน์ขวา แถวที่ 3
+        gbc.anchor = GridBagConstraints.WEST;
         add(sfxSlider, gbc);
 
         // Button Back
         buttonBack.setFont(new Font("Arial", Font.PLAIN, 40));
         buttonBack.addActionListener(e -> parent.toggleSetting(false));
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; // อยู่แถวล่างสุด ยึด 2 คอลัมน์
+        gbc.anchor = GridBagConstraints.CENTER;
         add(buttonBack, gbc);
     }
 
