@@ -3,6 +3,7 @@ package entities;
 import entities.Item;
 import entities.GameObject;
 
+import scenes.SceneQTE_Choke;
 import system.FadeTransition;
 import scenes.SceneManager;
 import system.KeyHandler;
@@ -30,7 +31,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyH = new KeyHandler();
     private GameObject targetItem = null;
-
     private FadeTransition fadeTransition;
 
     public GamePanel(FadeTransition fadeTransition) {
@@ -44,6 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
         inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
+        keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
         loadCustomFont();
 
@@ -252,14 +253,18 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        sceneManager.render(g2d);
-
-        if (mainPlayer != null) {
-            mainPlayer.render(g2d);
+        if (sceneManager != null) {
+            sceneManager.render(g2d);
         }
+        if (!(sceneManager.getCurrentScene() instanceof SceneQTE_Choke)) {
 
-        if (mainPlayer != null && mainPlayer.getInventory() != null) {
-            mainPlayer.getInventory().render(g2d, getWidth(), getHeight());
+            if (mainPlayer != null) {
+                mainPlayer.render(g2d);
+
+                if (mainPlayer.getInventory() != null) {
+                    mainPlayer.getInventory().render(g2d, getWidth(), getHeight());
+                }
+            }
         }
 
     }

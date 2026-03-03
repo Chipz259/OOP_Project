@@ -82,6 +82,9 @@ public class SceneManager {
         setupArrows("scene_7", "scene_6", "scene_8", imgLeftArrow, imgRightArrow);
         setupArrows("scene_8", "scene_7", null, imgLeftArrow, imgRightArrow);
 
+        SceneQTE_Choke qteChoke = new SceneQTE_Choke("qte_choke");
+        scenes.put("qte_choke", qteChoke);
+
         setupSpecificObjects();
 
         currentScene = scenes.get("scene_2");
