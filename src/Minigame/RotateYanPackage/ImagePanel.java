@@ -1,20 +1,33 @@
 package Minigame.RotateYanPackage;
 
+import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class ImagePanel extends JPanel {
-    private Image img;
+    private BufferedImage img;
     private int angle = 0;
 
-    public ImagePanel(String path){
-        img = new ImageIcon(getClass().getResource(path)).getImage();
+    public ImagePanel(String path, RotateYan frame, Clip yanFlipSound){
+        try {
+            img = ImageIO.read(getClass().getResource(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.setOpaque(false);
+        this.addMouseListener(new RotateHandler(frame, yanFlipSound));
     }
     public int getAngle(){
         return angle;
     }
     public void rotateImage() {
         angle = (angle + 90) % 360;
+        revalidate();
         repaint();
     }
     @Override
@@ -23,20 +36,15 @@ public class ImagePanel extends JPanel {
 
         Graphics2D g2 = (Graphics2D) g.create();
 
-        int w = getWidth();
-        int h = getHeight();
+        double cx = getWidth() / 2.0;
+        double cy = getHeight() / 2.0;
 
-        double diag = Math.sqrt(w*w + h*h);
+        g2.rotate(Math.toRadians(angle), cx, cy);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 
-        g2.translate(w/2.0, h/2.0);
-        g2.rotate(Math.toRadians(angle));
-
-        g2.drawImage(img,
-                (int)(-diag/2),
-                (int)(-diag/2),
-                (int)diag,
-                (int)diag,
-                this);
+        g2.dispose();
     }
 
 }

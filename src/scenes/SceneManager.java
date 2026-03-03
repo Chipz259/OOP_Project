@@ -21,7 +21,7 @@ public class SceneManager {
     private Scene currentScene;
 
     public SceneManager() {
-        scenes = new HashMap<>();
+        scenes = new HashMap<>() ;
         initScenes(); // สั่งสร้างและประกอบฉากทันทีที่เปิดเกม
     }
 
