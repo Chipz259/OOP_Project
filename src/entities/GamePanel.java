@@ -4,6 +4,7 @@ import entities.Item;
 import entities.GameObject;
 
 import scenes.SceneManager;
+import scenes.SceneQTE_Choke;
 import system.KeyHandler;
 // import system.QTEManager;
 
@@ -40,6 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
         inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
+        keyH.setSceneManager(sceneManager);
 
         loadCustomFont();
 
