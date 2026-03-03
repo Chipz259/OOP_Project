@@ -2,6 +2,7 @@ package scenes;
 
 import entities.Item;
 import entities.Player;
+import system.FadeTransition;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,9 +11,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 public class SceneManager {
-
-    private float fade = 0;
-    private boolean fadingOut = false, fadingIn = false;
+    private FadeTransition fadeTransition;
 
     private String nextSceneId;
     private Player pendingPlayer;
@@ -24,6 +23,10 @@ public class SceneManager {
     public SceneManager() {
         scenes = new HashMap<>() ;
         initScenes(); // สั่งสร้างและประกอบฉากทันทีที่เปิดเกม
+    }
+
+    public void setFadeTransition(FadeTransition fadeTransition) {
+        this.fadeTransition = fadeTransition;
     }
 
     // Setter และ Getter
@@ -79,17 +82,23 @@ public class SceneManager {
         setupArrows("scene_7", "scene_6", "scene_8", imgLeftArrow, imgRightArrow);
         setupArrows("scene_8", "scene_7", null, imgLeftArrow, imgRightArrow);
 
+        SceneQTE_Choke qteChoke = new SceneQTE_Choke("qte_choke");
+        scenes.put("qte_choke", qteChoke);
+
         setupSpecificObjects();
 
         currentScene = scenes.get("scene_2");
     }
 
     public void setupSpecificObjects() {
-        Item Candle = new Item("candle", 900, 400, 500, 500, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png",
-                "CandleStroke.png");
+        Item Candle = new Item("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
+        Item Water = new Item("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "CandleStroke.png");
+        Item Candle2 = new Item("candle2", 600, 700, 100, 100, "เทียนไข2", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
         Scene scene_2 = scenes.get("scene_2");
         if (scene_2 != null) {
             scene_2.addGameObject(Candle);
+            scene_2.addGameObject(Candle2);
+            scene_2.addGameObject(Water);
         }
         // //เอาไว้จัดการใส่ entities.Item เข้าไปในฉาก
         // //Ex
@@ -134,46 +143,31 @@ public class SceneManager {
         }
     }
 
-    public boolean isTransition() {
-        return fadingOut || fadingIn;
-    }
-
     public void startTransition(String targetScene, Player p, int spawnX, int spawnY) {
-        if (!isTransition()) {
-            this.nextSceneId = targetScene;
-            this.pendingPlayer = p;
-            this.spawnX = spawnX;
-            this.spawnY = spawnY;
-            this.fadingOut = true; // สั่งให้มืด
+        if (fadeTransition != null && !fadeTransition.isFading()) {
+
+            fadeTransition.executeFade(() -> {
+                loadScene(targetScene);
+                if (p != null) {
+                    p.setX(spawnX);
+                    p.setY(spawnY);
+                }
+            });
+
+        }
+        else if (fadeTransition == null) {
+            loadScene(targetScene);
+            if (p != null) {
+                p.setX(spawnX);
+                p.setY(spawnY);
+            }
         }
     }
 
     public void update() {
 
-        if (fadingOut) {
-            fade += 0.05; // ความเร็วตอนมืดลง (ยิ่งเยอะยิ่งมืดไว)
-            if (fade >= 1) {
-                fade = 1;
-                fadingOut = false;
-
-                loadScene(nextSceneId);
-                if (pendingPlayer != null) {
-                    pendingPlayer.setX(spawnX);
-                    pendingPlayer.setY(spawnY);
-                }
-
-                fadingIn = true;
-            }
-        } else if (fadingIn) {
-            fade -= 0.05;
-            if (fade <= 0) {
-                fade = 0;
-                fadingIn = false;
-            }
-        } else {
-            if (getCurrentScene() != null) {
-                currentScene.update();
-            }
+        if (getCurrentScene() != null) {
+            currentScene.update();
         }
 
     }
@@ -182,13 +176,5 @@ public class SceneManager {
         if (getCurrentScene() != null) {
             currentScene.render(g2d);
         }
-
-        if (fade > 0){
-            float safe = Math.max(0, Math.min(1, fade));
-
-            g2d.setColor(new Color(0, 0, 0, safe));
-            g2d.fillRect(0, 0, 1920, 1080);
-        }
     }
-
 }

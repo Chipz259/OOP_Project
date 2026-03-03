@@ -3,6 +3,8 @@ package entities;
 import entities.Item;
 import entities.GameObject;
 
+import scenes.SceneQTE_Choke;
+import system.FadeTransition;
 import scenes.SceneManager;
 import system.KeyHandler;
 // import system.QTEManager;
@@ -11,7 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;;
+import java.awt.event.MouseEvent;
+import java.io.InputStream;
 // import java.awt.event.KeyAdapter;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -20,30 +23,42 @@ public class GamePanel extends JPanel implements Runnable {
     // private int fps;
     private Player mainPlayer;
     private SceneManager sceneManager;
-    // private QTEManager qteManager;
+    private Inventory inventory;
+    public static Font customFont;
+    // private QTEManager qetManager;
     // private MouseAdapter mouseHandler;
     // private KeyAdapter keyHandler;
 
     KeyHandler keyH = new KeyHandler();
+    private GameObject targetItem = null;
+    private FadeTransition fadeTransition;
 
-    public GamePanel() {
+    public GamePanel(FadeTransition fadeTransition) {
+        this.fadeTransition = fadeTransition;
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
+        inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 250, 250);
         sceneManager = new SceneManager();
-
-        Item Candle = new Item("candle", 300, 400, 50, 50, "เทียนไข", "เทียนไขที่ยังไม่จุด", "Candle.png",
-                "CandleStroke.png");
+        keyH.setSceneManager(sceneManager);
+        sceneManager.setFadeTransition(this.fadeTransition);
+        loadCustomFont();
 
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (sceneManager.isTransition()) {
+                if (fadeTransition != null && fadeTransition.isFading()) {
                     return;
+                }
+                if (mainPlayer != null && mainPlayer.getInventory() != null) {
+                    boolean clickedInventory = mainPlayer.getInventory().handleClick(e.getX(), e.getY(), getWidth(), getHeight());
+                    if (clickedInventory) {
+                        return; // คลิกโดน = หยุดการทำงาน
+                    }
                 }
 
                 if (sceneManager.getCurrentScene() != null) {
@@ -59,10 +74,13 @@ public class GamePanel extends JPanel implements Runnable {
 
                             if (distance < 250) {
                                 ((Interactable) obj).onInteract(mainPlayer);
+                                targetItem = null;
                                 break;
                             } else {
                                 // ถ้าคลิกไกลเกินจะแสดงการแจ้งเตือน
-                                System.out.println("ระบบ: อยู่ไกลเกินไอเวร");
+                                System.out.println("ระบบ: กำลังเดินไปเก็บ " + obj);
+                                targetItem = obj;
+                                break;
                             }
                         }
                     }
@@ -100,6 +118,18 @@ public class GamePanel extends JPanel implements Runnable {
         });
     }
 
+    public void loadCustomFont(){
+        try {
+            InputStream is = getClass().getResourceAsStream("/res/Font/DSNSM__.TTF");
+            customFont = Font.createFont(Font.TRUETYPE_FONT, is);
+        }
+        catch (Exception e) {
+            System.err.println("ระบบ: โหลดฟอนต์ไม่ได้");
+            e.printStackTrace();
+            customFont = new Font("Arial", Font.PLAIN, 24);
+        }   
+    }
+
     public void startGameThread() {
         gameThread = new Thread(this);
         isRunning = true;
@@ -130,10 +160,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-
     public void update() {
         sceneManager.update();
-        if (!sceneManager.isTransition()) {
+
+        if (fadeTransition == null || !fadeTransition.isFading()) {
             if (mainPlayer != null) {
                 mainPlayer.update();
             }
@@ -142,23 +172,52 @@ public class GamePanel extends JPanel implements Runnable {
             boolean isWalking = false;
             boolean isFacingLeft = false;
 
-            if (keyH.left) {
-                if (mainPlayer.getX() - speed >= 0) {
-                    mainPlayer.setX(mainPlayer.getX() - speed);
-                } else {
-                    mainPlayer.setX(0);
-                }
-                isWalking = true;
-                mainPlayer.setFacingLeft(true);
+            if (keyH.left || keyH.right) {
+                targetItem = null;
             }
-            if (keyH.right) {
-                if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
-                    mainPlayer.setX(mainPlayer.getX() + speed);
+            if (targetItem != null) {
+                int playerCenter = mainPlayer.getX() + (mainPlayer.getWidth() / 2);
+                int targetCenter = targetItem.getX() + (targetItem.getWidth() / 2);
+                int distance = Math.abs(playerCenter - targetCenter);
+                if (distance < 150) {
+                    if (targetItem instanceof Interactable) {
+                        ((Interactable) targetItem).onInteract(mainPlayer);
+                    }
+                    targetItem = null;
                 } else {
-                    mainPlayer.setX(this.getWidth() - mainPlayer.getWidth());
+                    isWalking = true;
+                    if (playerCenter < targetCenter) {
+                        if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
+                            mainPlayer.setX(mainPlayer.getX() + speed);
+                        }
+                        mainPlayer.setFacingLeft(false);
+                    } else {
+                        if (mainPlayer.getX() - speed >= 0) {
+                            mainPlayer.setX(mainPlayer.getX() - speed);
+                        }
+                        mainPlayer.setFacingLeft(true);
+                    }
                 }
-                isWalking = true;
-                mainPlayer.setFacingLeft(false);
+            }
+            else {
+                if (keyH.left) {
+                    if (mainPlayer.getX() - speed >= 0) {
+                        mainPlayer.setX(mainPlayer.getX() - speed);
+                    } else {
+                        mainPlayer.setX(0);
+                    }
+                    isWalking = true;
+                    mainPlayer.setFacingLeft(true);
+                }
+                if (keyH.right) {
+                    if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
+                        mainPlayer.setX(mainPlayer.getX() + speed);
+                    } else {
+                        mainPlayer.setX(this.getWidth() - mainPlayer.getWidth());
+                    }
+                    isWalking = true;
+                    mainPlayer.setFacingLeft(false);
+                }
             }
 
             if (mainPlayer != null) {
@@ -173,7 +232,7 @@ public class GamePanel extends JPanel implements Runnable {
                         int objCenter = obj.getX() + (obj.getWidth() / 2);
                         int distance = Math.abs(playerCenter - objCenter);
 
-                        if (distance < 250) {
+                        if (distance < 150) {
                             obj.setVisible(true);
                         } else {
                             obj.setVisible(false);
@@ -194,14 +253,17 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        sceneManager.render(g2d);
+        if (sceneManager != null) {
+            sceneManager.render(g2d);
+        }
+        if (!(sceneManager.getCurrentScene() instanceof SceneQTE_Choke)) {
 
-        if (mainPlayer != null) {
-            mainPlayer.render(g2d);
+            if (mainPlayer != null) {
+                mainPlayer.render(g2d);
 
-            if (mainPlayer.getSprite() == null) {
-                g2d.setColor(Color.WHITE);
-                g2d.fillRect(mainPlayer.getX(), mainPlayer.getY(), mainPlayer.getWidth(), mainPlayer.getHeight());
+                if (mainPlayer.getInventory() != null) {
+                    mainPlayer.getInventory().render(g2d, getWidth(), getHeight());
+                }
             }
         }
 
