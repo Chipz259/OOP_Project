@@ -24,6 +24,7 @@ public class MainGameFrame extends JFrame {
     private JPanel mainCardPanel;
     private CutscenePanel cutscenePanel;
     private GamePanel gamePanel;
+    private FadeTransition fadeTransition;
 
     public MainGameFrame() {
         this.setUndecorated(true);
@@ -31,12 +32,14 @@ public class MainGameFrame extends JFrame {
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         widthSystem = (int) screenSize.getWidth();
         heightSystem = (int) screenSize.getHeight();
-        settingPanel = new SettingPanel(this);
-        settingPanel.setVisible(false);
+//        settingPanel = new SettingPanel(this);
+//        settingPanel.setVisible(false);
 
+        fadeTransition = new FadeTransition();
+        fadeTransition.setBounds(0,0, widthSystem, heightSystem);
         initMenuPanel();
 
-        gamePanel = new GamePanel();
+        gamePanel = new GamePanel(fadeTransition);
         cutscenePanel = new CutscenePanel(this, GamePanel.customFont);
         cardLayout = new CardLayout();
         mainCardPanel = new JPanel(cardLayout);
@@ -57,10 +60,9 @@ public class MainGameFrame extends JFrame {
         settingW = 1200;
         settingH = 800;
         settingPanel.setBounds(0, 0, widthSystem, heightSystem);
-        layeredPane.add(settingPanel, JLayeredPane.PALETTE_LAYER);
 
+        layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER);
         cardLayout.show(mainCardPanel, "MENU");
-
         this.setContentPane(layeredPane);
         this.revalidate();
         this.repaint();
@@ -155,15 +157,20 @@ public class MainGameFrame extends JFrame {
     }
 
     public void startCutscene() {
-        cardLayout.show(mainCardPanel, "CUTSCENE"); // สลับเป็นหน้าเล่นเกม
-        cutscenePanel.startCutscene(); // สั่งให้ข้อความเริ่มวิ่ง
+        fadeTransition.executeFade(() ->{
+            cardLayout.show(mainCardPanel, "CUTSCENE"); // สลับเป็นหน้าเล่นเกม
+            cutscenePanel.startCutscene(); // สั่งให้ข้อความเริ่มวิ่ง
+        });
+
     }
 
     // เรียกตอนคัดซีนฉายจบแล้ว
     public void transitionToGame() {
-        cardLayout.show(mainCardPanel, "GAME");
-        gamePanel.startGameThread();
-        gamePanel.requestFocusInWindow();
+        fadeTransition.executeFade(() -> {
+            cardLayout.show(mainCardPanel, "GAME");
+            gamePanel.startGameThread();
+            gamePanel.requestFocusInWindow();
+        });
     }
 
     /**

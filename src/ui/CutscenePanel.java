@@ -77,7 +77,7 @@ public class CutscenePanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         if (customFont != null){
-            g2d.setFont(customFont.deriveFont(Font.PLAIN, 50));
+            g2d.setFont(customFont.deriveFont(Font.PLAIN, 50f));
         }
         g2d.setColor(Color.WHITE);
 

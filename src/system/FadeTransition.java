@@ -58,8 +58,8 @@ public class FadeTransition extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        float safeAlpha = Math.max(0, Math.min(1, fadeAlpha));
-        g2d.setColor(new Color(0, 0, 0, safeAlpha));
+        float safeAlpha = Math.max(0f, Math.min(1f, fadeAlpha));
+        g2d.setColor(new Color(0f, 0f, 0f, safeAlpha));
         g2d.fillRect(0, 0, getWidth(), getHeight());
     }
 
