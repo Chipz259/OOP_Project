@@ -31,22 +31,22 @@ public class AudioManager {
     public static void setBgmVolume(int volume) {
         bgmVolume = volume;
         System.out.println("BGM Volume changed to: " + bgmVolume);
-//        if (bgMusic != null && bgMusic.isOpen()) {
-//            try {
-//                FloatControl gainControl = (FloatControl) bgMusic.getControl(FloatControl.Type.MASTER_GAIN);
-//
-//                // สูตรคำนวณแบบ Logarithmic ที่ตอบสนองเร็วขึ้น
-//                float dB = (float) (Math.log(volume != 0 ? volume / 100.0 : 0.0001) / Math.log(10.0) * 20.0);
-//
-//                // จำกัดค่าไม่ให้เกินขอบเขตของ hardware
-//                if (dB < gainControl.getMinimum()) dB = gainControl.getMinimum();
-//                if (dB > gainControl.getMaximum()) dB = gainControl.getMaximum();
-//
-//                gainControl.setValue(dB);
-//            } catch (IllegalArgumentException e) {
-//                // กรณี Hardware ไม่รองรับ MASTER_GAIN
-//            }
-//        }
+        if (bgMusic != null && bgMusic.isOpen()) {
+            try {
+                FloatControl gainControl = (FloatControl) bgMusic.getControl(FloatControl.Type.MASTER_GAIN);
+
+                // สูตรคำนวณแบบ Logarithmic ที่ตอบสนองเร็วขึ้น
+                float dB = (float) (Math.log(volume != 0 ? volume / 100.0 : 0.0001) / Math.log(10.0) * 20.0);
+
+                // จำกัดค่าไม่ให้เกินขอบเขตของ hardware
+                if (dB < gainControl.getMinimum()) dB = gainControl.getMinimum();
+                if (dB > gainControl.getMaximum()) dB = gainControl.getMaximum();
+
+                gainControl.setValue(dB);
+            } catch (IllegalArgumentException e) {
+                // กรณี Hardware ไม่รองรับ MASTER_GAIN
+            }
+        }
     }
 
     public static void setSfxVolume(int volume) {

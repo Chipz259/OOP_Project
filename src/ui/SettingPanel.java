@@ -12,7 +12,8 @@ public class SettingPanel extends JPanel {
     private GridBagConstraints gbc;
     private JSlider slider, bgmSlider, sfxSlider;
     private Graphics2D g2d, g2;
-    private Image trackRed, trackGray, bgImage;
+    private Image trackRed, trackGray, scorllingImage, bgImage;
+    private BasicSliderUI customUI;
 
     public SettingPanel(MainGameFrame parent) {
         settingTitle = new JLabel("Settings");
@@ -21,8 +22,9 @@ public class SettingPanel extends JPanel {
         gbc.insets = new Insets(20, 20, 20, 20); // ระยะห่างแต่ละช่อง
         bgmLabel = new JLabel("BGM Volume");
         sfxLabel = new JLabel("SFX Volume");
-        trackRed = new ImageIcon("src/res/").getImage();
-        trackGray = new ImageIcon("src/res").getImage();
+        trackRed = new ImageIcon("src/res/trackRed.png").getImage();
+        trackGray = new ImageIcon("src/res/trackGrey.png").getImage();
+        scorllingImage = new ImageIcon("src/res/Scrolling.png").getImage();
         bgImage = new ImageIcon("src/res/SettingMenuBG.png").getImage();
 
         setBackground(new Color(232, 94, 94, 200));
@@ -67,36 +69,58 @@ public class SettingPanel extends JPanel {
 
     private JSlider createCustomSlider(int min, int max, int value) {
         slider = new JSlider(min, max, value);
-        slider.setPreferredSize(new Dimension(500, 80));
-        slider.setOpaque(false);
-        slider.setFocusable(false);
-
-        slider.setUI(new BasicSliderUI(slider) {
+        customUI = new BasicSliderUI(slider) {
             @Override
             public void paintTrack(Graphics g) {
-                g2d = (Graphics2D) g.create();
+                Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                // 1. วาดหลอดสีเทาเป็นพื้นหลังทั้งหมดก่อน
-                g2d.drawImage(trackGray, trackRect.x, trackRect.y, trackRect.width, trackRect.height, null);
+                // วาดรูปหลอดสีเทา (พื้นหลัง)
+                if (trackGray != null) {
+                    g2d.drawImage(trackGray, trackRect.x, trackRect.y, trackRect.width, trackRect.height, null);
+                }
 
-                // 2. คำนวณตำแหน่งจุดตัด (ตำแหน่งกึ่งกลางของตัวปรับเสียง)
+                // คำนวณตำแหน่ง Thumb เพื่อทำ Clip วาดสีแดง
                 int thumbPos = thumbRect.x + (thumbRect.width / 2);
 
-                // 3. ใช้เทคนิค Clip เพื่อวาดรูปสีแดงแค่ส่วนที่ลากถึง
-                // เราจะจำกัดพื้นที่วาดให้เริ่มจากจุดซ้ายสุดของหลอด ไปจนถึงตำแหน่งตัวปรับ
-                g2d.setClip(trackRect.x, 0, thumbPos - trackRect.x, getHeight());
-
-                // 4. วาดรูปหลอดสีแดงทับลงไป (มันจะปรากฏแค่ในพื้นที่ Clip ที่เราตั้งไว้)
-                g2d.drawImage(trackRed, trackRect.x, trackRect.y, trackRect.width, trackRect.height, null);
+                // วาดรูปหลอดสีแดง (เฉพาะส่วนที่ลากถึง)
+                if (trackRed != null) {
+                    Shape oldClip = g2d.getClip();
+                    // Clip พื้นที่ตั้งแต่จุดเริ่มหลอด จนถึงตัวเลื่อน
+                    g2d.setClip(trackRect.x, 0, thumbPos - trackRect.x, slider.getHeight());
+                    g2d.drawImage(trackRed, trackRect.x, trackRect.y, trackRect.width, trackRect.height, null);
+                    g2d.setClip(oldClip);
+                }
 
                 g2d.dispose();
             }
+
+            @Override
+            public void paintThumb(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // วาดรูป Scrolling (image_7.png) ลงไปแทนปุ่มเลื่อน
+                if (scorllingImage != null) {
+                    g2d.drawImage(scorllingImage, thumbRect.x, thumbRect.y, thumbRect.width, thumbRect.height, null);
+                }
+
+                g2d.dispose();
+            }
+
             @Override
             protected Dimension getThumbSize() {
-                return new Dimension(45, 45); // ปรับขนาดปุ่มเลื่อน
+                // ปรับขนาดพื้นที่ปุ่มเลื่อนให้พอดีกับรูปภาพของคุณ (ลองปรับ 20, 45 ดูนะจ๊ะ)
+                return new Dimension(20, 45);
             }
-        });
+        };
+
+        // 3. ตั้งค่าพื้นฐานและใส่ UI
+        slider.setPreferredSize(new Dimension(500, 80));
+        slider.setOpaque(false);
+        slider.setFocusable(false);
+        slider.setUI(customUI);
+
         return slider;
     }
 
