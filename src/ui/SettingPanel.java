@@ -12,6 +12,7 @@ public class SettingPanel extends JPanel {
     private GridBagConstraints gbc;
     private JSlider slider, bgmSlider, sfxSlider;
     private Graphics2D g2d, g2;
+    private Image trackRed, trackGray, bgImage;
 
     public SettingPanel(MainGameFrame parent) {
         settingTitle = new JLabel("Settings");
@@ -20,6 +21,9 @@ public class SettingPanel extends JPanel {
         gbc.insets = new Insets(20, 20, 20, 20); // ระยะห่างแต่ละช่อง
         bgmLabel = new JLabel("BGM Volume");
         sfxLabel = new JLabel("SFX Volume");
+        trackRed = new ImageIcon("src/res/").getImage();
+        trackGray = new ImageIcon("src/res").getImage();
+        bgImage = new ImageIcon("src/res/SettingMenuBG.png").getImage();
 
         setBackground(new Color(232, 94, 94, 200));
         setLayout(new GridBagLayout());
@@ -73,11 +77,19 @@ public class SettingPanel extends JPanel {
                 g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                // กำหนดความหนาของหลอดตรงนี้ (ลองปรับเลข 20 ดูนะจ๊ะ)
-                g2d.setStroke(new BasicStroke(20.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                // 1. วาดหลอดสีเทาเป็นพื้นหลังทั้งหมดก่อน
+                g2d.drawImage(trackGray, trackRect.x, trackRect.y, trackRect.width, trackRect.height, null);
 
-                // วาดเส้น Track
-                super.paintTrack(g2d);
+                // 2. คำนวณตำแหน่งจุดตัด (ตำแหน่งกึ่งกลางของตัวปรับเสียง)
+                int thumbPos = thumbRect.x + (thumbRect.width / 2);
+
+                // 3. ใช้เทคนิค Clip เพื่อวาดรูปสีแดงแค่ส่วนที่ลากถึง
+                // เราจะจำกัดพื้นที่วาดให้เริ่มจากจุดซ้ายสุดของหลอด ไปจนถึงตำแหน่งตัวปรับ
+                g2d.setClip(trackRect.x, 0, thumbPos - trackRect.x, getHeight());
+
+                // 4. วาดรูปหลอดสีแดงทับลงไป (มันจะปรากฏแค่ในพื้นที่ Clip ที่เราตั้งไว้)
+                g2d.drawImage(trackRed, trackRect.x, trackRect.y, trackRect.width, trackRect.height, null);
+
                 g2d.dispose();
             }
             @Override
@@ -92,10 +104,18 @@ public class SettingPanel extends JPanel {
         g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);
+        // วาดรูปพื้นหลังให้เต็มพื้นที่ Panel
+        if (bgImage != null) {
+            // วาดรูปภาพลงไปแทนการวาดสี่เหลี่ยมสีแดงจ้ะ
+            g2.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+        } else {
+            // กรณีโหลดรูปไม่ขึ้น ให้วาดสีสำรองไว้ก่อน
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);
+        }
 
         g2.dispose();
+        // ห้ามลบ super.paintComponent เพราะจะทำให้ Component ลูก (Slider, Button) หาย
         super.paintComponent(g);
     }
 }
