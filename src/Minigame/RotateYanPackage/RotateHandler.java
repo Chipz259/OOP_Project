@@ -1,11 +1,13 @@
 package Minigame.RotateYanPackage;
 
 import javax.sound.sampled.*;
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 
-public class RotateHandler implements MouseListener {
+public class RotateHandler extends MouseAdapter {
     RotateYan rotateYan;
     Clip yanFlipSound;
     public RotateHandler(RotateYan rotateYan, Clip yanFlipSound){
@@ -16,39 +18,19 @@ public class RotateHandler implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        this.playYanFlipSound();
-        ImagePanel p = (ImagePanel) e.getSource();
-        p.rotateImage();
+        if (!(rotateYan.getSuccess())){
+            this.playYanFlipSound();
+            ImagePanel p = (ImagePanel) e.getSource();
+            p.rotateImage();
+            rotateYan.getMainFrame().repaint();
+            int targetAngle[] = {180, 180, 270, 0, 0, 180, 180, 270, 180, 180, 90, 180};
 
-        int targetAngle[] = {180, 0, 270, 270, 0, 0, 180, 0, 180, 0, 180, 270};
-
-        int nowAngle[] = rotateYan.getPanelAngle();
-        if (Arrays.equals(targetAngle, nowAngle)){
-            rotateYan.winAnimated();
-            rotateYan.getSuccess().setVisible(true);
-        } else{
-            rotateYan.getSuccess().setVisible(false);
+            int nowAngle[] = rotateYan.getPanelAngle();
+            if (Arrays.equals(targetAngle, nowAngle)) {
+                rotateYan.winAnimated();
+                rotateYan.setSuccess(true);
+            }
         }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
     public void playYanFlipSound(){
         if (yanFlipSound.isRunning()){
