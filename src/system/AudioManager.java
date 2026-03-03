@@ -7,26 +7,6 @@ public class AudioManager {
     public static int sfxVolume = 50;
     private static Clip bgMusic;
 
-    public static void playMusic(String path) {
-        try {
-            File musicPath = new File(path);
-            if (musicPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                bgMusic = AudioSystem.getClip();
-                bgMusic.open(audioInput);
-
-                // ตั้งค่าให้เล่นวนลูปไปเรื่อยๆ
-                bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
-
-                // ปรับระดับเสียงเริ่มต้น
-                setBgmVolume(bgmVolume);
-
-                bgMusic.start();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void setBgmVolume(int volume) {
         bgmVolume = volume;
@@ -52,5 +32,33 @@ public class AudioManager {
     public static void setSfxVolume(int volume) {
         sfxVolume = volume;
         System.out.println("SFX Volume changed to: " + sfxVolume);
+    }
+
+    public static void playMusic(String path) {
+        try {
+            File musicPath = new File(path);
+            if (musicPath.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+                bgMusic = AudioSystem.getClip();
+                bgMusic.open(audioInput);
+
+                // ตั้งค่าให้เล่นวนลูปไปเรื่อยๆ
+                bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
+
+                // ปรับระดับเสียงเริ่มต้น
+                setBgmVolume(bgmVolume);
+
+                bgMusic.start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void stopMusic() {
+        if (bgMusic != null && bgMusic.isRunning()) {
+            bgMusic.stop(); // หยุดเล่น
+            bgMusic.setFramePosition(0); // รีเซ็ตหัวอ่านกลับไปที่จุดเริ่มเพลง
+        }
     }
 }

@@ -32,8 +32,8 @@ public class MainGameFrame extends JFrame {
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         widthSystem = (int) screenSize.getWidth();
         heightSystem = (int) screenSize.getHeight();
-//        settingPanel = new SettingPanel(this);
-//        settingPanel.setVisible(false);
+        settingPanel = new SettingPanel(this);
+        settingPanel.setVisible(false);
 
         fadeTransition = new FadeTransition();
         fadeTransition.setBounds(0,0, widthSystem, heightSystem);
@@ -49,25 +49,18 @@ public class MainGameFrame extends JFrame {
         mainCardPanel.add(cutscenePanel, "CUTSCENE");
         mainCardPanel.add(gamePanel, "GAME");
 
-        layeredPane.add(mainCardPanel, JLayeredPane.DEFAULT_LAYER);
-
-        settingPanel = new SettingPanel(this);
-        settingPanel.setVisible(false);
-
-        // imageBg.setBounds(0, 0, widthSystem, heightSystem);
-        // layeredPane.add(imageBg, JLayeredPane.DEFAULT_LAYER);
-
-        settingW = 1200;
-        settingH = 800;
         settingPanel.setBounds(0, 0, widthSystem, heightSystem);
 
-        layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER);
+        layeredPane.add(mainCardPanel, JLayeredPane.DEFAULT_LAYER);      // ชั้นหลังสุด
+        layeredPane.add(settingPanel, JLayeredPane.PALETTE_LAYER);      // ชั้นเมนู Setting (ต้องอยู่เหนือเมนูหลัก)
+        layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER);       // ชั้นหน้าสุดสำหรับฉาก Fade
+
         cardLayout.show(mainCardPanel, "MENU");
         this.setContentPane(layeredPane);
         this.revalidate();
         this.repaint();
 
-        // AudioManager.playMusic("src/res/sound/BackgroundMusic.wav");
+        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
