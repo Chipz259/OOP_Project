@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 250, 250);
-        sceneManager = new SceneManager();
+        sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
         loadCustomFont();
@@ -168,7 +168,7 @@ public class GamePanel extends JPanel implements Runnable {
                 mainPlayer.update();
             }
 
-            int speed = 5;
+            int speed = 20;
             boolean isWalking = false;
             boolean isFacingLeft = false;
 
