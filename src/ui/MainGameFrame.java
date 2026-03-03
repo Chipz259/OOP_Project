@@ -59,7 +59,7 @@ public class MainGameFrame extends JFrame {
         this.revalidate();
         this.repaint();
 
-        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav");
+        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav", 0);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
@@ -114,11 +114,11 @@ public class MainGameFrame extends JFrame {
         groupButtonPanel.add(buttonStart);
         groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 40)));
         groupButtonPanel.add(buttonSetting);
-        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 60)));
+        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 70)));
         groupButtonPanel.add(buttonExit);
 
         leftPanel.add(titleGame);
-        leftPanel.add(Box.createRigidArea(new Dimension(0, 120)));
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 110)));
         leftPanel.add(groupButtonPanel);
 
         imageBg.setLayout(new BorderLayout());

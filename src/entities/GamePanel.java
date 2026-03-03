@@ -4,6 +4,7 @@ import entities.Item;
 import entities.GameObject;
 
 import scenes.SceneQTE_Choke;
+import system.AudioManager;
 import system.FadeTransition;
 import scenes.SceneManager;
 import system.KeyHandler;
@@ -134,6 +135,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         isRunning = true;
         gameThread.start();
+        AudioManager.playMusic("src/res/sound/UIABg.wav", 30);
     }
 
     public void stopGameThread() {
