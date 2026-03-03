@@ -138,7 +138,7 @@ public class SettingPanel extends JPanel {
             @Override
             protected Dimension getThumbSize() {
                 // ปรับขนาดพื้นที่ปุ่มเลื่อนให้พอดีกับรูปภาพของคุณ (ลองปรับ 20, 45 ดูนะจ๊ะ)
-                return new Dimension(30, 55);
+                return new Dimension(20, 45);
             }
         };
 
