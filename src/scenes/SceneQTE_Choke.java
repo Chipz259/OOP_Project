@@ -17,6 +17,7 @@ public class SceneQTE_Choke extends Scene {
     private int buttonScale = 100;
     private int fadeAlpha = 0;
     private BufferedImage bgImage;
+    private boolean hasStarted = false;
     public SceneQTE_Choke(String sceneId) {
         super(sceneId);
         try {
@@ -43,6 +44,10 @@ public class SceneQTE_Choke extends Scene {
         }
     }
     public void update() {
+        if (!hasStarted) {
+            startQTE();
+            hasStarted = true;
+        }
         if (isQteActive) {
             long passTime = System.currentTimeMillis() - startTime;
             if (passTime > timeLimit) {
@@ -62,6 +67,9 @@ public class SceneQTE_Choke extends Scene {
             fadeAlpha += 5;
             if (fadeAlpha > 255) fadeAlpha = 255;
         }
+//        if (isWinningFade && fadeAlpha >= 255) { // ค่อยวนมาทำตอนมีฉากแล้ว
+            // sceneManager.startTransition("scene_1", player, 1650, 550);
+//        }
         if (isWinningFade) {
             fadeWhiteAmount += (fadeWhiteAmount * 0.1) + 0.01;
             if (fadeWhiteAmount >= 1) {
