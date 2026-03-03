@@ -113,7 +113,7 @@ public class MainGameFrame extends JFrame {
         groupButtonPanel.add(buttonExit);
 
         leftPanel.add(titleGame);
-        leftPanel.add(Box.createRigidArea(new Dimension(0, 150)));
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 120)));
         leftPanel.add(groupButtonPanel);
 
         imageBg.setLayout(new BorderLayout());
