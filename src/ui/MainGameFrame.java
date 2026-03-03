@@ -78,7 +78,7 @@ public class MainGameFrame extends JFrame {
     // @SuppressWarnings("unchecked")
 
     private void initMenuPanel() {
-        imageBg = new ImageBackground("src/res/Menu.png");
+        imageBg = new ImageBackground("src/res/MenuBackground.png");
         contentPanel = new JPanel(new GridLayout(1, 2));
         buttonPanel = new JPanel();
         buttonStart = new JButton("Start");
