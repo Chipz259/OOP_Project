@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
     // private KeyAdapter keyHandler;
 
     KeyHandler keyH = new KeyHandler();
+    private GameObject targetItem = null;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(1920, 1080));
@@ -65,10 +66,13 @@ public class GamePanel extends JPanel implements Runnable {
 
                             if (distance < 250) {
                                 ((Interactable) obj).onInteract(mainPlayer);
+                                targetItem = null;
                                 break;
                             } else {
                                 // ถ้าคลิกไกลเกินจะแสดงการแจ้งเตือน
-                                System.out.println("ระบบ: อยู่ไกลเกินไอเวร");
+                                System.out.println("ระบบ: กำลังเดินไปเก็บ " + obj);
+                                targetItem = obj;
+                                break;
                             }
                         }
                     }
@@ -159,23 +163,52 @@ public class GamePanel extends JPanel implements Runnable {
             boolean isWalking = false;
             boolean isFacingLeft = false;
 
-            if (keyH.left) {
-                if (mainPlayer.getX() - speed >= 0) {
-                    mainPlayer.setX(mainPlayer.getX() - speed);
-                } else {
-                    mainPlayer.setX(0);
-                }
-                isWalking = true;
-                mainPlayer.setFacingLeft(true);
+            if (keyH.left || keyH.right) {
+                targetItem = null;
             }
-            if (keyH.right) {
-                if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
-                    mainPlayer.setX(mainPlayer.getX() + speed);
+            if (targetItem != null) {
+                int playerCenter = mainPlayer.getX() + (mainPlayer.getWidth() / 2);
+                int targetCenter = targetItem.getX() + (targetItem.getWidth() / 2);
+                int distance = Math.abs(playerCenter - targetCenter);
+                if (distance < 150) {
+                    if (targetItem instanceof Interactable) {
+                        ((Interactable) targetItem).onInteract(mainPlayer);
+                    }
+                    targetItem = null;
                 } else {
-                    mainPlayer.setX(this.getWidth() - mainPlayer.getWidth());
+                    isWalking = true;
+                    if (playerCenter < targetCenter) {
+                        if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
+                            mainPlayer.setX(mainPlayer.getX() + speed);
+                        }
+                        mainPlayer.setFacingLeft(false);
+                    } else {
+                        if (mainPlayer.getX() - speed >= 0) {
+                            mainPlayer.setX(mainPlayer.getX() - speed);
+                        }
+                        mainPlayer.setFacingLeft(true);
+                    }
                 }
-                isWalking = true;
-                mainPlayer.setFacingLeft(false);
+            }
+            else {
+                if (keyH.left) {
+                    if (mainPlayer.getX() - speed >= 0) {
+                        mainPlayer.setX(mainPlayer.getX() - speed);
+                    } else {
+                        mainPlayer.setX(0);
+                    }
+                    isWalking = true;
+                    mainPlayer.setFacingLeft(true);
+                }
+                if (keyH.right) {
+                    if (mainPlayer.getX() + mainPlayer.getWidth() + speed <= this.getWidth()) {
+                        mainPlayer.setX(mainPlayer.getX() + speed);
+                    } else {
+                        mainPlayer.setX(this.getWidth() - mainPlayer.getWidth());
+                    }
+                    isWalking = true;
+                    mainPlayer.setFacingLeft(false);
+                }
             }
 
             if (mainPlayer != null) {
@@ -190,7 +223,7 @@ public class GamePanel extends JPanel implements Runnable {
                         int objCenter = obj.getX() + (obj.getWidth() / 2);
                         int distance = Math.abs(playerCenter - objCenter);
 
-                        if (distance < 250) {
+                        if (distance < 150) {
                             obj.setVisible(true);
                         } else {
                             obj.setVisible(false);
