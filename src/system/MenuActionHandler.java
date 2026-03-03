@@ -15,7 +15,7 @@ public class MenuActionHandler implements ActionListener {
         String scanAction = e.getActionCommand();
 
         if (scanAction.equals("Start")){
-            mainFrame.startCutscene();
+//            mainFrame.startCutscene();
         }
         else if (scanAction.equals("Setting")){
             action.toggleSetting(true);

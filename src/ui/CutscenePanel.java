@@ -49,7 +49,7 @@ public class CutscenePanel extends JPanel {
     public void updateAutoText(){
         if (currentLineIndex >= storyLines.length){
             timer.stop();
-            mainFrame.transitionToGame();
+//            mainFrame.transitionToGame();
             return;
         }
 
