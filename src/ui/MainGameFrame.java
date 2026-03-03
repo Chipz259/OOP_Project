@@ -33,8 +33,8 @@ public class MainGameFrame extends JFrame {
         imageBg.setBounds(0, 0, widthSystem, heightSystem);
         layeredPane.add(imageBg, JLayeredPane.DEFAULT_LAYER);
 
-        settingW = 1000;
-        settingH = 600;
+        settingW = 1200;
+        settingH = 800;
         settingPanel.setBounds((widthSystem - settingW) / 2, (heightSystem - settingH) / 2, settingW, settingH);
         layeredPane.add(settingPanel, JLayeredPane.PALETTE_LAYER);
 
@@ -42,7 +42,7 @@ public class MainGameFrame extends JFrame {
         this.revalidate();
         this.repaint();
 
-        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav");
+//        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
