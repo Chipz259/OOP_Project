@@ -1,7 +1,6 @@
 package ui;
 
 import system.AudioManager;
-
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
@@ -12,14 +11,14 @@ public class SettingPanel extends JPanel {
     private GridBagConstraints gbc;
     private JSlider slider, bgmSlider, sfxSlider;
     private Graphics2D g2d, g2;
-    private Image trackRed, trackGray, scorllingImage, bgImage, titleImg, bgmTextImg, sfxTextImg, backBtnImg;
+    private Image trackRed, trackGray, scorllingImage, bgImage, titleImg, bgmTextImg, sfxTextImg, backNormalBtnImg, backHoverBtnImg;
     private BasicSliderUI customUI;
+    private ImageIcon normalIcon, hoverIcon;
 
     public SettingPanel(MainGameFrame parent) {
         settingTitle = new JLabel();
         bgmLabel = new JLabel();
         sfxLabel = new JLabel();
-        buttonBack = new JButton("Back to Menu");
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 20, 20, 20); // ระยะห่างแต่ละช่อง
         trackRed = new ImageIcon("src/res/trackRed.png").getImage();
@@ -29,6 +28,8 @@ public class SettingPanel extends JPanel {
         titleImg = new ImageIcon("src/res/SettingTitle.png").getImage();
         bgmTextImg = new ImageIcon("src/res/BGMText.png").getImage();
         sfxTextImg = new ImageIcon("src/res/SFXText.png").getImage();
+        backNormalBtnImg = new ImageIcon("src/res/SettingBtnBack01.png").getImage();
+        backHoverBtnImg = new ImageIcon("src/res/SettingBtnBack02.png").getImage();
 
 
         setBackground(new Color(232, 94, 94, 200));
@@ -71,7 +72,16 @@ public class SettingPanel extends JPanel {
         add(sfxSlider, gbc);
 
         // Button Back
-        buttonBack.setFont(new Font("Arial", Font.PLAIN, 40));
+        normalIcon = new ImageIcon(backNormalBtnImg.getScaledInstance(150, 70, Image.SCALE_SMOOTH));
+        hoverIcon = new ImageIcon(backHoverBtnImg.getScaledInstance(150, 70, Image.SCALE_SMOOTH));
+        buttonBack = new JButton(normalIcon);
+        buttonBack.setRolloverIcon(hoverIcon);
+        buttonBack.setBorderPainted(false); // ไม่วาดขอบปุ่ม
+        buttonBack.setContentAreaFilled(false); // ไม่วาดสีพื้นหลังปุ่ม
+        buttonBack.setFocusable(false); // เอาเส้นประตอนเลือกออก
+        buttonBack.setOpaque(false); // ตั้งค่าความโปร่งใส
+
+        buttonBack.setText("");
         buttonBack.addActionListener(e -> parent.toggleSetting(false));
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; // อยู่แถวล่างสุด ยึด 2 คอลัมน์
         gbc.anchor = GridBagConstraints.CENTER;
@@ -83,7 +93,7 @@ public class SettingPanel extends JPanel {
         customUI = new BasicSliderUI(slider) {
             @Override
             public void paintTrack(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g.create();
+                g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                 // วาดรูปหลอดสีเทา (พื้นหลัง)
