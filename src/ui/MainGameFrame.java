@@ -7,7 +7,6 @@ import java.awt.*;
 
 public class MainGameFrame extends JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainGameFrame.class.getName());
-    private JDesktopPane desktopPane;
     private ImageBackground imageBg;
     private JButton buttonStart, buttonSetting, buttonExit;
     private JLabel titleGame, picture;
@@ -21,7 +20,6 @@ public class MainGameFrame extends JFrame {
     private int widthSystem, heightSystem, settingW, settingH;
 
     public MainGameFrame() {
-
         this.setUndecorated(true);
         layeredPane = new JLayeredPane();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -57,7 +55,6 @@ public class MainGameFrame extends JFrame {
     @SuppressWarnings("unchecked")
 
     private void initMenuPanel() {
-        desktopPane = new JDesktopPane();
         imageBg = new ImageBackground("src/res/Menu.png");
         contentPanel = new JPanel(new GridLayout(1, 2));
         buttonPanel = new JPanel();
@@ -68,11 +65,8 @@ public class MainGameFrame extends JFrame {
         icon = new ImageIcon("src/res/Front Menu Right.png");
 
 
-        imageBg.setLayout(new BorderLayout());
         imageBg.setLayout(new BorderLayout(50, 50));
         imageBg.setBorder(new EmptyBorder(50, 100, 0, 0));
-        desktopPane.setOpaque(false);
-        imageBg.add(desktopPane, BorderLayout.CENTER);
 
         //Title Game Name
         titleGame = new JLabel("Phawang", SwingConstants.CENTER);

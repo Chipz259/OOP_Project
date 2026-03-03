@@ -20,7 +20,8 @@ public class Player extends GameObject {
     private int spriteNum = 0;
     private final int ANIMATION_SPEED = 9;
     public Player(String id, int x, int y, int width, int height) {
-        super(id, x, y, width, height, "testPlayer.png");
+        super(id, x, y, width, height);
+        inventory = new Inventory("slots.png");
         loadAnimation();
     }
     private void loadAnimation() {
@@ -42,28 +43,28 @@ public class Player extends GameObject {
         }
     }
     public Inventory getInventory() {
-        return inventory; //ใส่ไว้ก่อน กัน error
+        return this.inventory;
     }
     public void setInventory(Inventory inventory) {
-
+        this.inventory = inventory;
     }
     public int getTargetX() {
-        return 0; //ใส่ไว้ก่อน กัน error
+        return targetX;
     }
     public void setTargetX(int targetX) {
-
+        this.targetX = targetX;
     }
     public int getTargetY() {
-        return 0; //ใส่ไว้ก่อน กัน error
+        return targetY;
     }
     public void setTargetY(int targetY) {
-
+        this.targetY = targetY;
     }
     public float getSpeed() {
-        return 0; //ใส่ไว้ก่อน กัน error
+        return speed;
     }
     public void setSpeed(float speed) {
-
+        this.speed = speed;
     }
     public boolean isMoving() {
         return this.isMoving;
