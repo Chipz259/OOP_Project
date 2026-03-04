@@ -5,6 +5,7 @@ public class AudioManager {
     public static int bgmVolume = 50;
     public static int sfxVolume = 50;
     private static Clip bgMusic;
+    private static java.util.List<Clip> activeSfx = new java.util.concurrent.CopyOnWriteArrayList<>();
 
     // เพิ่มตัวแปรเก็บค่า Offset ล่าสุดของ BGM เพื่อให้เวลาเลื่อน Slider แล้วเสียงยังสมดุลอยู่
     private static float currentBgmOffset = 0.0f;
@@ -49,13 +50,17 @@ public class AudioManager {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(sfxFile);
                 Clip sfxClip = AudioSystem.getClip();
                 sfxClip.open(audioInput);
-
                 applyVolume(sfxClip, sfxVolume, offsetDB);
+
+                // เพิ่ม Clip เข้าไปในรายการที่กำลังทำงาน
+                activeSfx.add(sfxClip);
+
                 sfxClip.start();
 
                 sfxClip.addLineListener(event -> {
                     if (event.getType() == LineEvent.Type.STOP) {
                         sfxClip.close();
+                        activeSfx.remove(sfxClip); // ลบออกเมื่อเล่นจบ
                     }
                 });
             }
@@ -92,5 +97,9 @@ public class AudioManager {
             bgMusic.stop();
             bgMusic.setFramePosition(0);
         }
+    }
+
+    public static boolean isSfxRunning() {
+        return !activeSfx.isEmpty();
     }
 }
