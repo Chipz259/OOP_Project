@@ -7,6 +7,7 @@ public class RotateNariga {
     private JPanel bg, kemSmall, kemBig, btPanel;
     private JFrame mainFrame;
     private JButton increaseH, increaseM;
+    private boolean finishRotateNariga = false;
     public  RotateNariga(){
         mainFrame = new JFrame();
         btPanel = new JPanel();
@@ -16,8 +17,8 @@ public class RotateNariga {
         kemSmall = new KemImagePanel("Image/kemSmall.png", 6,0);
         kemBig = new KemImagePanel("Image/kemBig.png", 30, 90);
 
-        increaseH.addMouseListener(new RotateNarigaHandler(30, kemBig));
-        increaseM.addMouseListener(new RotateNarigaHandler(6, kemSmall));
+        increaseH.addMouseListener(new RotateNarigaHandler(this, 30, kemBig));
+        increaseM.addMouseListener(new RotateNarigaHandler(this,6, kemSmall));
 
         btPanel.setLayout(new GridLayout(1,2,10,10));
         bg.setLayout(null);
@@ -41,5 +42,15 @@ public class RotateNariga {
             kemSmall.setLocation(bg.getWidth() / 2 - (kemSmall.getWidth() / 2), bg.getHeight() / 2 - (kemSmall.getHeight() / 2));
             kemBig.setLocation(bg.getWidth() / 2 - (kemBig.getWidth() / 2), bg.getHeight() / 2 - (kemBig.getHeight() / 2));
         });
+    }
+    public void setFinishRotateNariga(boolean b){
+        finishRotateNariga = b;
+    }
+    public boolean getFinishRotateNariga(){
+        return finishRotateNariga;
+    }
+    public int[] getKemAngle(){
+        int kemAngle[] = {((KemImagePanel) kemSmall).getAngle(), ((KemImagePanel) kemBig).getAngle()};
+        return  kemAngle;
     }
 }
