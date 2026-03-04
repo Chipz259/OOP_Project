@@ -32,6 +32,8 @@ public class GamePanel extends JPanel implements Runnable {
     private SettingPanel settingPanel;
     private JLayeredPane layeredPane;
     private MainGameFrame parentFrame;
+    private JButton btnSetting;
+    private ImageIcon settingIcon, settingHoverIcon;
 
     KeyHandler keyH = new KeyHandler();
     private GameObject targetItem = null;
@@ -45,12 +47,23 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+        this.setLayout(null);
+
+        settingIcon = new ImageIcon(new ImageIcon("src/res/GamePanelNormalBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        settingHoverIcon = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        btnSetting = new JButton(settingIcon);
+        btnSetting.setRolloverIcon(settingHoverIcon);
+        btnSetting.setBorderPainted(false);
+        btnSetting.setContentAreaFilled(false);
+        btnSetting.setFocusPainted(false);
+        btnSetting.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 150, 313);
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
+        btnSetting.setBounds(1810, 30, 80, 80);
         loadCustomFont();
 
         this.addMouseListener(new MouseAdapter() {
@@ -121,6 +134,11 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         });
+
+        btnSetting.addActionListener(e -> {
+            parentFrame.toggleSetting(true);
+        });
+        this.add(btnSetting);
     }
 
     public void loadCustomFont(){
