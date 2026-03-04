@@ -9,6 +9,7 @@ import java.io.IOException;
 public class changableImagePanel extends JPanel {
     private BufferedImage img;
     private BufferedImage tintedImg;
+    private Color unactive = new Color(67, 69, 69, 255);
     public changableImagePanel(String path){
         try {
             img = ImageIO.read(getClass().getResource(path));
@@ -16,6 +17,8 @@ public class changableImagePanel extends JPanel {
             throw new RuntimeException(e);
         }
         setOpaque(false);
+        setTint(unactive);
+        this.addMouseListener(new hoverHandler());
         System.out.println(img.getColorModel().hasAlpha());
     }
 
@@ -24,11 +27,7 @@ public class changableImagePanel extends JPanel {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        if (tintedImg != null) {
-            g2.drawImage(tintedImg, 0, 0, this);
-        } else {
-            g2.drawImage(img, 0, 0, this);
-        }
+        g2.drawImage(tintedImg, 0, 0, this);
     }
     public void setTint(Color color) {
          tintedImg = new BufferedImage(
