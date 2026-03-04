@@ -22,7 +22,6 @@ public class SceneManager {
         this.pendingPlayer = player;
         initScenes(); // สั่งสร้างและประกอบฉากทันทีที่เปิดเกม
     }
-
     public void setFadeTransition(FadeTransition fadeTransition) {
         this.fadeTransition = fadeTransition;
     }
@@ -93,17 +92,27 @@ public class SceneManager {
         Item Candle = new Item("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
         Item Water = new Item("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "CandleStroke.png");
         Item Candle2 = new Item("candle2", 600, 700, 100, 100, "เทียนไข2", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
+
         Item Bed = new Item("bed", 900, 700, 100, 100, "เตียง", "เตียงนะจ๊ะ", "candle.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
-                // 🌟 เมื่อกดเตียง สั่ง Fade จอมืดแล้ววาร์ปไปฉาก qte_choke ทันที!
                 //this.setVisible(false);
                 startQTETransition("qte_choke");
             }
         };
+        Item Daddy = new Item("daddy", 900, 700, 100, 100, "แด๊ดดี้", "พ่อเองงับ", "daddy.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+                this.setVisible(false);
+            }
+        };
 
+        Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
         Scene scene_4 = scenes.get("scene_4");
+        if (scene_1 != null) {
+            scene_1.addGameObject(Daddy);
+        }
         if (scene_2 != null) {
             scene_2.addGameObject(Candle);
             scene_2.addGameObject(Candle2);

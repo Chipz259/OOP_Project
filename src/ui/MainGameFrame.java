@@ -184,7 +184,7 @@ public class MainGameFrame extends JFrame {
 
     // เรียกตอนคัดซีนฉายจบแล้ว
     public void transitionToGame() {
-        fadeTransition.executeFade(0, 0, 1500, () -> {
+        fadeTransition.executeFade(0, 0, 600, () -> {
             cardLayout.show(mainCardPanel, "GAME");
             gamePanel.startGameThread();
             gamePanel.requestFocusInWindow();
