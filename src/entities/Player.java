@@ -34,7 +34,7 @@ public class Player extends GameObject {
             }
             URL idleUrl = getClass().getResource("/res/pIdle.png");
             BufferedImage idleSheet = ImageIO.read(idleUrl);
-            idleFrames = new BufferedImage[8];
+            idleFrames = new BufferedImage[12];
             for (int i = 0; i < idleFrames.length; i++) {
                 idleFrames[i] = idleSheet.getSubimage(i * 622, 0, 622, 1299);
             }
