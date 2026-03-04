@@ -1,12 +1,16 @@
 package scenes;
 
+import entities.Player;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
+
 public class SceneQTE_Choke extends Scene {
+    private SceneManager sceneManager;
     private int clickCount = 0;
     private int targetClicks = 20;
     private long startTime;
@@ -17,13 +21,25 @@ public class SceneQTE_Choke extends Scene {
     private int buttonScale = 100;
     private int fadeAlpha = 0;
     private BufferedImage bgImage;
+    private BufferedImage btnImage;
     private boolean hasStarted = false;
-    public SceneQTE_Choke(String sceneId) {
+    private Player player;
+    public SceneQTE_Choke(String sceneId, SceneManager sm, Player p) {
         super(sceneId);
+        this.sceneManager = sm;
+        this.player = p;
         try {
             URL bgImgURL = getClass().getResource("/res/pLork.png");
             if (bgImgURL != null) {
                 this.bgImage = ImageIO.read(bgImgURL);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            URL btnImgURL = getClass().getResource("/res/eButton.png");
+            if (btnImgURL != null) {
+                this.btnImage = ImageIO.read(btnImgURL);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,9 +83,9 @@ public class SceneQTE_Choke extends Scene {
             fadeAlpha += 5;
             if (fadeAlpha > 255) fadeAlpha = 255;
         }
-//        if (isWinningFade && fadeAlpha >= 255) { // ค่อยวนมาทำตอนมีฉากแล้ว
-            // sceneManager.startTransition("scene_1", player, 1650, 550);
-//        }
+        if (isWinningFade && fadeAlpha >= 255) {
+            sceneManager.startTransition("scene_4", player, 1650, 550);
+        }
         if (isWinningFade) {
             fadeWhiteAmount += (fadeWhiteAmount * 0.1) + 0.01;
             if (fadeWhiteAmount >= 1) {
@@ -82,7 +98,8 @@ public class SceneQTE_Choke extends Scene {
         int renderOffsetY = 0;
         if (isQteActive) {
             double progress = (double) clickCount / targetClicks;
-            int maxShake = (int) (progress * 20);
+            int baseShake = 8;
+            int maxShake = baseShake + (int) (progress * 20);
             long time = System.currentTimeMillis();
             renderOffsetX = (int) (Math.sin(time * 0.1) * maxShake);
             renderOffsetY = (int) (Math.cos(time * 0.12) * maxShake);
@@ -93,11 +110,14 @@ public class SceneQTE_Choke extends Scene {
         }
         super.render(g2d);
         g2d.translate(-renderOffsetX, -renderOffsetY);
-        if (isQteActive) {
-            int centerX = 1920 / 2;
-            int centerY =  1080 / 2;
-            g2d.setColor(Color.RED);
-            g2d.fillRect(centerX - (buttonScale / 2), centerY - (buttonScale / 2), buttonScale, buttonScale);
+        if (isQteActive && btnImage != null) {
+            int width = buttonScale;
+            int height = buttonScale;
+            int centerX = 1550;
+            int centerY = 350;
+            int drawX = centerX - (width / 2);
+            int drawY = centerY - (height / 2);
+            g2d.drawImage(btnImage, drawX, drawY, width, height, null);
         }
         if (isWinningFade) {
             g2d.setColor(new Color(255, 255, 255, (int)fadeAlpha));

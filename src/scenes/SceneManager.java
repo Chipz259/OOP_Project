@@ -20,8 +20,9 @@ public class SceneManager {
     private HashMap<String, Scene> scenes;
     private Scene currentScene;
 
-    public SceneManager() {
-        scenes = new HashMap<>() ;
+    public SceneManager(Player player) {
+        scenes = new HashMap<>();
+        this.pendingPlayer = player;
         initScenes(); // สั่งสร้างและประกอบฉากทันทีที่เปิดเกม
     }
 
@@ -82,8 +83,7 @@ public class SceneManager {
         setupArrows("scene_7", "scene_6", "scene_8", imgLeftArrow, imgRightArrow);
         setupArrows("scene_8", "scene_7", null, imgLeftArrow, imgRightArrow);
 
-        SceneQTE_Choke qteChoke = new SceneQTE_Choke("qte_choke");
-        scenes.put("qte_choke", qteChoke);
+        scenes.put("qte_choke", new SceneQTE_Choke("qte_choke", this, this.pendingPlayer));
 
         setupSpecificObjects();
 
@@ -94,11 +94,24 @@ public class SceneManager {
         Item Candle = new Item("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
         Item Water = new Item("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "CandleStroke.png");
         Item Candle2 = new Item("candle2", 600, 700, 100, 100, "เทียนไข2", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
+        Item Bed = new Item("bed", 900, 700, 100, 100, "เตียง", "เตียงนะจ๊ะ", "candle.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+                // 🌟 เมื่อกดเตียง สั่ง Fade จอมืดแล้ววาร์ปไปฉาก qte_choke ทันที!
+                //this.setVisible(false);
+                startTransition("qte_choke", p, 0, 0);
+            }
+        };
+
         Scene scene_2 = scenes.get("scene_2");
+        Scene scene_4 = scenes.get("scene_4");
         if (scene_2 != null) {
             scene_2.addGameObject(Candle);
             scene_2.addGameObject(Candle2);
             scene_2.addGameObject(Water);
+        }
+        if (scene_4 != null) {
+            scene_4.addGameObject(Bed);
         }
         // //เอาไว้จัดการใส่ entities.Item เข้าไปในฉาก
         // //Ex

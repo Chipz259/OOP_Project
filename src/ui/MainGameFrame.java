@@ -13,8 +13,7 @@ public class MainGameFrame extends JFrame {
     private JButton buttonStart, buttonSetting, buttonExit;
     private JLabel titleGame, picture;
     private JPanel leftPanel, groupButtonPanel;
-    private ImageIcon logoIcon, startIcon, settingIcon, exitIcon;
-    private Image scaled;
+    private ImageIcon logoIcon, startNormalIcon, settingNormalIcon, exitNormalIcon, startHoverIcon, settingHoverIcon, exitHoverIcon;
     private MenuActionHandler action;
     private SettingPanel settingPanel;
     private JLayeredPane layeredPane;
@@ -32,8 +31,8 @@ public class MainGameFrame extends JFrame {
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         widthSystem = (int) screenSize.getWidth();
         heightSystem = (int) screenSize.getHeight();
-//        settingPanel = new SettingPanel(this);
-//        settingPanel.setVisible(false);
+        settingPanel = new SettingPanel(this);
+        settingPanel.setVisible(false);
 
         fadeTransition = new FadeTransition();
         fadeTransition.setBounds(0,0, widthSystem, heightSystem);
@@ -49,25 +48,18 @@ public class MainGameFrame extends JFrame {
         mainCardPanel.add(cutscenePanel, "CUTSCENE");
         mainCardPanel.add(gamePanel, "GAME");
 
-        layeredPane.add(mainCardPanel, JLayeredPane.DEFAULT_LAYER);
-
-        settingPanel = new SettingPanel(this);
-        settingPanel.setVisible(false);
-
-        // imageBg.setBounds(0, 0, widthSystem, heightSystem);
-        // layeredPane.add(imageBg, JLayeredPane.DEFAULT_LAYER);
-
-        settingW = 1200;
-        settingH = 800;
         settingPanel.setBounds(0, 0, widthSystem, heightSystem);
 
-        layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER);
+        layeredPane.add(mainCardPanel, JLayeredPane.DEFAULT_LAYER);      // ชั้นหลังสุด
+        layeredPane.add(settingPanel, JLayeredPane.PALETTE_LAYER);      // ชั้นเมนู Setting (ต้องอยู่เหนือเมนูหลัก)
+        layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER);       // ชั้นหน้าสุดสำหรับฉาก Fade
+
         cardLayout.show(mainCardPanel, "MENU");
         this.setContentPane(layeredPane);
         this.revalidate();
         this.repaint();
 
-        // AudioManager.playMusic("src/res/sound/BackgroundMusic.wav");
+        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav", 0);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
@@ -83,43 +75,50 @@ public class MainGameFrame extends JFrame {
         imageBg = new ImageBackground("src/res/MenuBackground.png");
         leftPanel = new JPanel();
         groupButtonPanel = new JPanel();
-        startIcon = new ImageIcon(new ImageIcon("src/res/MenuStartBtn.png").getImage().getScaledInstance(144, 51, Image.SCALE_SMOOTH));
-        settingIcon = new ImageIcon(new ImageIcon("src/res/MenuSettingBtn.png").getImage().getScaledInstance(109, 51, Image.SCALE_SMOOTH));
-        exitIcon = new ImageIcon(new ImageIcon("src/res/MenuExitBtn.png").getImage().getScaledInstance(236, 24, Image.SCALE_SMOOTH));
-        buttonStart = new JButton(startIcon);
-        buttonSetting = new JButton(settingIcon);
-        buttonExit = new JButton(exitIcon);
+        startNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuStartNormalBtn.png").getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
+        settingNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuSettingNormalBtn.png").getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
+        exitNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuExitNormalBtn.png").getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
+        startHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuStartHoverBtn.png").getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
+        settingHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuSettingHoverBtn.png").getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
+        exitHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuExitHoverBtn.png").getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
+        buttonStart = new JButton(startNormalIcon);
+        buttonSetting = new JButton(settingNormalIcon);
+        buttonExit = new JButton(exitNormalIcon);
+        buttonStart.setRolloverIcon(startHoverIcon);
+        buttonSetting.setRolloverIcon(settingHoverIcon);
+        buttonExit.setRolloverIcon(exitHoverIcon);
 
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.setOpaque(false);
-        leftPanel.setBorder(new EmptyBorder(300, 0, 0, 0));
+        leftPanel.setBorder(new EmptyBorder(50, 0, 0, 0));
 
         imageBg.setLayout(new BorderLayout());
         imageBg.setBorder(new EmptyBorder(50, 80, 50, 0));
 
         // Title Game Name
         titleGame = new JLabel();
-        logoIcon = new ImageIcon(new ImageIcon("src/res/MenuLogo.png").getImage().getScaledInstance(500, 250, Image.SCALE_SMOOTH));
+        logoIcon = new ImageIcon(new ImageIcon("src/res/MenuLogo.png").getImage().getScaledInstance(600, 350, Image.SCALE_SMOOTH));
         titleGame.setIcon(logoIcon);
         titleGame.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Content button
         groupButtonPanel.setLayout(new BoxLayout(groupButtonPanel, BoxLayout.Y_AXIS));
         groupButtonPanel.setOpaque(false);
-        groupButtonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        groupButtonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        groupButtonPanel.setAlignmentX(0.5f);
 
         setupButtonCenter(buttonStart);
         setupButtonCenter(buttonSetting);
         setupButtonCenter(buttonExit);
 
         groupButtonPanel.add(buttonStart);
-        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 40)));
         groupButtonPanel.add(buttonSetting);
-        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 35)));
+        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 70)));
         groupButtonPanel.add(buttonExit);
 
         leftPanel.add(titleGame);
-        leftPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 110)));
         leftPanel.add(groupButtonPanel);
 
         imageBg.setLayout(new BorderLayout());
@@ -147,7 +146,7 @@ public class MainGameFrame extends JFrame {
 
     private void setupButtonCenter(JButton btn) {
         customizeButton(btn); // เรียกใช้ฟังก์ชันทำให้ปุ่มใสที่คุณมีอยู่แล้ว
-        btn.setAlignmentX(Component.CENTER_ALIGNMENT); // บังคับปุ่มเกาะเส้นกึ่งกลาง
+        btn.setAlignmentX(Component.LEFT_ALIGNMENT); // บังคับปุ่มเกาะเส้นกึ่งกลาง
     }
 
     public void toggleSetting(boolean show) {

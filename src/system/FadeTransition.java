@@ -32,6 +32,8 @@ public class FadeTransition extends JPanel {
                         fadeAlpha = 1;
                         isFadingOut = false;
 
+                        AudioManager.stopMusic();
+
                         if (actionAfterFadeOut != null) {
                             actionAfterFadeOut.run();
                         }

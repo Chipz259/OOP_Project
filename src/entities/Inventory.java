@@ -64,7 +64,7 @@ public class Inventory {
         String id2 = item2.getObjectId();
         if ((id1.equals("candle") && id2.equals("water")) || (id1.equals("water") && id2.equals("candle"))) {
             System.out.println("ระบบ : ทำน้ำมนต์สำมะเร็จเสร็จสิ้น");
-            return new Item("holyWater", 0, 0, 100, 100, "น้ำมนต์", "น้ำมนต์กินแล้วตาย", "candle.png", "candle.png");
+            return new Item("holyWater", 0, 0, 100, 100, "น้ำมนต์", "น้ำมนต์กินแล้วตาย", "holyWater.png", "holyWater.png");
         }
         // if อันต่อไป
         return null;

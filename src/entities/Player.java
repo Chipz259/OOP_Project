@@ -26,11 +26,11 @@ public class Player extends GameObject {
     }
     private void loadAnimation() {
         try {
-            URL walkUrl = getClass().getResource("/res/solWalk.png");
+            URL walkUrl = getClass().getResource("/res/pWalk.png");
             BufferedImage walkSheet = ImageIO.read(walkUrl);
-            walkFrames = new BufferedImage[8];
+            walkFrames = new BufferedImage[12];
             for (int i = 0; i < walkFrames.length; i++) {
-                walkFrames[i] = walkSheet.getSubimage(i * 100, 0, 100, 100);
+                walkFrames[i] = walkSheet.getSubimage(i * 622, 0, 622, 1299);;
             }
             URL idleUrl = getClass().getResource("/res/solIdle.png");
             BufferedImage idleSheet = ImageIO.read(idleUrl);
@@ -119,8 +119,11 @@ public class Player extends GameObject {
         else if (getSprite() != null) {
             g2d.drawImage(getSprite(), getX(), getY(), getWidth(), getHeight(), null);
         } else {
-            g2d.setColor(Color.BLUE);
-            g2d.fillRect(getX(), getY(), getWidth(), getHeight());
+            if (isFacingLeft) {
+                g2d.drawImage(walkFrames[spriteNum], getX() + getWidth(), getY(), -getWidth(), getHeight(), null);
+            } else {
+                g2d.drawImage(walkFrames[spriteNum], getX(), getY(), getWidth(), getHeight(), null);
+            }
         }
     }
     public void moveTo(int x, int y) {
