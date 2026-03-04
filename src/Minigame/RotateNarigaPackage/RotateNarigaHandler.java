@@ -3,15 +3,18 @@ package Minigame.RotateNarigaPackage;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 public class RotateNarigaHandler extends MouseAdapter {
     private int deg;
-    public RotateNarigaHandler(int deg){
+    private JPanel panel;
+    public RotateNarigaHandler(int deg, JPanel panel){
         this.deg = deg;
+        this.panel = panel;
     }
     @Override
     public void mouseClicked(MouseEvent e){
-        JPanel panel = (JPanel) e.getSource();
-        ((test) panel).rotate(deg);
+        ((KemImagePanel) panel).rotate(deg);
+
     }
 }
