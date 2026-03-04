@@ -27,6 +27,7 @@ public class KemImagePanel extends JPanel {
         this.angle = (angle + this.angle) % 360;
         repaint();
     }
+    public int getAngle(){return angle;}
     public BufferedImage getImg(){return  img;}
     @Override
     protected void paintComponent(Graphics g) {
