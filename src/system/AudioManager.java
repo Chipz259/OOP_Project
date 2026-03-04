@@ -61,4 +61,37 @@ public class AudioManager {
             bgMusic.setFramePosition(0); // รีเซ็ตหัวอ่านกลับไปที่จุดเริ่มเพลง
         }
     }
+
+    public static void playSFX(String path) {
+        try {
+            File sfxFile = new File(path);
+            if (sfxFile.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(sfxFile);
+                Clip sfxClip = AudioSystem.getClip();
+                sfxClip.open(audioInput);
+
+                // ปรับเสียงเฉพาะของ SFX
+                setClipVolume(sfxClip, sfxVolume);
+
+                sfxClip.start();
+
+                // คืนทรัพยากรเมื่อเสียงจบ (ป้องกัน Memory Leak)
+                sfxClip.addLineListener(event -> {
+                    if (event.getType() == LineEvent.Type.STOP) {
+                        sfxClip.close();
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void setClipVolume(Clip clip, int volume) {
+        if (clip != null && clip.isOpen()) {
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float dB = (float) (Math.log(volume != 0 ? volume / 100.0 : 0.0001) / Math.log(10.0) * 20.0);
+            gainControl.setValue(Math.max(gainControl.getMinimum(), Math.min(gainControl.getMaximum(), dB)));
+        }
+    }
 }

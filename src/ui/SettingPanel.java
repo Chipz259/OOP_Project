@@ -28,8 +28,8 @@ public class SettingPanel extends JPanel {
         scorllingImage = new ImageIcon("src/res/SettingScrolling.png").getImage();
         bgImage = new ImageIcon("src/res/SettingMenuBG.png").getImage();
         titleImg = new ImageIcon("src/res/SettingTitle.png").getImage();
-        bgmTextImg = new ImageIcon("src/res/BGMText.png").getImage();
-        sfxTextImg = new ImageIcon("src/res/SFXText.png").getImage();
+        bgmTextImg = new ImageIcon("src/res/SettingBGMText.png").getImage();
+        sfxTextImg = new ImageIcon("src/res/SettingSFXText.png").getImage();
         backNormalBtnImg = new ImageIcon("src/res/SettingBtnBack01.png").getImage();
         backHoverBtnImg = new ImageIcon("src/res/SettingBtnBack02.png").getImage();
 
