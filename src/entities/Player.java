@@ -18,7 +18,7 @@ public class Player extends GameObject {
     private boolean isFacingLeft = false;
     private int spriteCounter = 0;
     private int spriteNum = 0;
-    private final int ANIMATION_SPEED = 9;
+    private final int ANIMATION_SPEED = 4;
     public Player(String id, int x, int y, int width, int height) {
         super(id, x, y, width, height);
         inventory = new Inventory("slots.png");
@@ -32,11 +32,11 @@ public class Player extends GameObject {
             for (int i = 0; i < walkFrames.length; i++) {
                 walkFrames[i] = walkSheet.getSubimage(i * 622, 0, 622, 1299);;
             }
-            URL idleUrl = getClass().getResource("/res/solIdle.png");
+            URL idleUrl = getClass().getResource("/res/pIdle.png");
             BufferedImage idleSheet = ImageIO.read(idleUrl);
-            idleFrames = new BufferedImage[6];
+            idleFrames = new BufferedImage[8];
             for (int i = 0; i < idleFrames.length; i++) {
-                idleFrames[i] = idleSheet.getSubimage(i * 100, 0, 100, 100);
+                idleFrames[i] = idleSheet.getSubimage(i * 622, 0, 622, 1299);
             }
         } catch (Exception e) {
             e.printStackTrace();
