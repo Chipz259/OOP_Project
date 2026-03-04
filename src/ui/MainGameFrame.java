@@ -166,7 +166,7 @@ public class MainGameFrame extends JFrame {
         fadeTransition.executeFade(350, 0, 350,() ->{
             cardLayout.show(mainCardPanel, "CUTSCENE"); // สลับเป็นหน้าเล่นเกม
 
-            cutscenePanel.startCutscene(introStory, true, () -> {
+            cutscenePanel.startCutscene(introStory, true, false, () -> {
                 transitionToGame();
             }); // สั่งให้ข้อความเริ่มวิ่ง
         });
