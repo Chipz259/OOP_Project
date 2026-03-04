@@ -4,7 +4,9 @@ import entities.Inventory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +24,30 @@ public class ObjectiveManager {
         this.tickedBoxImg = tickedBoxImg;
         this.objectiveFont = new Font("Arial", Font.BOLD, 20);
     }
-//    public void initGame() {
-//        Image emptyBox = ImageIO.read(getClass().getResource("/res/uncheck.png"));
-//        Image tickedBox = ImageIO.read(getClass().getResource("/res/check.png"));
-//    }
+    public void initGame() {
+        try {
+            Image emptyBox = ImageIO.read(getClass().getResource("/res/uncheck.png"));
+            Image tickedBox = ImageIO.read(getClass().getResource("/res/check.png"));
+
+            objectiveManager = new ObjectiveManager(emptyBox, tickedBox);
+            setupObjectives();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void setupObjectives() {
+        objectiveManager.addObjective(new Objective("obj1", "วางดอกไม้จันทร์ที่โลงศพพ่อ"));
+        objectiveManager.addObjective(new Objective("obj2", "เข้านอน"));
+        objectiveManager.addObjective(new Objective("obj3", "แปะยันต์ที่ประตู"));
+        objectiveManager.addObjective(new Objective("obj4", "หาสมุดบันทึกพ่อ"));
+        LinkedHashMap<String, String> ritualItems = new LinkedHashMap<>();
+        ritualItems.put("knife", "มีดอาคม");
+        ritualItems.put("holyWater", "น้ำมนต์"); //ตอนนี้มีแค่อันนี้
+        ritualItems.put("rosary", "ลูกประคำ");
+        ritualItems.put("parasite", "กาฝากไม้คูณตายพราย");
+
+        objectiveManager.addObjective(new Objective("obj5", "หาของมาทำพิธี", ritualItems));
+    }
     public void addObjective(Objective obj) {
         objectives.add(obj);
     }
