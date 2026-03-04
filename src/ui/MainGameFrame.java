@@ -39,7 +39,7 @@ public class MainGameFrame extends JFrame {
         initMenuPanel();
 
         gamePanel = new GamePanel(fadeTransition);
-        cutscenePanel = new CutscenePanel(this, GamePanel.customFont);
+        cutscenePanel = new CutscenePanel(GamePanel.customFont);
         cardLayout = new CardLayout();
         mainCardPanel = new JPanel(cardLayout);
         mainCardPanel.setBounds(0, 0, widthSystem, heightSystem);
@@ -156,16 +156,26 @@ public class MainGameFrame extends JFrame {
     }
 
     public void startCutscene() {
-        fadeTransition.executeFade(() ->{
+        String[] introStory = {
+                "กริ๊งๆๆๆ น้ำตาลโทรมา",
+                "รับสายโทรศัพท์น้ำตาล",
+                "อึ่งๆๆๆๆๆ",
+                "ไปงานศพด้วยจ้าเพื่อน"
+        };
+
+        fadeTransition.executeFade(350, 0, 350,() ->{
             cardLayout.show(mainCardPanel, "CUTSCENE"); // สลับเป็นหน้าเล่นเกม
-            cutscenePanel.startCutscene(); // สั่งให้ข้อความเริ่มวิ่ง
+
+            cutscenePanel.startCutscene(introStory, true, () -> {
+                transitionToGame();
+            }); // สั่งให้ข้อความเริ่มวิ่ง
         });
 
     }
 
     // เรียกตอนคัดซีนฉายจบแล้ว
     public void transitionToGame() {
-        fadeTransition.executeFade(() -> {
+        fadeTransition.executeFade(0, 0, 1500, () -> {
             cardLayout.show(mainCardPanel, "GAME");
             gamePanel.startGameThread();
             gamePanel.requestFocusInWindow();
