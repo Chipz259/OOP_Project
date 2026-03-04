@@ -2,14 +2,14 @@ package entities;
 
 import entities.Item;
 import entities.GameObject;
-
 import scenes.SceneQTE_Choke;
 import system.AudioManager;
 import system.FadeTransition;
 import scenes.SceneManager;
 import system.KeyHandler;
+import ui.MainGameFrame;
+import ui.SettingPanel;
 // import system.QTEManager;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseMotionAdapter;
@@ -29,12 +29,16 @@ public class GamePanel extends JPanel implements Runnable {
     // private QTEManager qetManager;
     // private MouseAdapter mouseHandler;
     // private KeyAdapter keyHandler;
+    private SettingPanel settingPanel;
+    private JLayeredPane layeredPane;
+    private MainGameFrame parentFrame;
 
     KeyHandler keyH = new KeyHandler();
     private GameObject targetItem = null;
     private FadeTransition fadeTransition;
 
-    public GamePanel(FadeTransition fadeTransition) {
+    public GamePanel(MainGameFrame parentFrame, FadeTransition fadeTransition) {
+        this.parentFrame = parentFrame;
         this.fadeTransition = fadeTransition;
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
@@ -164,6 +168,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         sceneManager.update();
+
+        if (keyH.esc) {
+            keyH.esc = false; // รีเซ็ตค่าเพื่อไม่ให้เมนูเด้งรัวๆ
+            parentFrame.toggleSetting(true); // เรียกเปิดหน้า Setting
+        }
 
         if (fadeTransition == null || !fadeTransition.isFading()) {
             if (mainPlayer != null) {

@@ -38,7 +38,7 @@ public class MainGameFrame extends JFrame {
         fadeTransition.setBounds(0,0, widthSystem, heightSystem);
         initMenuPanel();
 
-        gamePanel = new GamePanel(fadeTransition);
+        gamePanel = new GamePanel(this, fadeTransition);
         cutscenePanel = new CutscenePanel(GamePanel.customFont);
         cardLayout = new CardLayout();
         mainCardPanel = new JPanel(cardLayout);
