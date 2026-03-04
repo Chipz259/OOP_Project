@@ -138,15 +138,6 @@ public class RotateYan {
         timer.start();
         mainFrame.repaint();
     }
-//    Clip yanFlipSound;
-//    public void loadFlipSound(){
-//        try {
-//            AudioInputStream audio = AudioSystem.getAudioInputStream(getClass().getResource("SoundEffect/yanFlip.wav"));
-//            yanFlipSound = AudioSystem.getClip();
-//            yanFlipSound.open(audio);
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//    }
+
     public JFrame getMainFrame(){return mainFrame;}
 }
