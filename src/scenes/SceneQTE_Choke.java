@@ -63,6 +63,10 @@ public class SceneQTE_Choke extends Scene {
         }
     }
     public void update() {
+        if (sceneManager.getFadeTransition() != null && sceneManager.getFadeTransition().isFading()) {
+            return;
+        }
+
         if (!hasStarted) {
             startQTE();
             hasStarted = true;

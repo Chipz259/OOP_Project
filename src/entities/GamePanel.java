@@ -247,6 +247,14 @@ public class GamePanel extends JPanel implements Runnable {
             if (mainPlayer != null) {
                 mainPlayer.setMoving(false);
             }
+
+            if (sceneManager.getCurrentScene() != null) {
+                for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
+                    if (obj instanceof scenes.Door) {
+                        obj.setVisible(false);
+                    }
+                }
+            }
         }
     }
 
