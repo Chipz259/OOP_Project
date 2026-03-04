@@ -3,7 +3,6 @@ package scenes;
 import entities.Item;
 import entities.Player;
 import system.FadeTransition;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -12,11 +11,9 @@ import javax.imageio.ImageIO;
 
 public class SceneManager {
     private FadeTransition fadeTransition;
-
     private String nextSceneId;
     private Player pendingPlayer;
     private int spawnX, spawnY;
-
     private HashMap<String, Scene> scenes;
     private Scene currentScene;
 
