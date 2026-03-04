@@ -6,30 +6,32 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class CutscenePanel extends JPanel {
-    private MainGameFrame mainFrame;
+public class CutscenePanel extends JPanel { ;
     private Font customFont;
-
-    private String[] storyLines = {
-        "อยู่ๆ ก็มีคนโทรมา ติ๊งๆๆๆๆ",
-        "รับสายดิวะๆๆๆๆ",
-        "พ่อตายแล้วน้าฮือๆๆๆ",
-        "ไปงานศพพ่อด้วยจ้าาาา"
-    };
-
+    private Timer timer;
+    private String[] storyLines;
+    private boolean isAutio;
+    private Runnable onCompleate;
     private int currentLineIndex = 0, charIndex = 0, waitCounter = 0;
     private String currentDisplay = "";
-    private Timer timer;
+    private boolean isLineFinished = false;
 
-    public CutscenePanel(MainGameFrame frame, Font font){
-        this.mainFrame = frame;
+    public CutscenePanel(Font font){
         this.customFont = font;
         this.setBackground(Color.BLACK);
 
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                handleMouseClick();
+            }
+        });
+
         // ตั้งเวลาให้พิมพ์ตัวอักษรทุกๆ 50 มิลลิวินาที
         timer = new Timer(50, new ActionListener() {
-        
             @Override
             public void actionPerformed(ActionEvent e){
                 updateAutoText();
@@ -38,18 +40,23 @@ public class CutscenePanel extends JPanel {
         });
     }
 
-    public void startCutscene(){
-        currentLineIndex = 0;
-        charIndex = 0;
-        currentDisplay = "";
-        waitCounter = 0;
+    public void startCutscene(String[] lines, boolean auto, Runnable onCompleate){
+        this.storyLines = lines;
+        this.isAutio = auto;
+        this.onCompleate = onCompleate;
+
+        this.currentLineIndex = 0;
+        this.charIndex = 0;
+        this.currentDisplay = "";
+        this.waitCounter = 0;
+        this.isLineFinished = false;
+
         timer.start(); //ให้เริ่มพิมพ์
     }
 
     public void updateAutoText(){
-        if (currentLineIndex >= storyLines.length){
-            timer.stop();
-            mainFrame.transitionToGame();
+        if (storyLines == null || currentLineIndex >= storyLines.length){
+            finishCutscene(); //จบเนื้อเรื่อง
             return;
         }
 
@@ -58,16 +65,47 @@ public class CutscenePanel extends JPanel {
         if (charIndex < fullLine.length()) {
             currentDisplay += fullLine.charAt(charIndex);
             charIndex++;
+            isLineFinished = false;
         }
         else {
+            isLineFinished = true;
             //เมื่อพิมพ์จบ ค้างไว้ให้อ่าน
-            waitCounter++;
-            if (waitCounter == 40){
-                waitCounter = 0;
-                charIndex = 0;
-                currentDisplay = "";
-                currentLineIndex++;
+            if (isAutio){
+                waitCounter++;
+                if (waitCounter >= 40){
+                    nextLine();
+                }
             }
+        }
+    }
+
+
+    public void handleMouseClick () {
+        if (storyLines == null || currentLineIndex >= storyLines.length) return;
+
+        if (!isLineFinished) {
+            currentDisplay = storyLines[currentLineIndex];
+            charIndex = storyLines[currentLineIndex].length();
+            isLineFinished = true;
+            waitCounter = 0;
+        }
+        else {
+            nextLine();
+        }
+    }
+
+    public void nextLine(){
+        waitCounter = 0;
+        charIndex = 0;
+        currentDisplay = "";
+        currentLineIndex++;
+        isLineFinished = false;
+    }
+
+    public void finishCutscene(){
+        timer.stop();
+        if (onCompleate != null) {
+            onCompleate.run();
         }
     }
 

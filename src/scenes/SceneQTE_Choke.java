@@ -1,6 +1,7 @@
 package scenes;
 
 import entities.Player;
+import system.AudioManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,6 +25,7 @@ public class SceneQTE_Choke extends Scene {
     private BufferedImage btnImage;
     private boolean hasStarted = false;
     private Player player;
+
     public SceneQTE_Choke(String sceneId, SceneManager sm, Player p) {
         super(sceneId);
         this.sceneManager = sm;
@@ -52,6 +54,7 @@ public class SceneQTE_Choke extends Scene {
         this.isWinningFade = false;
         this.fadeWhiteAmount = 0;
         this.buttonScale = 100;
+        AudioManager.playMusic("src/res/sound/DonPLork.wav", 0.0f);
     }
     public void registerClick() {
         if (isQteActive) {
@@ -69,11 +72,15 @@ public class SceneQTE_Choke extends Scene {
             if (passTime > timeLimit) {
                 isQteActive = false;
                 System.out.println("ระบบ : แพ้ โดนบีบคอตายไปดิ");
+                AudioManager.stopMusic();
+                AudioManager.playSFX("src/res/sound/LosePLork.wav", 0.0f);
             }
             else if (clickCount >= targetClicks) {
                 isQteActive = false;
                 isWinningFade = true;
                 System.out.println("สวดเก่งนี่ รอด");
+                AudioManager.stopMusic();
+                AudioManager.playSFX("src/res/sound/WinPLork.wav", 0.0f);
             }
         }
         if (buttonScale > 100) {

@@ -1,5 +1,7 @@
 package Minigame.RotateYanPackage;
 
+import system.AudioManager;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -33,12 +35,11 @@ public class RotateHandler extends MouseAdapter {
         }
     }
     public void playYanFlipSound(){
-        if (yanFlipSound.isRunning()){
-            yanFlipSound.stop();
+        if (AudioManager.isSfxRunning()){
+            AudioManager.stopMusic();
         }
 
-        yanFlipSound.setFramePosition(0);
-        yanFlipSound.start();
+        AudioManager.playSFX("src/res/sound/yanFlip.wav", 10.0f);
     }
 
 }

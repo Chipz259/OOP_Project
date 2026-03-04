@@ -19,22 +19,34 @@ public class RotateYan {
     int borderH = 83;
 
     public RotateYan(){
-        this.loadFlipSound();
+//        this.loadFlipSound();
         mainFrame = new JFrame();
         sup = new JPanel();
 
-        panel1 = new ImagePanel("YanImage/yan1.png", this, yanFlipSound);
-        panel2 = new ImagePanel("YanImage/yan2.png", this, yanFlipSound);
-        panel3 = new ImagePanel("YanImage/yan3.png", this, yanFlipSound);
-        panel4 = new ImagePanel("YanImage/yan4.png", this, yanFlipSound);
-        panel5 = new ImagePanel("YanImage/yan5.png", this, yanFlipSound);
-        panel6 = new ImagePanel("YanImage/yan6.png", this, yanFlipSound);
-        panel7 = new ImagePanel("YanImage/yan7.png", this, yanFlipSound);
-        panel8 = new ImagePanel("YanImage/yan8.png", this, yanFlipSound);
-        panel9 = new ImagePanel("YanImage/yan9.png", this, yanFlipSound);
-        panel10 = new ImagePanel("YanImage/yan10.png", this, yanFlipSound);
-        panel11 = new ImagePanel("YanImage/yan11.png", this, yanFlipSound);
-        panel12 = new ImagePanel("YanImage/yan12.png", this, yanFlipSound);
+//        panel1 = new ImagePanel("YanImage/yan1.png", this, yanFlipSound);
+//        panel2 = new ImagePanel("YanImage/yan2.png", this, yanFlipSound);
+//        panel3 = new ImagePanel("YanImage/yan3.png", this, yanFlipSound);
+//        panel4 = new ImagePanel("YanImage/yan4.png", this, yanFlipSound);
+//        panel5 = new ImagePanel("YanImage/yan5.png", this, yanFlipSound);
+//        panel6 = new ImagePanel("YanImage/yan6.png", this, yanFlipSound);
+//        panel7 = new ImagePanel("YanImage/yan7.png", this, yanFlipSound);
+//        panel8 = new ImagePanel("YanImage/yan8.png", this, yanFlipSound);
+//        panel9 = new ImagePanel("YanImage/yan9.png", this, yanFlipSound);
+//        panel10 = new ImagePanel("YanImage/yan10.png", this, yanFlipSound);
+//        panel11 = new ImagePanel("YanImage/yan11.png", this, yanFlipSound);
+//        panel12 = new ImagePanel("YanImage/yan12.png", this, yanFlipSound);
+        panel1 = new ImagePanel("YanImage/yan1.png", this, null);
+        panel2 = new ImagePanel("YanImage/yan2.png", this, null);
+        panel3 = new ImagePanel("YanImage/yan3.png", this, null);
+        panel4 = new ImagePanel("YanImage/yan4.png", this, null);
+        panel5 = new ImagePanel("YanImage/yan5.png", this, null);
+        panel6 = new ImagePanel("YanImage/yan6.png", this, null);
+        panel7 = new ImagePanel("YanImage/yan7.png", this, null);
+        panel8 = new ImagePanel("YanImage/yan8.png", this, null);
+        panel9 = new ImagePanel("YanImage/yan9.png", this, null);
+        panel10 = new ImagePanel("YanImage/yan10.png", this, null);
+        panel11 = new ImagePanel("YanImage/yan11.png", this, null);
+        panel12 = new ImagePanel("YanImage/yan12.png", this, null);
 
 
         sup.setBackground(new Color(214,84,84,255));
@@ -126,15 +138,15 @@ public class RotateYan {
         timer.start();
         mainFrame.repaint();
     }
-    Clip yanFlipSound;
-    public void loadFlipSound(){
-        try {
-            AudioInputStream audio = AudioSystem.getAudioInputStream(getClass().getResource("SoundEffect/yanFlip.wav"));
-            yanFlipSound = AudioSystem.getClip();
-            yanFlipSound.open(audio);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    Clip yanFlipSound;
+//    public void loadFlipSound(){
+//        try {
+//            AudioInputStream audio = AudioSystem.getAudioInputStream(getClass().getResource("SoundEffect/yanFlip.wav"));
+//            yanFlipSound = AudioSystem.getClip();
+//            yanFlipSound.open(audio);
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
     public JFrame getMainFrame(){return mainFrame;}
 }

@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class FadeTransition extends JPanel {
-    private float fadeAlpha = 0;
+    private float fadeAlpha = 0f;
     private boolean isFading = false;
     private  Timer fadeTimer;
 
@@ -15,34 +15,71 @@ public class FadeTransition extends JPanel {
         this.setVisible(false);
     }
 
-    public void executeFade(Runnable actionAfterFadeOut){
-        if (isFading) return;;
+    //หน่วยเป็นมิลลิวินาที 1000 ms = 1 วินาที
+    public void executeFade(int fadeOut, int wait, int fadeIn, Runnable actionAfterFadeOut){
+        if (isFading) return;
 
         isFading = true;
         this.setVisible(true);
 
-        fadeTimer = new Timer(30, new ActionListener() {
-            boolean isFadingOut = true;
+        int fpsDelay = 16;
+
+        float alphaOut;
+        if (fadeOut > 0) {
+            alphaOut = (float) fpsDelay / fadeOut;
+        }
+        else {
+            //ถ้าอยากให้พริบตาเดียวในการเปลี่ยน กรอก 0 หรือ ติดลบ
+            alphaOut = 1.0f;
+        }
+
+        float alphaIn;
+        if (fadeIn > 0) {
+            alphaIn = (float) fpsDelay / fadeIn;
+        }
+        else {
+            //ถ้าอยากให้พริบตาเดียวในการเปลี่ยน กรอก 0 หรือ ติดลบ
+            alphaIn = 1.0f;
+        }
+
+        int waitTicks;
+        if (wait > 0) {
+            waitTicks = wait / fpsDelay;
+        }
+        else {
+            waitTicks = 0;
+        }
+
+        fadeTimer = new Timer(fpsDelay, new ActionListener() {
+            int state = 0; // 0 : fade Out, 1 = Wait, 2 = Fade In
+            int currenWait = 0;
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (isFadingOut) {
-                    fadeAlpha += 0.05f;
-                    if (fadeAlpha >= 1){
-                        fadeAlpha = 1;
-                        isFadingOut = false;
-
-                        AudioManager.stopMusic();
+                // fade Out
+                if (state == 0) {
+                    fadeAlpha += alphaOut;
+                    if (fadeAlpha >= 1f){
+                        fadeAlpha = 1f;
+                        state = 1; //เปลี่ยนสถานะ
 
                         if (actionAfterFadeOut != null) {
                             actionAfterFadeOut.run();
                         }
                     }
                 }
-                else {
-                    fadeAlpha -= 0.05f;
-                    if (fadeAlpha <= 0) {
-                        fadeAlpha = 0;
+                //wait
+                else if (state == 1) {
+                    currenWait++;
+                    if (currenWait >= wait){
+                        state = 2; //เปลี่ยนสถานะ
+                    }
+                }
+                //Fade In
+                else if (state == 2) {
+                    fadeAlpha -= alphaIn;
+                    if (fadeAlpha <= 0f) {
+                        fadeAlpha = 0f;
                         isFading = false;
                         setVisible(false);
                         fadeTimer.stop();
@@ -53,6 +90,11 @@ public class FadeTransition extends JPanel {
             }
         });
         fadeTimer.start();
+    }
+
+    //ถ้าไม่กรอกค่าอะไร เรียกเปล่าๆ
+    public void executeFade(Runnable actionAfterFadeOut){
+        executeFade(500, 200, 500, actionAfterFadeOut);
     }
 
     @Override

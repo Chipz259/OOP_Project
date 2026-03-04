@@ -135,7 +135,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         isRunning = true;
         gameThread.start();
-        AudioManager.playMusic("src/res/sound/UIABg.wav", 30);
+        AudioManager.playMusic("src/res/sound/UIABg.wav", 1.0f);
     }
 
     public void stopGameThread() {
