@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class FadeTransition extends JPanel {
     private float fadeAlpha = 0f;
     private boolean isFading = false;
-    private  Timer fadeTimer;
+    private Timer fadeTimer;
 
     public FadeTransition(){
         this.setOpaque(false);
@@ -90,6 +90,7 @@ public class FadeTransition extends JPanel {
             }
         });
         fadeTimer.start();
+        AudioManager.stopMusic();
     }
 
     //ถ้าไม่กรอกค่าอะไร เรียกเปล่าๆ
