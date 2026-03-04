@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import entities.*;
+import system.FadeTransition;
 
 public class Door extends GameObject implements Interactable {
 
@@ -44,7 +45,6 @@ public class Door extends GameObject implements Interactable {
     public void setSpawnY(int spawnY) {
         this.spawnY = spawnY;
     }
-
 
     @Override
     public void update() {

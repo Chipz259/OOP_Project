@@ -29,7 +29,9 @@ public class SceneManager {
     public void setFadeTransition(FadeTransition fadeTransition) {
         this.fadeTransition = fadeTransition;
     }
-
+    public FadeTransition getFadeTransition(){
+        return  this.fadeTransition;
+    }
     // Setter และ Getter
     public Scene getCurrentScene() {
         return currentScene;
@@ -99,7 +101,7 @@ public class SceneManager {
             public void onInteract(Player p) {
                 // 🌟 เมื่อกดเตียง สั่ง Fade จอมืดแล้ววาร์ปไปฉาก qte_choke ทันที!
                 //this.setVisible(false);
-                startTransition("qte_choke", p, 0, 0);
+                startQTETransition("qte_choke");
             }
         };
 
@@ -113,21 +115,6 @@ public class SceneManager {
         if (scene_4 != null) {
             scene_4.addGameObject(Bed);
         }
-        // //เอาไว้จัดการใส่ entities.Item เข้าไปในฉาก
-        // //Ex
-        // scenes.Scene scene1 = scenes.get("scene_1");
-        // try {
-        // BufferedImage imgWater =
-        // ImageIO.read(getClass().getResourceAsStream("/res/Water.png"));
-
-        // if (scene1 != null){
-        // entities.Item waterBottle = new entities.Item("item_water", 0, 0, 0, 0, null,
-        // null);
-        // }
-        // }
-        // catch () {
-
-        // }
     }
 
     public void setupArrows(String targetSceneId, String leftDestId, String rightDestId, BufferedImage imgLeft,
@@ -140,7 +127,8 @@ public class SceneManager {
             int leftHeight = imgLeft.getHeight();
 
             Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftDestId, this,
-                    imgLeft, 1650, 550);
+                    imgLeft, 1550, 550);
+            leftArrow.setVisible(false);
             scene.addGameObject(leftArrow);
         }
 
@@ -151,7 +139,8 @@ public class SceneManager {
             int rightX = 1920 - rightWidth - 50;
 
             Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightDestId,
-                    this, imgRight, 150, 550);
+                    this, imgRight, 200, 550);
+            rightArrow.setVisible(false);
             scene.addGameObject(rightArrow);
         }
     }
@@ -174,6 +163,17 @@ public class SceneManager {
                 p.setX(spawnX);
                 p.setY(spawnY);
             }
+        }
+    }
+
+    public void startQTETransition(String targetScene) {
+        if (fadeTransition != null && !fadeTransition.isFading()) {
+            fadeTransition.executeFade(200, 200, 0, () -> {
+                loadScene(targetScene);
+            });
+        }
+        else if (fadeTransition == null) {
+            loadScene(targetScene);
         }
     }
 
