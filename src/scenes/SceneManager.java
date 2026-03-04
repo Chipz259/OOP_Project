@@ -159,7 +159,7 @@ public class SceneManager {
     public void startTransition(String targetScene, Player p, int spawnX, int spawnY) {
         if (fadeTransition != null && !fadeTransition.isFading()) {
 
-            fadeTransition.executeFade(() -> {
+            fadeTransition.executeFade(200, 0, 200, () -> {
                 loadScene(targetScene);
                 if (p != null) {
                     p.setX(spawnX);
