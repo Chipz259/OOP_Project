@@ -20,7 +20,7 @@ public class ImagePanel extends JPanel {
             throw new RuntimeException(e);
         }
         this.setOpaque(false);
-        this.addMouseListener(new RotateHandler(frame, yanFlipSound));
+        this.addMouseListener(new RotateHandler(frame));
     }
     public int getAngle(){
         return angle;

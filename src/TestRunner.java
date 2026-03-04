@@ -14,7 +14,7 @@ public class TestRunner {
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GamePanel gamePanel = new GamePanel(fadeTransition);
+        GamePanel gamePanel = new GamePanel(null, fadeTransition);
         window.add(gamePanel);
         window.pack();
 

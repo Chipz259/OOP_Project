@@ -38,7 +38,7 @@ public class MainGameFrame extends JFrame {
         fadeTransition.setBounds(0,0, widthSystem, heightSystem);
         initMenuPanel();
 
-        gamePanel = new GamePanel(fadeTransition);
+        gamePanel = new GamePanel(this, fadeTransition);
         cutscenePanel = new CutscenePanel(GamePanel.customFont);
         cardLayout = new CardLayout();
         mainCardPanel = new JPanel(cardLayout);
@@ -166,7 +166,7 @@ public class MainGameFrame extends JFrame {
         fadeTransition.executeFade(350, 0, 350,() ->{
             cardLayout.show(mainCardPanel, "CUTSCENE"); // สลับเป็นหน้าเล่นเกม
 
-            cutscenePanel.startCutscene(introStory, true, () -> {
+            cutscenePanel.startCutscene(introStory, true, false, () -> {
                 transitionToGame();
             }); // สั่งให้ข้อความเริ่มวิ่ง
         });

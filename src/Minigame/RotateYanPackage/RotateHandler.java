@@ -11,10 +11,8 @@ import java.util.Arrays;
 
 public class RotateHandler extends MouseAdapter {
     RotateYan rotateYan;
-    Clip yanFlipSound;
-    public RotateHandler(RotateYan rotateYan, Clip yanFlipSound){
+    public RotateHandler(RotateYan rotateYan){
         this.rotateYan = rotateYan;
-        this.yanFlipSound = yanFlipSound;
     }
 
 
