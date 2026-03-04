@@ -34,7 +34,7 @@ public class AudioManager {
         System.out.println("SFX Volume changed to: " + sfxVolume);
     }
 
-    public static void playMusic(String path) {
+    public static void playMusic(String path, int lowVolume) {
         try {
             File musicPath = new File(path);
             if (musicPath.exists()) {
@@ -46,7 +46,7 @@ public class AudioManager {
                 bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
 
                 // ปรับระดับเสียงเริ่มต้น
-                setBgmVolume(bgmVolume);
+                setBgmVolume(bgmVolume - lowVolume);
 
                 bgMusic.start();
             }
