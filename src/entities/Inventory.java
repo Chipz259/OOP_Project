@@ -66,7 +66,13 @@ public class Inventory {
 
     }
     public boolean hasItem(String itemName) {
-        return true; //ใส่ไว้ก่อน กัน error
+        for (int i = 0; i < slots.length; i++) {
+            if (slots[i] != null) {
+                if (slots[i].getObjectId().equals(itemName)) {
+                    return true;
+                }
+            }
+        } return false;
     }
     public Item combineItems(Item item1, Item item2) {
         String id1 = item1.getObjectId();

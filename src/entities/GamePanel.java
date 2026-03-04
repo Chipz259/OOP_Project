@@ -9,7 +9,6 @@ import scenes.SceneManager;
 import system.KeyHandler;
 import ui.MainGameFrame;
 import ui.SettingPanel;
-// import system.QTEManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseMotionAdapter;
