@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Inventory {
     private int selectedSlot = -1;
     private BufferedImage slotSprite;
+    private BufferedImage slotHoverSprite;
     private ArrayList<Item> itemlist;
     private int maxCapacity;
     private Item[] slots;
@@ -19,6 +20,14 @@ public class Inventory {
             URL slotURL = getClass().getResource("/res/" + slotSpritePath);
             if  (slotURL != null) {
                 this.slotSprite = ImageIO.read(slotURL);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            URL slotHoverURL = getClass().getResource("/res/slotsHover.png");
+            if  (slotHoverURL != null) {
+                this.slotHoverSprite = ImageIO.read(slotHoverURL);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -129,8 +138,9 @@ public class Inventory {
                 g2d.drawImage(slotSprite, x, y, slotSize, slotSize, null);
             }
             if (i == selectedSlot) {
-                g2d.setColor(new Color(255, 0, 0, 100));
-                g2d.fillRect(x, y, slotSize, slotSize);
+                g2d.drawImage(slotHoverSprite, x, y, slotSize, slotSize, null);
+//                g2d.setColor(new Color(255, 0, 0, 100));
+//                g2d.fillRect(x, y, slotSize, slotSize);
             }
             if (slots[i] != null) {
                 int padding = 15;

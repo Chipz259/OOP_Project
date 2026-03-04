@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         inventory = new Inventory("slots.png");
-        mainPlayer = new Player("player", 1650, 550, 125, 261);
+        mainPlayer = new Player("player", 1650, 550, 150, 313);
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
