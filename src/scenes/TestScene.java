@@ -24,7 +24,7 @@ public class TestScene {
         fadeTransition.setBounds(0, 0, (int)screenSize.getWidth(), (int)screenSize.getHeight());
 
         // 🌟 3. ส่งแผ่น Fade เข้าไปให้ GamePanel รู้จัก
-        GamePanel gamePanel = new GamePanel(fadeTransition);
+        GamePanel gamePanel = new GamePanel(null, fadeTransition);
         gamePanel.setBounds(0, 0, (int)screenSize.getWidth(), (int)screenSize.getHeight());
 
         // 🌟 4. ต้องใช้ JLayeredPane เพื่อซ้อนฟิล์มดำไว้ "บนสุด" (เหนือ GamePanel)
