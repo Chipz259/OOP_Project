@@ -1,13 +1,9 @@
 package entities;
 
-import entities.Item;
-import entities.GameObject;
 import scenes.SceneQTE_Choke;
-import system.AudioManager;
 import system.FadeTransition;
 import scenes.SceneManager;
 import system.KeyHandler;
-import system.ObjectiveManager;
 import ui.MainGameFrame;
 import ui.SettingPanel;
 import javax.swing.*;
@@ -26,7 +22,6 @@ public class GamePanel extends JPanel implements Runnable {
     private SceneManager sceneManager;
     private Inventory inventory;
     public static Font customFont;
-    // private QTEManager qetManager;
     // private MouseAdapter mouseHandler;
     // private KeyAdapter keyHandler;
     private SettingPanel settingPanel;
@@ -38,7 +33,6 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     private GameObject targetItem = null;
     private FadeTransition fadeTransition;
-    ObjectiveManager objectiveManager;
 
     public GamePanel(MainGameFrame parentFrame, FadeTransition fadeTransition) {
         this.parentFrame = parentFrame;
@@ -321,10 +315,6 @@ public class GamePanel extends JPanel implements Runnable {
                     mainPlayer.getInventory().render(g2d, getWidth(), getHeight());
                 }
             }
-            if (objectiveManager != null && mainPlayer != null && mainPlayer.getInventory() != null) {
-                objectiveManager.draw(g2d, mainPlayer.getInventory());
-            }
         }
-        g2d.dispose();
     }
 }
