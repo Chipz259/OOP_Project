@@ -49,21 +49,21 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.setLayout(null);
 
-        settingIcon = new ImageIcon(new ImageIcon("src/res/GamePanelNormalBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-        settingHoverIcon = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        settingIcon = new ImageIcon(new ImageIcon("src/res/GamePanelNormalBtnSetting.png").getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
+        settingHoverIcon = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
         btnSetting = new JButton(settingIcon);
         btnSetting.setRolloverIcon(settingHoverIcon);
         btnSetting.setBorderPainted(false);
         btnSetting.setContentAreaFilled(false);
         btnSetting.setFocusPainted(false);
         btnSetting.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnSetting.setBounds(1780, 20, 120, 120);
 
         inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 150, 313);
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
-        btnSetting.setBounds(1810, 30, 80, 80);
         loadCustomFont();
 
         this.addMouseListener(new MouseAdapter() {
@@ -136,6 +136,7 @@ public class GamePanel extends JPanel implements Runnable {
         });
 
         btnSetting.addActionListener(e -> {
+            stopPlayerMovement();
             parentFrame.toggleSetting(true);
         });
         this.add(btnSetting);
@@ -157,7 +158,6 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         isRunning = true;
         gameThread.start();
-        AudioManager.playMusic("src/res/sound/UIABg.wav", 1.0f);
     }
 
     public void stopGameThread() {
@@ -187,9 +187,18 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         sceneManager.update();
 
-        if (keyH.esc) {
-            keyH.esc = false; // รีเซ็ตค่าเพื่อไม่ให้เมนูเด้งรัวๆ
-            parentFrame.toggleSetting(true); // เรียกเปิดหน้า Setting
+        // ดักถ้าเข้า Sceen QTE ให้ซ่อนปุ่ม Setting
+        if (sceneManager.getCurrentScene() instanceof SceneQTE_Choke) {
+            if (btnSetting.isVisible()) {
+                btnSetting.setVisible(false);
+            }
+        } else {
+            // ถ้าไม่ใช่ฉาก QTE และหน้าจอไม่ได้กำลัง Fade อยู่ ให้แสดงปุ่มตามปกติ
+            if (fadeTransition != null && !fadeTransition.isFading()) {
+                if (!btnSetting.isVisible()) {
+                    btnSetting.setVisible(true);
+                }
+            }
         }
 
         if (fadeTransition == null || !fadeTransition.isFading()) {
@@ -282,6 +291,15 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
+        }
+    }
+
+    private void stopPlayerMovement() {
+        keyH.left = false;
+        keyH.right = false;
+
+        if (mainPlayer != null) {
+            mainPlayer.setMoving(false);
         }
     }
 

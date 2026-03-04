@@ -151,6 +151,10 @@ public class MainGameFrame extends JFrame {
 
     public void toggleSetting(boolean show) {
         settingPanel.setVisible(show);
+        if (!show) {
+            // เมื่อปิดหน้า Setting ต้องคืนโฟกัสให้ GamePanel ทันทีเพื่อให้เดินได้
+            gamePanel.requestFocusInWindow();
+        }
         layeredPane.revalidate();
         layeredPane.repaint();
     }
@@ -182,9 +186,7 @@ public class MainGameFrame extends JFrame {
         });
     }
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         System.setProperty("sun.java2d.uiScale", "1.0");
         try {

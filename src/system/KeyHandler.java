@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 public class KeyHandler implements KeyListener {
-    public boolean left, right, esc;
+    public boolean left, right;
     private SceneManager sceneManager;
 
     public void setSceneManager(SceneManager sm) {
@@ -29,9 +29,6 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_D) {
             right = true;
         }
-        if(code == KeyEvent.VK_ESCAPE) {
-            esc = true;
-        }
     }
     @Override
     public void keyReleased(KeyEvent e) {
@@ -41,9 +38,6 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_D) {
             right = false;
-        }
-        if(code == KeyEvent.VK_ESCAPE) {
-            esc = false;
         }
     }
     @Override
