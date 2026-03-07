@@ -315,6 +315,10 @@ public class GamePanel extends JPanel implements Runnable {
                     mainPlayer.getInventory().render(g2d, getWidth(), getHeight());
                 }
             }
+            if (mainPlayer != null && mainPlayer.getInventory() != null) {
+                system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
+            }
         }
+
     }
 }
