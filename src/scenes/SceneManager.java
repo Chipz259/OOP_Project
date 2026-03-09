@@ -1,12 +1,17 @@
 package scenes;
 
 import entities.Item;
+import entities.NPC;
 import entities.Player;
+import entities.GamePanel;
 import system.FadeTransition;
+import system.DialogueLine;
+import ui.DialogueOverlay;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 
@@ -20,6 +25,8 @@ public class SceneManager {
     private HashMap<String, Scene> scenes;
     private Scene currentScene;
 
+    private DialogueOverlay overlay;
+
     public SceneManager(Player player) {
         scenes = new HashMap<>();
         this.pendingPlayer = player;
@@ -31,7 +38,11 @@ public class SceneManager {
     public FadeTransition getFadeTransition(){
         return  this.fadeTransition;
     }
-    // Setter และ Getter
+
+    public DialogueOverlay getOverlay() {
+        return overlay;
+    }
+
     public Scene getCurrentScene() {
         return currentScene;
     }
@@ -50,14 +61,19 @@ public class SceneManager {
     public void initScenes() {
         BufferedImage imgLeftArrow = null;
         BufferedImage imgRightArrow = null;
+        BufferedImage imgDialogBox = null;
 
         // โหลดรูปลูกศร
         try {
             imgLeftArrow = ImageIO.read(getClass().getResource("/res/leftArrow.png"));
             imgRightArrow = ImageIO.read(getClass().getResource("/res/rightArrow.png"));
+            URL boxUrl = getClass().getResource("/res/Rectangle251.png");
+            if (boxUrl != null) imgDialogBox = ImageIO.read(boxUrl);
         } catch (IOException e) {
             System.err.println("โหลดรูปภาพไม่สำเร็จ");
         }
+
+        overlay = new DialogueOverlay(GamePanel.customFont, imgDialogBox);
 
         // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
         for (int i = 1; i <= 8; i++) {
@@ -110,11 +126,37 @@ public class SceneManager {
             }
         };
 
+        BufferedImage girlIdle = null, girlTalk = null, mainIdle = null, mainTalk = null;
+        try {
+            URL urlGirlIdle = getClass().getResource("/res/NPC/NPC_ girl.png");
+            URL urlGirlTalk = getClass().getResource("/res/NPC/NPC_ girl_talk.png");
+            URL urlMainIdle = getClass().getResource("/res/NPC/Main_character.png");
+            URL urlMainTalk = getClass().getResource("/res/NPC/Main_character_talk.png");
+
+            if (urlGirlIdle != null) girlIdle = ImageIO.read(urlGirlIdle);
+            if (urlGirlTalk != null) girlTalk = ImageIO.read(urlGirlTalk);
+            if (urlMainIdle != null) mainIdle = ImageIO.read(urlMainIdle);
+            if (urlMainTalk != null) mainTalk = ImageIO.read(urlMainTalk);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        NPC npcGirl = new NPC("Girl", 1300, 550, 150, 313, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
+
+        DialogueLine[] npcGirlScript = {
+            new DialogueLine("น้ำตาล", "พ่อตายแล้วน้าฮือๆๆๆ", girlTalk, mainIdle),
+            new DialogueLine("พระเอก", "อุก้ะๆๆๆๆๆๆ", girlIdle, mainTalk),
+            new DialogueLine("น้ำตาล", "ไปงานศพด้วยจ้าเพื่อน", girlTalk, mainIdle)
+        };
+        npcGirl.setVNDialogue(npcGirlScript, overlay);
+        npcGirl.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+
         Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
         Scene scene_4 = scenes.get("scene_4");
         if (scene_1 != null) {
             scene_1.addGameObject(Daddy);
+            scene_1.addGameObject(npcGirl);
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Candle);
@@ -187,8 +229,10 @@ public class SceneManager {
     }
 
     public void update() {
-
-        if (getCurrentScene() != null) {
+        if (overlay != null && overlay.isActive()) {
+            overlay.update();
+        }
+        else if (getCurrentScene() != null) {
             currentScene.update();
         }
 
@@ -197,6 +241,10 @@ public class SceneManager {
     public void render(Graphics2D g2d) {
         if (getCurrentScene() != null) {
             currentScene.render(g2d);
+        }
+
+        if (overlay != null && overlay.isActive()) {
+            overlay.render(g2d, 1920, 1080);
         }
     }
 }
