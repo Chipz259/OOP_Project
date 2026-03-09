@@ -188,7 +188,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         sceneManager.update();
 
-        // ดักถ้าเข้า Sceen QTE ให้ซ่อนปุ่ม Setting
+        // ดักถ้าเข้า Sceen QTE ให้ซ่อนปุ่ม Setting นะน้องนะ
         if (sceneManager.getCurrentScene() instanceof SceneQTE_Choke) {
             if (btnSetting.isVisible()) {
                 btnSetting.setVisible(false);
@@ -332,6 +332,10 @@ public class GamePanel extends JPanel implements Runnable {
                     mainPlayer.getInventory().render(g2d, getWidth(), getHeight());
                 }
             }
+            if (mainPlayer != null && mainPlayer.getInventory() != null) {
+                system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
+            }
         }
+
     }
 }

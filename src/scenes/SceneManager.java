@@ -17,11 +17,9 @@ import javax.imageio.ImageIO;
 
 public class SceneManager {
     private FadeTransition fadeTransition;
-
     private String nextSceneId;
     private Player pendingPlayer;
     private int spawnX, spawnY;
-
     private HashMap<String, Scene> scenes;
     private Scene currentScene;
 
@@ -122,7 +120,8 @@ public class SceneManager {
         Item Daddy = new Item("daddy", 900, 700, 100, 100, "แด๊ดดี้", "พ่อเองงับ", "daddy.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
-                this.setVisible(false);
+//                this.setVisible(false);
+                system.ObjectiveManager.getInstance().advanceObjective();
             }
         };
 
@@ -220,6 +219,7 @@ public class SceneManager {
     public void startQTETransition(String targetScene) {
         if (fadeTransition != null && !fadeTransition.isFading()) {
             fadeTransition.executeFade(200, 200, 0, () -> {
+                system.ObjectiveManager.getInstance().advanceObjective();
                 loadScene(targetScene);
             });
         }

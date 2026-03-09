@@ -62,6 +62,11 @@ public class MainGameFrame extends JFrame {
         AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", 0.0f);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        try {
+            this.setIconImage(logoIcon.getImage());
+        } catch (Exception e) {
+            System.err.println("ระบบ: ไม่สามารถเปลี่ยนไอคอนโปรแกรมได้");
+        }
     }
 
     /**
