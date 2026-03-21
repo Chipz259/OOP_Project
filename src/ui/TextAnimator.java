@@ -113,4 +113,8 @@ public class TextAnimator {
     public String getCurrentDisplay() {
         return currentDisplay;
     }
+
+    public int getCurrentLineIndex() {
+        return currentLineIndex;
+    }
 }

@@ -62,6 +62,11 @@ public class MainGameFrame extends JFrame {
         AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", 0.0f);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        try {
+            this.setIconImage(logoIcon.getImage());
+        } catch (Exception e) {
+            System.err.println("ระบบ: ไม่สามารถเปลี่ยนไอคอนโปรแกรมได้");
+        }
     }
 
     /**
@@ -179,7 +184,7 @@ public class MainGameFrame extends JFrame {
 
     // เรียกตอนคัดซีนฉายจบแล้ว
     public void transitionToGame() {
-        fadeTransition.executeFade(0, 0, 1500, () -> {
+        fadeTransition.executeFade(0, 0, 600, () -> {
             cardLayout.show(mainCardPanel, "GAME");
             gamePanel.startGameThread();
             gamePanel.requestFocusInWindow();

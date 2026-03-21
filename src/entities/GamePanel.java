@@ -52,12 +52,12 @@ public class GamePanel extends JPanel implements Runnable {
         btnSetting.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnSetting.setBounds(1780, 20, 120, 120);
 
+        loadCustomFont();
         inventory = new Inventory("slots.png");
         mainPlayer = new Player("player", 1650, 550, 150, 313);
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
-        loadCustomFont();
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -65,6 +65,12 @@ public class GamePanel extends JPanel implements Runnable {
                 if (fadeTransition != null && fadeTransition.isFading()) {
                     return;
                 }
+
+                if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()) {
+                    sceneManager.getOverlay().handleMouseClick();
+                    return;
+                }
+
                 if (mainPlayer != null && mainPlayer.getInventory() != null) {
                     boolean clickedInventory = mainPlayer.getInventory().handleClick(e.getX(), e.getY(), getWidth(), getHeight());
                     if (clickedInventory) {
@@ -180,7 +186,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         sceneManager.update();
 
-        // ดักถ้าเข้า Sceen QTE ให้ซ่อนปุ่ม Setting
+        // ดักถ้าเข้า Sceen QTE ให้ซ่อนปุ่ม Setting นะน้องนะ
         if (sceneManager.getCurrentScene() instanceof SceneQTE_Choke) {
             if (btnSetting.isVisible()) {
                 btnSetting.setVisible(false);
@@ -192,6 +198,13 @@ public class GamePanel extends JPanel implements Runnable {
                     btnSetting.setVisible(true);
                 }
             }
+        }
+
+        if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()){
+            if (mainPlayer != null) {
+                mainPlayer.setMoving(false);
+            }
+            return;
         }
 
         if (fadeTransition == null || !fadeTransition.isFading()) {
@@ -304,7 +317,11 @@ public class GamePanel extends JPanel implements Runnable {
         if (sceneManager != null) {
             sceneManager.render(g2d);
         }
-        if (!(sceneManager.getCurrentScene() instanceof SceneQTE_Choke)) {
+
+        boolean isTalk = sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive();
+
+
+        if (!(sceneManager.getCurrentScene() instanceof SceneQTE_Choke) && !isTalk) {
 
             if (mainPlayer != null) {
                 mainPlayer.render(g2d);
@@ -313,6 +330,10 @@ public class GamePanel extends JPanel implements Runnable {
                     mainPlayer.getInventory().render(g2d, getWidth(), getHeight());
                 }
             }
+            if (mainPlayer != null && mainPlayer.getInventory() != null) {
+                system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
+            }
         }
+
     }
 }
