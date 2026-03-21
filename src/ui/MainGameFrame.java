@@ -136,6 +136,9 @@ public class MainGameFrame extends JFrame {
         buttonStart.addActionListener(action);
         buttonSetting.addActionListener(action);
         buttonExit.addActionListener(action);
+        buttonStart.addMouseListener(action);
+        buttonSetting.addMouseListener(action);
+        buttonExit.addMouseListener(action);
 
         setTitle("Phawang");
     }
@@ -190,7 +193,6 @@ public class MainGameFrame extends JFrame {
             gamePanel.requestFocusInWindow();
         });
     }
-
 
     public static void main(String args[]) {
         System.setProperty("sun.java2d.uiScale", "1.0");
