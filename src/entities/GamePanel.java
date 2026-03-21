@@ -1,16 +1,14 @@
 package entities;
 
 import scenes.SceneQTE_Choke;
-import system.FadeTransition;
 import scenes.SceneManager;
+import system.FadeTransition;
 import system.KeyHandler;
 import ui.MainGameFrame;
 import ui.SettingPanel;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.InputStream;
 // import java.awt.event.KeyAdapter;
 
