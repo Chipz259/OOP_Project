@@ -18,7 +18,7 @@ public class ObjectiveManager {
     private Font headerFont;
     private Font questFont;
 
-    public ObjectiveManager() {
+    private ObjectiveManager() {
         this.objectives = new ArrayList<Objective>();
 
         try {

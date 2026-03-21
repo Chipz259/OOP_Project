@@ -4,6 +4,7 @@ import entities.Item;
 import entities.NPC;
 import entities.Player;
 import entities.GamePanel;
+import system.AudioManager;
 import system.FadeTransition;
 import system.DialogueLine;
 import ui.DialogueOverlay;
@@ -50,15 +51,13 @@ public class SceneManager {
     public void loadScene(String sceneId) {
         if (scenes.containsKey(sceneId)) {
             currentScene = scenes.get(sceneId);
+            playBGMusic(sceneID);
             System.out.println("ระบบ: เปลี่ยนเป็นฉาก -> " + sceneId);
 
             if (titleOverlay != null) {
                 String thName = getSceneDisplayName(sceneId);
                 titleOverlay.showTitle(thName);
             }
-        } else {
-            System.out.println("ระบบ: ไม่พบฉาก ID -> " + sceneId);
-        }
     }
 
     // ระบบประกอบร่างฉาก
@@ -295,6 +294,15 @@ public class SceneManager {
 
         if (overlay != null && overlay.isActive()) {
             overlay.render(g2d, 1920, 1080);
+        }
+    }
+
+    private void playBGMusic(String sceenID) {
+        if (sceenID.equals("scene_1")) {
+            AudioManager.playMusic("src/res/sound/UIABg.wav", 0.0f);
+        }
+        else {
+            System.out.println("น้องโหลดเพลงไม่ขึ้นจ้าาา");
         }
     }
 }
