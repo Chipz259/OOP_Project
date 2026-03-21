@@ -124,7 +124,6 @@ public class SceneManager {
                     break;
                 }
             }
-        }
         currentScene = scenes.get("scene_2");
     }
 
