@@ -157,14 +157,41 @@ public class MainGameFrame extends JFrame {
         btn.setAlignmentX(Component.LEFT_ALIGNMENT); // บังคับปุ่มเกาะเส้นกึ่งกลาง
     }
 
-    public void toggleSetting(boolean show) {
-        settingPanel.setVisible(show);
-        if (!show) {
-            // เมื่อปิดหน้า Setting ต้องคืนโฟกัสให้ GamePanel ทันทีเพื่อให้เดินได้
-            gamePanel.requestFocusInWindow();
+    public void toggleSetting(boolean show, boolean isInGame) {
+        if (show) {
+            // ก่อนจะโชว์ ให้สั่งตั้งค่าโหมดปุ่มก่อน
+            settingPanel.setInGameMode(isInGame);
         }
+
+        settingPanel.setVisible(show);
         layeredPane.revalidate();
         layeredPane.repaint();
+    }
+    // 1. เมื่อกดปุ่ม Setting จาก "หน้าเมนู"
+    public void openSettingFromMenu() {
+        // ส่ง false เข้าไปเพื่อบอกว่าไม่ได้อยู่ภายในเกม (จะโชว์แค่ปุ่ม Back)
+        toggleSetting(true, false);
+    }
+
+    // 2. เมื่อกดปุ่ม Esc จาก "ภายในเกม"
+    public void openSettingFromGame() {
+        // ส่ง true เข้าไปเพื่อบอกว่าอยู่ภายในเกม (จะโชว์ Back + Return คู่กัน)
+        toggleSetting(true, true);
+    }
+
+    // 3. อย่าลืมสร้างเมธอดกลางสำหรับกลับหน้าเมนูด้วยจ้ะ
+    public void returnToMainMenu() {
+        // 1. หยุดการทำงานของ GamePanel
+        gamePanel.stopGameThread();
+
+        // 2. สลับ CardLayout กลับไปที่หน้า MENU
+        cardLayout.show(mainCardPanel, "MENU");
+
+        // 3. เปลี่ยนเพลงประกอบกลับเป็นเพลงหน้าเมนู
+        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav", 0.0f);
+
+        // 4. บังคับให้หน้าเมนูรับโฟกัส (เพื่อให้กดปุ่มเริ่มเกมใหม่ได้)
+        imageBg.requestFocusInWindow();
     }
 
     public void startCutscene() {

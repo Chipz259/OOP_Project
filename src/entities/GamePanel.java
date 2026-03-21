@@ -150,7 +150,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         btnSetting.addActionListener(e -> {
             stopPlayerMovement();
-            parentFrame.toggleSetting(true);
+            parentFrame.toggleSetting(true, true);
         });
         this.add(btnSetting);
     }

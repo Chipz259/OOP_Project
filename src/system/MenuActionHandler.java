@@ -19,7 +19,7 @@ public class MenuActionHandler implements ActionListener, MouseListener {
             action.startCutscene();
         }
         else if (scanAction.equals("Setting")){
-            action.toggleSetting(true);
+            action.toggleSetting(true, false);
         }
         else if (scanAction.equals("Exit")){
             System.exit(0);
