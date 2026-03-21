@@ -8,6 +8,7 @@ import system.AudioManager;
 import system.FadeTransition;
 import system.DialogueLine;
 import ui.DialogueOverlay;
+import ui.SceneTitleOverlay;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,8 +24,8 @@ public class SceneManager {
     private int spawnX, spawnY;
     private HashMap<String, Scene> scenes;
     private Scene currentScene;
-
     private DialogueOverlay overlay;
+    private SceneTitleOverlay titleOverlay;
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -47,77 +48,82 @@ public class SceneManager {
     }
 
     // ระบบสลับฉาก
-    public void loadScene(String sceneID) {
-        if (scenes.containsKey(sceneID)) {
-            currentScene = scenes.get(sceneID);
-            playBGMusic(sceneID);
-            System.out.println("ระบบ: เปลี่ยนเป็นฉาก -> " + sceneID);
+    public void loadScene(String sceneId) {
+        if (scenes.containsKey(sceneId)) {
+            currentScene = scenes.get(sceneId);
+            playBGMusic(sceneId);
+            System.out.println("ระบบ: เปลี่ยนเป็นฉาก -> " + sceneId);
+
+            if (titleOverlay != null) {
+                String thName = getSceneDisplayName(sceneId);
+                titleOverlay.showTitle(thName);
+            }
         } else {
-            System.out.println("ระบบ: ไม่พบฉาก ID -> " + sceneID);
+            System.out.println("ไม่พบฉาก");
         }
     }
 
     // ระบบประกอบร่างฉาก
     public void initScenes() {
-        BufferedImage imgLeftArrow = null;
-        BufferedImage imgRightArrow = null;
-        BufferedImage imgLeftHover = null;
-        BufferedImage imgRightHover = null;
-        BufferedImage imgDialogBox = null;
+            BufferedImage imgLeftArrow = null;
+            BufferedImage imgRightArrow = null;
+            BufferedImage imgLeftHover = null;
+            BufferedImage imgRightHover = null;
+            BufferedImage imgDialogBox = null;
 
-        // โหลดรูปลูกศร
-        try {
-            imgLeftArrow = ImageIO.read(getClass().getResource("/res/Left_Default.png"));
-            imgRightArrow = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
-            imgLeftHover = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
-            imgRightHover = ImageIO.read(getClass().getResource("/res/Right_Hover.png"));
-            URL boxUrl = getClass().getResource("/res/Rectangle251.png");
-            if (boxUrl != null) imgDialogBox = ImageIO.read(boxUrl);
-        } catch (IOException e) {
-            System.err.println("โหลดรูปภาพไม่สำเร็จ");
-        }
-
-        overlay = new DialogueOverlay(GamePanel.customFont, imgDialogBox);
-
-        // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
-        for (int i = 1; i <= 11; i++) {
-            String sceneId = "scene_" + i;
-            Scene newScene = new Scene(sceneId);
-
+            // โหลดรูปลูกศร
             try {
-                BufferedImage bgImage = ImageIO.read(getClass().getResource("/res/bg_" + i + ".png"));
-                newScene.setBackgroundImage(bgImage);
-            } catch (Exception e) {
-                System.err.println("หารูปไม่เจอ");
+                imgLeftArrow = ImageIO.read(getClass().getResource("/res/Left_Default.png"));
+                imgRightArrow = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
+                imgLeftHover = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
+                imgRightHover = ImageIO.read(getClass().getResource("/res/Right_Hover.png"));
+                URL boxUrl = getClass().getResource("/res/Rectangle251.png");
+                if (boxUrl != null) imgDialogBox = ImageIO.read(boxUrl);
+            } catch (IOException e) {
+                System.err.println("โหลดรูปภาพไม่สำเร็จ");
             }
 
-            scenes.put(sceneId, newScene);
-        }
+            overlay = new DialogueOverlay(GamePanel.customFont, imgDialogBox);
+            titleOverlay = new SceneTitleOverlay(GamePanel.customFont);
 
-        // กำหนดลูกศรซ้าย-ขวา
-        setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_2", "scene_1", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_4", "scene_5", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_5", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_6", "scene_7", "scene_8", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_7", null, "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_8", "scene_6", "scene_9", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_9", "scene_8", "scene_10", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_10", "scene_9", "scene_11", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_11", "scene_10", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
+            for (int i = 1; i <= 11; i++) {
+                String sceneId = "scene_" + i;
+                Scene newScene = new Scene(sceneId);
 
-        scenes.put("qte_choke", new SceneQTE_Choke("qte_choke", this, this.pendingPlayer));
+                try {
+                    BufferedImage bgImage = ImageIO.read(getClass().getResource("/res/bg_" + i + ".png"));
+                    newScene.setBackgroundImage(bgImage);
+                } catch (Exception e) {
+                    System.err.println("หารูปไม่เจอ");
+                }
 
-        setupSpecificObjects();
-
-        for (entities.GameObject obj : scenes.get("scene_2").getObjectsInScene()) {
-            if (obj instanceof Door && obj.getID().equals("right_scene_2")) {
-                ((Door) obj).setSpawnX(1550);
-                break;
+                scenes.put(sceneId, newScene);
             }
-        }
 
+            // กำหนดลูกศรซ้าย-ขวา
+            setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_2", "scene_1", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_4", "scene_5", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_5", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_6", "scene_7", "scene_8", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_7", null, "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_8", "scene_6", "scene_9", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_9", "scene_8", "scene_10", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_10", "scene_9", "scene_11", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+            setupArrows("scene_11", "scene_10", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+
+            scenes.put("qte_choke", new SceneQTE_Choke("qte_choke", this, this.pendingPlayer));
+
+            setupSpecificObjects();
+
+            for (entities.GameObject obj : scenes.get("scene_2").getObjectsInScene()) {
+                if (obj instanceof Door && obj.getID().equals("right_scene_2")) {
+                    ((Door) obj).setSpawnX(1550);
+                    break;
+                }
+            }
         currentScene = scenes.get("scene_2");
     }
 
@@ -267,6 +273,9 @@ public class SceneManager {
 
 
     public void update() {
+        if (titleOverlay != null) {
+            titleOverlay.update();
+        }
         if (overlay != null && overlay.isActive()) {
             overlay.update();
         }
@@ -281,13 +290,17 @@ public class SceneManager {
             currentScene.render(g2d);
         }
 
+        if (titleOverlay != null) {
+            titleOverlay.render(g2d, 1920);
+        }
+
         if (overlay != null && overlay.isActive()) {
             overlay.render(g2d, 1920, 1080);
         }
     }
 
-    private void playBGMusic(String sceenID) {
-        if (sceenID.equals("scene_1")) {
+    private void playBGMusic(String sceenId) {
+        if (sceenId.equals("scene_1")) {
             AudioManager.playMusic("src/res/sound/UIABg.wav", 0.0f);
         }
         else {
@@ -295,3 +308,4 @@ public class SceneManager {
         }
     }
 }
+
