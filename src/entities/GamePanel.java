@@ -57,6 +57,12 @@ public class GamePanel extends JPanel implements Runnable {
         btnSetting.setFocusPainted(false);
         btnSetting.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnSetting.setBounds(1780, 20, 120, 120);
+        btnSetting.addActionListener(e -> {
+            stopPlayerMovement();
+            parentFrame.toggleSetting(true, true); // เปิดโหมดในเกม (มีปุ่ม Return)
+        });
+        this.add(btnSetting);
+        setComponentZOrder(btnSetting, 0);
 
         loadCustomFont();
         inventory = new Inventory("slots.png");
