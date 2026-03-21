@@ -51,13 +51,16 @@ public class SceneManager {
     public void loadScene(String sceneId) {
         if (scenes.containsKey(sceneId)) {
             currentScene = scenes.get(sceneId);
-            playBGMusic(sceneID);
+            playBGMusic(sceneId);
             System.out.println("ระบบ: เปลี่ยนเป็นฉาก -> " + sceneId);
 
             if (titleOverlay != null) {
                 String thName = getSceneDisplayName(sceneId);
                 titleOverlay.showTitle(thName);
             }
+        } else {
+            System.out.println("ไม่พบฉาก");
+        }
     }
 
     // ระบบประกอบร่างฉาก
@@ -297,8 +300,8 @@ public class SceneManager {
         }
     }
 
-    private void playBGMusic(String sceenID) {
-        if (sceenID.equals("scene_1")) {
+    private void playBGMusic(String sceenId) {
+        if (sceenId.equals("scene_1")) {
             AudioManager.playMusic("src/res/sound/UIABg.wav", 0.0f);
         }
         else {
@@ -306,3 +309,4 @@ public class SceneManager {
         }
     }
 }
+
