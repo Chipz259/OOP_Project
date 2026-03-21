@@ -6,8 +6,8 @@ public class SceneTitleOverlay {
     private String title = "";
     private int state = 0, alpha = 0, currentLineWidth = 0, maxLineWidth = 0, waitTime = 0;
     private Font font;
-    private final int FADE_SPEED = 8;
-    private final int LINE_SPEED = 20;
+    private final int FADE_SPEED = 3;
+    private final int LINE_SPEED = 8;
     private final int WALT_TIME = 130;
 
     public SceneTitleOverlay(Font font) {

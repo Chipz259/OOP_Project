@@ -47,6 +47,9 @@ public class SceneManager {
     public Scene getCurrentScene() {
         return currentScene;
     }
+    public SceneTitleOverlay getTitleOverlay() {
+        return this.titleOverlay;
+    }
 
     // ระบบสลับฉาก
     public void loadScene(String sceneId) {
@@ -54,6 +57,14 @@ public class SceneManager {
             currentScene = scenes.get(sceneId);
             playBGMusic(sceneId);
             System.out.println("ระบบ: เปลี่ยนเป็นฉาก -> " + sceneId);
+
+            for (entities.GameObject obj : currentScene.getObjectsInScene()) {
+                if (obj instanceof Item) {
+                    ((Item) obj).setHovered(false);
+                } else if (obj instanceof Door) {
+                    ((Door) obj).setIsHovered(false);
+                }
+            }
 
             if (titleOverlay != null) {
                 String thName = getSceneDisplayName(sceneId);
@@ -149,16 +160,16 @@ public class SceneManager {
             }
         };
         //scene_6
-        Item Locker = new Item("locker", 1246, 700, 100, 100, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "candleStroke.png") {
+        Item Locker = new Item("locker", 1248, 550, 356, 303, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
               //this.setVisible(false);
             }
         };
-        Item Chest = new Item("chest", 1246, 500, 100, 100, "กล่อง", "กล่องพ่อ", "chest.png", "candleStroke.png") {
+        Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
-                //this.setVisible(false);
+                ui.DiaryUi.getInstance().openDiary();
             }
         };
 

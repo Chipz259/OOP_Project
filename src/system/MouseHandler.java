@@ -3,6 +3,7 @@ import entities.GameObject;
 import entities.GamePanel;
 import entities.Interactable;
 import entities.Item;
+import scenes.Door;
 
 import java.awt.event.*;
 import java.awt.*;
@@ -18,6 +19,13 @@ public class MouseHandler extends MouseAdapter {
     // ==========================================
     @Override
     public void mousePressed(MouseEvent e) {
+        //ดักจับตอนคลิกสมุดบันทึก
+        if (ui.DiaryUi.getInstance().isVisible()) {
+            boolean clickedDiary = ui.DiaryUi.getInstance().handleClick(e.getX(), e.getY());
+            if (clickedDiary) {
+                return; // ถ้าเปิดสมุดอยู่ ให้บล็อกการคลิกเดินหรือเก็บของในฉากไปเลย
+            }
+        }
 
         // --- 1. เช็คเฟดหน้าจอ ---
         if (gamePanel.fadeTransition != null && gamePanel.fadeTransition.isFading()) {
@@ -73,9 +81,19 @@ public class MouseHandler extends MouseAdapter {
     public void mouseMoved(MouseEvent e) {
         boolean isHoveringAnyItem = false;
 
+        if (ui.DiaryUi.getInstance().isVisible()) {
+            ui.DiaryUi.getInstance().handleMouseMove(e.getX(), e.getY());
+
+            // เปลี่ยนเมาส์เป็นรูปนิ้วชี้ไว้เลย แล้วจบการทำงานทันที
+            gamePanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            return;
+        }
+
         if (gamePanel.sceneManager != null && gamePanel.sceneManager.getCurrentScene() != null) {
 
             for (GameObject obj : gamePanel.sceneManager.getCurrentScene().getObjectsInScene()) {
+
+                if (!obj.isVisible()) continue;
 
                 if (obj instanceof Interactable) {
                     Interactable interactObj = (Interactable) obj;
@@ -85,9 +103,15 @@ public class MouseHandler extends MouseAdapter {
                         if (obj instanceof Item) {
                             ((Item) obj).setHovered(true);
                         }
+                        else if (obj instanceof scenes.Door) {
+                            ((scenes.Door) obj).setIsHovered(true);
+                        }
                     } else {
                         if (obj instanceof Item) {
                             ((Item) obj).setHovered(false);
+                        }
+                        else if (obj instanceof scenes.Door) {
+                            ((scenes.Door) obj).setIsHovered(false);
                         }
                     }
                 }
