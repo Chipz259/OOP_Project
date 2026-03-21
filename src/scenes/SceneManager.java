@@ -128,10 +128,12 @@ public class SceneManager {
     }
 
     public void setupSpecificObjects() {
+        //scene_1
         Item Candle = new Item("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
-        Item Water = new Item("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "CandleStroke.png");
+        Item Water = new Item("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "candleStroke.png");
         Item Candle2 = new Item("candle2", 600, 700, 100, 100, "เทียนไข2", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
 
+        //scene_5
         Item Bed = new Item("bed", 900, 700, 100, 100, "เตียง", "เตียงนะจ๊ะ", "candle.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
@@ -142,12 +144,24 @@ public class SceneManager {
         Item Daddy = new Item("daddy", 900, 700, 100, 100, "แด๊ดดี้", "พ่อเองงับ", "daddy.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
-//                this.setVisible(false);
                 system.ObjectiveManager.getInstance().advanceObjective();
             }
         };
+        //scene_6
+        Item Locker = new Item("locker", 1246, 700, 100, 100, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+              //this.setVisible(false);
+            }
+        };
+        Item Chest = new Item("chest", 1246, 500, 100, 100, "กล่อง", "กล่องพ่อ", "chest.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+                //this.setVisible(false);
+            }
+        };
 
-        BufferedImage girlIdle = null, girlTalk = null, mainIdle = null, mainTalk = null;
+            BufferedImage girlIdle = null, girlTalk = null, mainIdle = null, mainTalk = null;
         try {
             URL urlGirlIdle = getClass().getResource("/res/NPC/NPC_ girl.png");
             URL urlGirlTalk = getClass().getResource("/res/NPC/NPC_ girl_talk.png");
@@ -175,6 +189,7 @@ public class SceneManager {
         Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
         Scene scene_5 = scenes.get("scene_5");
+        Scene scene_6 = scenes.get("scene_6");
         if (scene_1 != null) {
             scene_1.addGameObject(Daddy);
             scene_1.addGameObject(npcGirl);
@@ -186,6 +201,10 @@ public class SceneManager {
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
+        }
+        if (scene_6 != null) {
+            scene_6.addGameObject(Locker);
+            scene_6.addGameObject(Chest);
         }
     }
 
