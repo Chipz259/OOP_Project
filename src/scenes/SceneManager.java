@@ -46,6 +46,9 @@ public class SceneManager {
     public Scene getCurrentScene() {
         return currentScene;
     }
+    public SceneTitleOverlay getTitleOverlay() {
+        return this.titleOverlay;
+    }
 
     // ระบบสลับฉาก
     public void loadScene(String sceneId) {
@@ -53,6 +56,14 @@ public class SceneManager {
             currentScene = scenes.get(sceneId);
             playBGMusic(sceneId);
             System.out.println("ระบบ: เปลี่ยนเป็นฉาก -> " + sceneId);
+
+            for (entities.GameObject obj : currentScene.getObjectsInScene()) {
+                if (obj instanceof Item) {
+                    ((Item) obj).setHovered(false);
+                } else if (obj instanceof Door) {
+                    ((Door) obj).setIsHovered(false);
+                }
+            }
 
             if (titleOverlay != null) {
                 String thName = getSceneDisplayName(sceneId);

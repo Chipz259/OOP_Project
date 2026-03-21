@@ -3,6 +3,7 @@ import entities.GameObject;
 import entities.GamePanel;
 import entities.Interactable;
 import entities.Item;
+import scenes.Door;
 
 import java.awt.event.*;
 import java.awt.*;
@@ -77,6 +78,8 @@ public class MouseHandler extends MouseAdapter {
 
             for (GameObject obj : gamePanel.sceneManager.getCurrentScene().getObjectsInScene()) {
 
+                if (!obj.isVisible()) continue;
+
                 if (obj instanceof Interactable) {
                     Interactable interactObj = (Interactable) obj;
 
@@ -85,9 +88,15 @@ public class MouseHandler extends MouseAdapter {
                         if (obj instanceof Item) {
                             ((Item) obj).setHovered(true);
                         }
+                        else if (obj instanceof scenes.Door) {
+                            ((scenes.Door) obj).setIsHovered(true);
+                        }
                     } else {
                         if (obj instanceof Item) {
                             ((Item) obj).setHovered(false);
+                        }
+                        else if (obj instanceof scenes.Door) {
+                            ((scenes.Door) obj).setIsHovered(false);
                         }
                     }
                 }

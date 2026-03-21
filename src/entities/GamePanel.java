@@ -205,6 +205,7 @@ public class GamePanel extends JPanel implements Runnable {
                             obj.setVisible(true);
                         } else {
                             obj.setVisible(false);
+                            ((scenes.Door) obj).setIsHovered(false);
                         }
                     }
                 }
@@ -219,6 +220,7 @@ public class GamePanel extends JPanel implements Runnable {
                 for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
                     if (obj instanceof scenes.Door) {
                         obj.setVisible(false);
+                        ((scenes.Door) obj).setIsHovered(false);
                     }
                 }
             }
@@ -239,8 +241,8 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        if (sceneManager != null) {
-            sceneManager.render(g2d);
+        if (sceneManager != null && sceneManager.getCurrentScene() != null) {
+            sceneManager.getCurrentScene().render(g2d);
         }
 
         boolean isTalk = sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive();
@@ -257,6 +259,23 @@ public class GamePanel extends JPanel implements Runnable {
             }
             if (mainPlayer != null && mainPlayer.getInventory() != null) {
                 system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
+            }
+        }
+
+        if (sceneManager != null && sceneManager.getCurrentScene() != null) {
+            for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
+                if (obj instanceof scenes.Door) {
+                    obj.render(g2d);
+                }
+            }
+        }
+
+        if (sceneManager != null) {
+            if (sceneManager.getTitleOverlay() != null) {
+                sceneManager.getTitleOverlay().render(g2d, getWidth());
+            }
+            if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()) {
+                sceneManager.getOverlay().render(g2d, getWidth(), getHeight());
             }
         }
 
