@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
     public GamePanel(MainGameFrame parentFrame, FadeTransition fadeTransition) {
         this.parentFrame = parentFrame;
         this.fadeTransition = fadeTransition;
+
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
@@ -69,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
+        sceneManager.setGamePanel(this);
     }
 
     public void loadCustomFont(){
@@ -260,6 +262,9 @@ public class GamePanel extends JPanel implements Runnable {
                 system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
             }
         }
+    }
 
+    public void triggerDeath() {
+        parentFrame.showGameOver(true);
     }
 }

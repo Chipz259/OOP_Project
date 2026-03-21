@@ -26,6 +26,7 @@ public class SceneManager {
     private Scene currentScene;
     private DialogueOverlay overlay;
     private SceneTitleOverlay titleOverlay;
+    private GamePanel gamePanel;
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -325,6 +326,14 @@ public class SceneManager {
         else {
             System.out.println("น้องโหลดเพลงไม่ขึ้นจ้าาา");
         }
+    }
+
+    public void setGamePanel(GamePanel gp) {
+        this.gamePanel = gp;
+    }
+
+    public GamePanel getGamePanel() {
+        return this.gamePanel;
     }
 }
 

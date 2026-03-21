@@ -24,6 +24,7 @@ public class MainGameFrame extends JFrame {
     private CutscenePanel cutscenePanel;
     private GamePanel gamePanel;
     private FadeTransition fadeTransition;
+    private GameOverPanel gameOverPanel;
 
     public MainGameFrame() {
         this.setUndecorated(true);
@@ -33,6 +34,10 @@ public class MainGameFrame extends JFrame {
         heightSystem = (int) screenSize.getHeight();
         settingPanel = new SettingPanel(this);
         settingPanel.setVisible(false);
+
+        gameOverPanel = new GameOverPanel(this);
+        gameOverPanel.setVisible(false);
+        gameOverPanel.setBounds(0, 0, widthSystem, heightSystem);
 
         fadeTransition = new FadeTransition();
         fadeTransition.setBounds(0,0, widthSystem, heightSystem);
@@ -52,6 +57,7 @@ public class MainGameFrame extends JFrame {
 
         layeredPane.add(mainCardPanel, JLayeredPane.DEFAULT_LAYER);      // ชั้นหลังสุด
         layeredPane.add(settingPanel, JLayeredPane.PALETTE_LAYER);      // ชั้นเมนู Setting (ต้องอยู่เหนือเมนูหลัก)
+        layeredPane.add(gameOverPanel, JLayeredPane.MODAL_LAYER);
         layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER);       // ชั้นหน้าสุดสำหรับฉาก Fade
 
         cardLayout.show(mainCardPanel, "MENU");
@@ -195,6 +201,20 @@ public class MainGameFrame extends JFrame {
 
         // 4. บังคับให้หน้าเมนูรับโฟกัส (เพื่อให้กดปุ่มเริ่มเกมใหม่ได้)
         imageBg.requestFocusInWindow();
+    }
+
+    public void showGameOver(boolean show) {
+        if (show) {
+            gamePanel.stopGameThread(); // หยุดลูปเกม
+            // คุณอาจจะสั่งซ่อนปุ่ม Setting ของ GamePanel ที่นี่ด้วย
+        }
+        gameOverPanel.setVisible(show);
+
+        if (show) {
+            gameOverPanel.requestFocusInWindow();
+        }
+        layeredPane.revalidate();
+        layeredPane.repaint();
     }
 
     public void startCutscene() {
