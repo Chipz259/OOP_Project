@@ -5,7 +5,7 @@ import java.io.*;
 public class FontManager {
     public static Font customFont;
 
-    public FontManager(){
+    static {
         try {
             InputStream is = FontManager.class.getResourceAsStream("/res/Font/DSNSM__.TTF");
             customFont = Font.createFont(Font.TRUETYPE_FONT, is);
