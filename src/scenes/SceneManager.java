@@ -8,6 +8,7 @@ import system.AudioManager;
 import system.FadeTransition;
 import system.DialogueLine;
 import ui.DialogueOverlay;
+import ui.SceneTitleOverlay;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,8 +24,8 @@ public class SceneManager {
     private int spawnX, spawnY;
     private HashMap<String, Scene> scenes;
     private Scene currentScene;
-
     private DialogueOverlay overlay;
+    private SceneTitleOverlay titleOverlay;
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -47,14 +48,16 @@ public class SceneManager {
     }
 
     // ระบบสลับฉาก
-    public void loadScene(String sceneID) {
-        if (scenes.containsKey(sceneID)) {
-            currentScene = scenes.get(sceneID);
+    public void loadScene(String sceneId) {
+        if (scenes.containsKey(sceneId)) {
+            currentScene = scenes.get(sceneId);
             playBGMusic(sceneID);
-            System.out.println("ระบบ: เปลี่ยนเป็นฉาก -> " + sceneID);
-        } else {
-            System.out.println("ระบบ: ไม่พบฉาก ID -> " + sceneID);
-        }
+            System.out.println("ระบบ: เปลี่ยนเป็นฉาก -> " + sceneId);
+
+            if (titleOverlay != null) {
+                String thName = getSceneDisplayName(sceneId);
+                titleOverlay.showTitle(thName);
+            }
     }
 
     // ระบบประกอบร่างฉาก
@@ -78,6 +81,7 @@ public class SceneManager {
         }
 
         overlay = new DialogueOverlay(GamePanel.customFont, imgDialogBox);
+        titleOverlay = new SceneTitleOverlay(GamePanel.customFont);
 
         // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
         for (int i = 1; i <= 11; i++) {
@@ -267,6 +271,9 @@ public class SceneManager {
 
 
     public void update() {
+        if (titleOverlay != null) {
+            titleOverlay.update();
+        }
         if (overlay != null && overlay.isActive()) {
             overlay.update();
         }
@@ -279,6 +286,10 @@ public class SceneManager {
     public void render(Graphics2D g2d) {
         if (getCurrentScene() != null) {
             currentScene.render(g2d);
+        }
+
+        if (titleOverlay != null) {
+            titleOverlay.render(g2d, 1920);
         }
 
         if (overlay != null && overlay.isActive()) {
