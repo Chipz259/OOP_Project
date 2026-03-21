@@ -15,7 +15,7 @@ public class TestScene {
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // ==========================================
+        // ===================================ฟ=======
         // 🌟 2. จำลองการสร้างแผ่น Fade เหมือนใน MainGameFrame
         // ==========================================
         FadeTransition fadeTransition = new FadeTransition();

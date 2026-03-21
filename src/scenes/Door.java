@@ -10,12 +10,15 @@ public class Door extends GameObject implements Interactable {
 
     private int spawnX;
     private int spawnY;
-    private String nextSceneId;
+    private String nextSceneId, destName;
     private SceneManager sceneM;
+    private BufferedImage hoverSpite;
+    private boolean isHovered = false;
 
-    public Door(String id, int x, int y, int width, int height, String nextSceneId, SceneManager sceneM, BufferedImage arrowImage, int spawnX, int spawnY) {
+    public Door(String id, int x, int y, int width, int height, String destName , String nextSceneId, SceneManager sceneM, BufferedImage arrowImage, int spawnX, int spawnY) {
         super(id, x, y, width, height);
         this.nextSceneId = nextSceneId;
+        this.destName = destName;
         this.sceneM = sceneM;
 
         //กำหนดรูปภาพลูกศรให้ตัวแปร sprite
@@ -45,6 +48,12 @@ public class Door extends GameObject implements Interactable {
     public void setSpawnY(int spawnY) {
         this.spawnY = spawnY;
     }
+    public void setHoverSpite(BufferedImage hoverSpite) {
+        this.hoverSpite = hoverSpite;
+    }
+    public void setIsHovered(Boolean isHovered){
+        this.isHovered = isHovered;
+    }
 
     @Override
     public void update() {
@@ -53,8 +62,36 @@ public class Door extends GameObject implements Interactable {
 
     @Override
     public void render(Graphics2D g2d) {
-        if (getSprite() != null && isVisible()){
-            g2d.drawImage(getSprite(), this.getX(), this.getY(), null);
+        if (!isVisible()) return;
+
+        if (isHovered && hoverSpite != null) {
+            g2d.drawImage(hoverSpite, getX(), getY(), getWidth(), getHeight(), null);
+            if (destName != null && !destName.isEmpty()) {
+                g2d.setFont(GamePanel.customFont.deriveFont(Font.PLAIN, 45f));
+                FontMetrics fm = g2d.getFontMetrics();
+
+                int textY = getY() + (getHeight() / 2) + (fm.getAscent() / 3);
+                int textX;
+
+                if (getID().startsWith("right_")) {
+                    textX = getX() - fm.stringWidth(destName) - 20;
+                }
+                else {
+                    textX = getX() + getWidth() + 20;
+                }
+
+//                g2d.setColor(Color.BLACK);
+//                g2d.drawString(destName, textX - 2, textY - 2);
+//                g2d.drawString(destName, textX + 2, textY - 2);
+//                g2d.drawString(destName, textX - 2, textY + 2);
+//                g2d.drawString(destName, textX + 2, textY + 2);
+
+                g2d.setColor(Color.WHITE);
+                g2d.drawString(destName, textX, textY);
+            }
+        }
+        else if (getSprite() != null) {
+            g2d.drawImage(getSprite(), getX(),  getY(), getWidth(), getHeight(), null);
         }
     }
 
