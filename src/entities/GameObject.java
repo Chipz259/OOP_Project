@@ -75,6 +75,9 @@ public abstract class GameObject {
         this.height = height;
         this.hitbox.setSize(this.width, this.height);
     }
+    public String getID() {
+        return this.objectId;
+    }
     public Rectangle getHitbox() {
         return this.hitbox;
     }

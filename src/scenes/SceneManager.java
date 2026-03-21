@@ -80,7 +80,7 @@ public class SceneManager {
         overlay = new DialogueOverlay(GamePanel.customFont, imgDialogBox);
 
         // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= 11; i++) {
             String sceneId = "scene_" + i;
             Scene newScene = new Scene(sceneId);
 
@@ -96,17 +96,27 @@ public class SceneManager {
 
         // กำหนดลูกศรซ้าย-ขวา
         setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_2", "scene_1", "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_3", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_4", "scene_3", "scene_5", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_5", "scene_4", "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_6", "scene_5", "scene_7", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_7", "scene_6", "scene_8", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_8", "scene_7", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_2", "scene_1", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_4", "scene_5", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_5", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_6", "scene_7", "scene_8", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_7", null, "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_8", "scene_6", "scene_9", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_9", "scene_8", "scene_10", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_10", "scene_9", "scene_11", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_11", "scene_10", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
 
         scenes.put("qte_choke", new SceneQTE_Choke("qte_choke", this, this.pendingPlayer));
 
         setupSpecificObjects();
+
+        for (entities.GameObject obj : scenes.get("scene_2").getObjectsInScene()) {
+            if (obj instanceof Door && obj.getID().equals("right_scene_2")) {
+                ((Door) obj).setSpawnX(1550);
+                break;
+            }
+        }
 
         currentScene = scenes.get("scene_2");
     }
@@ -158,7 +168,7 @@ public class SceneManager {
 
         Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
-        Scene scene_4 = scenes.get("scene_4");
+        Scene scene_5 = scenes.get("scene_5");
         if (scene_1 != null) {
             scene_1.addGameObject(Daddy);
             scene_1.addGameObject(npcGirl);
@@ -168,8 +178,26 @@ public class SceneManager {
             scene_2.addGameObject(Candle2);
             scene_2.addGameObject(Water);
         }
-        if (scene_4 != null) {
-            scene_4.addGameObject(Bed);
+        if (scene_5 != null) {
+            scene_5.addGameObject(Bed);
+        }
+    }
+
+    private String getSceneDisplayName(String sceneId) {
+        if (sceneId == null) return "";
+        switch (sceneId) {
+            case "scene_1" : return "หน้าเมรุ";
+            case "scene_2" : return "ด้านข้างเมรุ";
+            case "scene_3" : return "หน้าบ้าน";
+            case "scene_4" : return "โถงบ้าน";
+            case "scene_5" : return "ห้องนอน";
+            case "scene_6" : return "ห้องนอน";
+            case "scene_7" : return "ห้องทำพิธี";
+            case "scene_8" : return "โถงบ้าน";
+            case "scene_9" : return "หน้าบ้าน";
+            case "scene_10" : return "ป่า";
+            case "scene_11" : return "ป่า";
+            default: return  sceneId;
         }
     }
 
@@ -180,8 +208,9 @@ public class SceneManager {
         if (leftDestId != null) {
             int leftWidth = imgLeft.getWidth();
             int leftHeight = imgLeft.getHeight();
+            String leftName = getSceneDisplayName(leftDestId);
 
-            Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftDestId, this,
+            Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftName, leftDestId,  this,
                     imgLeft, 1550, 550);
             leftArrow.setVisible(false);
             leftArrow.setHoverSpite(imgLeftHover);
@@ -191,10 +220,11 @@ public class SceneManager {
         if (rightDestId != null) {
             int rightWidth = imgRight.getWidth();
             int rightHeight = imgRight.getHeight();
+            String rightName = getSceneDisplayName(rightDestId);
 
             int rightX = 1920 - rightWidth - 50;
 
-            Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightDestId,
+            Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightName, rightDestId ,
                     this, imgRight, 200, 550);
             rightArrow.setVisible(false);
             rightArrow.setHoverSpite(imgRightHover);
@@ -234,6 +264,7 @@ public class SceneManager {
             loadScene(targetScene);
         }
     }
+
 
     public void update() {
         if (overlay != null && overlay.isActive()) {

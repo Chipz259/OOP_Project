@@ -90,6 +90,26 @@ public class SceneQTE_Choke extends Scene {
         if (buttonScale > 100) {
             buttonScale -= 5;
         }
+
+        if(isWinningFade) {
+
+            fadeWhiteAmount += (fadeWhiteAmount * 0.1) + 0.1;
+            if (fadeWhiteAmount >= 1) {
+                fadeWhiteAmount = 1;
+            }
+
+            if (fadeAlpha < 255) {
+                fadeAlpha += 5;
+
+                if (fadeAlpha >= 255) {
+                    fadeAlpha = 255;
+
+                    sceneManager.startTransition("scene_6", player, 900, 550);
+                }
+            }
+
+        }
+
         if (isWinningFade && fadeAlpha < 255) {
             fadeAlpha += 5;
             if (fadeAlpha > 255) fadeAlpha = 255;
