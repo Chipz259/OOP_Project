@@ -12,6 +12,8 @@ public class Door extends GameObject implements Interactable {
     private int spawnY;
     private String nextSceneId;
     private SceneManager sceneM;
+    private BufferedImage hoverSpite;
+    private boolean isHovered = false;
 
     public Door(String id, int x, int y, int width, int height, String nextSceneId, SceneManager sceneM, BufferedImage arrowImage, int spawnX, int spawnY) {
         super(id, x, y, width, height);
@@ -45,6 +47,12 @@ public class Door extends GameObject implements Interactable {
     public void setSpawnY(int spawnY) {
         this.spawnY = spawnY;
     }
+    public void setHoverSpite(BufferedImage hoverSpite) {
+        this.hoverSpite = hoverSpite;
+    }
+    public void setIsHovered(Boolean isHovered){
+        this.isHovered = isHovered;
+    }
 
     @Override
     public void update() {
@@ -53,8 +61,13 @@ public class Door extends GameObject implements Interactable {
 
     @Override
     public void render(Graphics2D g2d) {
-        if (getSprite() != null && isVisible()){
-            g2d.drawImage(getSprite(), this.getX(), this.getY(), null);
+        if (!isVisible()) return;
+
+        if (isHovered && hoverSpite != null) {
+            g2d.drawImage(hoverSpite, getX(), getY(), getWidth(), getHeight(), null);
+        }
+        else if (getSprite() != null) {
+            g2d.drawImage(getSprite(), getX(),  getY(), getWidth(), getHeight(), null);
         }
     }
 

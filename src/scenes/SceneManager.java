@@ -59,12 +59,16 @@ public class SceneManager {
     public void initScenes() {
         BufferedImage imgLeftArrow = null;
         BufferedImage imgRightArrow = null;
+        BufferedImage imgLeftHover = null;
+        BufferedImage imgRightHover = null;
         BufferedImage imgDialogBox = null;
 
         // โหลดรูปลูกศร
         try {
-            imgLeftArrow = ImageIO.read(getClass().getResource("/res/leftArrow.png"));
-            imgRightArrow = ImageIO.read(getClass().getResource("/res/rightArrow.png"));
+            imgLeftArrow = ImageIO.read(getClass().getResource("/res/Left_Default.png"));
+            imgRightArrow = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
+            imgLeftHover = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
+            imgRightHover = ImageIO.read(getClass().getResource("/res/Right_Hover.png"));
             URL boxUrl = getClass().getResource("/res/Rectangle251.png");
             if (boxUrl != null) imgDialogBox = ImageIO.read(boxUrl);
         } catch (IOException e) {
@@ -89,14 +93,14 @@ public class SceneManager {
         }
 
         // กำหนดลูกศรซ้าย-ขวา
-        setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow);
-        setupArrows("scene_2", "scene_1", "scene_6", imgLeftArrow, imgRightArrow);
-        setupArrows("scene_3", null, "scene_4", imgLeftArrow, imgRightArrow);
-        setupArrows("scene_4", "scene_3", "scene_5", imgLeftArrow, imgRightArrow);
-        setupArrows("scene_5", "scene_4", "scene_6", imgLeftArrow, imgRightArrow);
-        setupArrows("scene_6", "scene_5", "scene_7", imgLeftArrow, imgRightArrow);
-        setupArrows("scene_7", "scene_6", "scene_8", imgLeftArrow, imgRightArrow);
-        setupArrows("scene_8", "scene_7", null, imgLeftArrow, imgRightArrow);
+        setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_2", "scene_1", "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_3", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_4", "scene_3", "scene_5", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_5", "scene_4", "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_6", "scene_5", "scene_7", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_7", "scene_6", "scene_8", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_8", "scene_7", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
 
         scenes.put("qte_choke", new SceneQTE_Choke("qte_choke", this, this.pendingPlayer));
 
@@ -167,8 +171,7 @@ public class SceneManager {
         }
     }
 
-    public void setupArrows(String targetSceneId, String leftDestId, String rightDestId, BufferedImage imgLeft,
-            BufferedImage imgRight) {
+    public void setupArrows(String targetSceneId, String leftDestId, String rightDestId, BufferedImage imgLeft, BufferedImage imgRight, BufferedImage imgLeftHover, BufferedImage imgRightHover) {
 
         Scene scene = scenes.get(targetSceneId);
 
@@ -179,6 +182,7 @@ public class SceneManager {
             Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftDestId, this,
                     imgLeft, 1550, 550);
             leftArrow.setVisible(false);
+            leftArrow.setHoverSpite(imgLeftHover);
             scene.addGameObject(leftArrow);
         }
 
@@ -191,6 +195,7 @@ public class SceneManager {
             Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightDestId,
                     this, imgRight, 200, 550);
             rightArrow.setVisible(false);
+            rightArrow.setHoverSpite(imgRightHover);
             scene.addGameObject(rightArrow);
         }
     }
