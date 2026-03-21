@@ -162,6 +162,9 @@ public class MainGameFrame extends JFrame {
             // ก่อนจะโชว์ ให้สั่งตั้งค่าโหมดปุ่มก่อน
             settingPanel.setInGameMode(isInGame);
         }
+        if (!show) {
+            gamePanel.requestFocusInWindow();
+        }
 
         settingPanel.setVisible(show);
         layeredPane.revalidate();

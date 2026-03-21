@@ -38,7 +38,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
-        this.setFocusable(true);
         this.setLayout(null);
 
         keyH = new KeyHandler();
@@ -57,6 +56,12 @@ public class GamePanel extends JPanel implements Runnable {
         btnSetting.setFocusPainted(false);
         btnSetting.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnSetting.setBounds(1780, 20, 120, 120);
+        btnSetting.addActionListener(e -> {
+            stopPlayerMovement();
+            parentFrame.toggleSetting(true, true); // เปิดโหมดในเกม (มีปุ่ม Return)
+        });
+        this.add(btnSetting);
+        btnSetting.setFocusable(false);
 
         loadCustomFont();
         inventory = new Inventory("slots.png");
@@ -82,6 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         isRunning = true;
         gameThread.start();
+        this.requestFocusInWindow();
     }
 
     public void stopGameThread() {
@@ -111,18 +117,13 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         sceneManager.update();
 
-        // ดักถ้าเข้า Sceen QTE ให้ซ่อนปุ่ม Setting นะน้องนะ
-        if (sceneManager.getCurrentScene() instanceof SceneQTE_Choke) {
-            if (btnSetting.isVisible()) {
-                btnSetting.setVisible(false);
-            }
+        boolean isQTE = sceneManager.getCurrentScene() instanceof SceneQTE_Choke;
+        boolean isTalking = sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive();
+        boolean isFading = fadeTransition != null && fadeTransition.isFading();
+        if (isQTE || isTalking || isFading) {
+            if (btnSetting.isVisible()) btnSetting.setVisible(false);
         } else {
-            // ถ้าไม่ใช่ฉาก QTE และหน้าจอไม่ได้กำลัง Fade อยู่ ให้แสดงปุ่มตามปกติ
-            if (fadeTransition != null && !fadeTransition.isFading()) {
-                if (!btnSetting.isVisible()) {
-                    btnSetting.setVisible(true);
-                }
-            }
+            if (!btnSetting.isVisible()) btnSetting.setVisible(true);
         }
 
         if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()){
