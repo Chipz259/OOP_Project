@@ -1,6 +1,8 @@
 package ui;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 public class DiaryUi {
@@ -28,8 +30,19 @@ public class DiaryUi {
 
     private DiaryUi() {
         try {
+            InputStream is = getClass().getResourceAsStream("/res/Font/DSNSM__.TTF");
+            if (is == null) {
+                System.err.println("ระบบสมุด: หาไฟล์ฟอนต์ไม่เจอ!");
+                diaryFont = new Font("Arial", Font.PLAIN, 28);
+            } else {
+                Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
+                diaryFont = baseFont.deriveFont(Font.PLAIN, 28f);
+            }
+        } catch (Exception ex) {
+            System.err.println("ระบบสมุด: โหลดฟอนต์พัง!");
             diaryFont = new Font("Arial", Font.PLAIN, 28);
-
+        }
+        try {
             bookImg = ImageIO.read(getClass().getResource("/res/diary_bg.png"));
 
             arrowNextImg = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
@@ -52,6 +65,7 @@ public class DiaryUi {
             closeBtnHoverImg = closeBtnHoverImg.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 
         } catch (Exception ex) {
+            diaryFont = new Font("Arial", Font.PLAIN, 24);
             ex.printStackTrace();
         }
     }

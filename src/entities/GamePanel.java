@@ -7,6 +7,7 @@ import system.KeyHandler;
 import system.MouseHandler;
 import ui.MainGameFrame;
 import ui.SettingPanel;
+import ui.DiaryUi;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -138,7 +139,7 @@ public class GamePanel extends JPanel implements Runnable {
                 mainPlayer.update();
             }
 
-            int speed = 8;
+            int speed = 100;
             boolean isWalking = false;
             boolean isFacingLeft = false;
 
@@ -260,6 +261,6 @@ public class GamePanel extends JPanel implements Runnable {
                 system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
             }
         }
-
+        DiaryUi.getInstance().draw(g2d, getWidth(), getHeight());
     }
 }
