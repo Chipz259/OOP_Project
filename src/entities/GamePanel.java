@@ -115,6 +115,8 @@ public class GamePanel extends JPanel implements Runnable {
 
                     for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
 
+                        if (!obj.isVisible()) continue;
+
                         if (obj instanceof Item) {
                             Item item = (Item) obj;
 
@@ -123,6 +125,16 @@ public class GamePanel extends JPanel implements Runnable {
                                 isHoveringAnyItem = true;
                             } else {
                                 item.setHovered(false);
+                            }
+                        }
+                        else if (obj instanceof scenes.Door) {
+                            scenes.Door door = (scenes.Door) obj;
+                            if (door.getHitbox().contains(e.getPoint())) {
+                                door.setIsHovered(true);
+                                isHoveringAnyItem = true;
+                            }
+                            else {
+                                door.setIsHovered(false);
                             }
                         }
                     }
