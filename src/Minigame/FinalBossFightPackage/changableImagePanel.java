@@ -10,6 +10,8 @@ public class changableImagePanel extends JPanel {
     private BufferedImage img;
     private BufferedImage tintedImg;
     private Color unactive = new Color(67, 69, 69, 255);
+    private Color active = new Color(71, 248, 248, 255);
+
     public changableImagePanel(String path){
         try {
             img = ImageIO.read(getClass().getResource(path));
@@ -18,8 +20,9 @@ public class changableImagePanel extends JPanel {
         }
         setOpaque(false);
         setTint(unactive);
-        this.addMouseListener(new hoverHandler());
-        System.out.println(img.getColorModel().hasAlpha());
+        this.setPreferredSize(new Dimension(170, 170));
+        this.setMaximumSize(new Dimension(170, 170));
+        this.setMinimumSize(new Dimension(170, 170));
     }
 
     @Override
@@ -27,7 +30,14 @@ public class changableImagePanel extends JPanel {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        g2.drawImage(tintedImg, 0, 0, this);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setColor(new Color(133, 128, 128, 255));
+        g2.fillOval(0, 0, getWidth(), getHeight());
+
+        g2.translate(getWidth()/2,getHeight()/2);
+
+        g2.drawImage(tintedImg, -img.getWidth()/2, -img.getHeight()/2, this);
     }
     public void setTint(Color color) {
          tintedImg = new BufferedImage(
@@ -43,5 +53,12 @@ public class changableImagePanel extends JPanel {
         tg.dispose();
 
         repaint();
+    }
+
+    public void setUnactive(){
+        this.setTint(unactive);
+    }
+    public void setActive(){
+        this.setTint(active);
     }
 }

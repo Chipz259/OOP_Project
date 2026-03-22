@@ -6,91 +6,156 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-public class FinalBossFight {
+public class FinalBossFight implements Runnable {
     private JFrame mainFrame;
-    private JPanel timer,comboBox;
-    private JPanel targetImgArray[];
-    private JLabel timerText;
-    private int targetArray[] = {KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_W, KeyEvent.VK_S};
-    private int timerW, timerH = 20;
+    private JPanel comboBox, timer;
+    private YanKeys YanKeysArray[];
+    private Stage stage1, stage2, stage3, stage4, nowStage;
+    private boolean finished = false, timeout = false;
+    private KeyHandler kh;
+    private double timerStep = 1;
+
 
     public FinalBossFight(){
-        mainFrame = new JFrame();
-
-        timer = new JPanel();
-        timerText = new JLabel();
-        targetImgArray = new JPanel[]{new changableImagePanel("Image/Alpha1.png"),
-                new changableImagePanel("Image/Alpha2.png"),
-                new changableImagePanel("Image/Alpha3.png"),
-                new changableImagePanel("Image/Alpha4.png")
+        //Setting All key's Attribute
+        YanKeysArray = new YanKeys[]{new YanKeys(KeyEvent.VK_W, "Image/Alpha1.png"),
+                new YanKeys(KeyEvent.VK_A, "Image/Alpha2.png"),
+                new YanKeys(KeyEvent.VK_S, "Image/Alpha3.png"),
+                new YanKeys(KeyEvent.VK_D, "Image/Alpha4.png")
         };
+
+        //Set Key For Each Stage
+        stage1 = new Stage(new YanKeys[]{YanKeysArray[0],YanKeysArray[1],YanKeysArray[2], YanKeysArray[3]});
+        stage2 = new Stage(new YanKeys[]{YanKeysArray[3], YanKeysArray[0],YanKeysArray[2], YanKeysArray[1]});
+        stage3 = new Stage(new YanKeys[]{YanKeysArray[2], YanKeysArray[0], YanKeysArray[1],  YanKeysArray[3]});
+        stage4 = new Stage(new YanKeys[]{YanKeysArray[1], YanKeysArray[3], YanKeysArray[0],  YanKeysArray[2]});
+
+        mainFrame = new JFrame();
         comboBox = new JPanel();
+        timer = new JPanel();
+
+        timer.setBackground(Color.white);
+        timer.setLocation(240, 380);
         comboBox.setLocation(240, 100);
-        comboBox.setLayout(new GridLayout(1, 4, 20, 30));
-        timerText.setLocation(500, 500);
-        timerText.setSize(200, 200);
-        timer.setBounds(240,300, 20,20);
-        timer.setBackground(new Color(255,255,255,255));
+        comboBox.setLayout(new GridLayout(1, 4, 20, 0));
+        comboBox.setBackground(new Color(217, 217, 217, 255));
         mainFrame.setLayout(null);
-        mainFrame.getContentPane().setBackground(new Color(217, 217, 217, 255));
+        mainFrame.getContentPane().setBackground(new Color(252, 240, 202, 255));
 
         mainFrame.setResizable(false);
         mainFrame.setFocusable(true);
         mainFrame.requestFocusInWindow();
-//        mainFrame.addKeyListener(new KeyHandler(this));
+
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         gd.setFullScreenWindow(mainFrame);
-        for (int i = 0 ; i < targetImgArray.length; i++){
-            comboBox.add(targetImgArray[i]);
+        nowStage = stage1;
+        kh = new KeyHandler(nowStage, this);
+        mainFrame.addKeyListener(kh);
+        for (YanKeys yanKeys : nowStage.getYanKeysArray()) {
+            comboBox.add(yanKeys.getImg());
         }
-        mainFrame.add(timer); mainFrame.add(timerText); mainFrame.add(comboBox);
+        mainFrame.add(comboBox);
+        mainFrame.add(timer);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setVisible(true);
 
         SwingUtilities.invokeLater(() -> {
-            timerW = mainFrame.getWidth() - 480;
-            timer.setSize(timerW, timerH);
-            comboBox.setSize(mainFrame.getWidth() - 480, 200);
+            comboBox.setSize(mainFrame.getWidth() - 480, 250);
+            timer.setSize(mainFrame.getWidth() - 480, 7);
+            mainFrame.revalidate();
+            mainFrame.repaint();
+            mainFrame.setVisible(true);
             startTimer();
         });
     }
-    public int[] getTargetArray(){return targetArray;}
-    public JPanel[] getTargetImgArray(){return targetImgArray;}
+    public boolean isFinished() {
+        return finished;
+    }
     public void startTimer(){
-        int duration = 5000;
+        int start = timer.getWidth();
+        int timerH = timer.getHeight();
+        int end = 0;
+        int duration = 30000;
         int fps = 60;
         int delay = 1000 / fps;
         int steps = duration / delay;
-        int start = timer.getWidth();
-        int end = 0;
 
         Timer timer1 = new Timer(delay, null);
-
         timer1.addActionListener(new ActionListener() {
-            int step = 0;
+            double step = 0;
             @Override
             public void actionPerformed(ActionEvent e) {
-                step++;
+                step += timerStep;
                 double t = (double) step / steps;
-                timerW = (int) (start + (end - start) * t);
-                timer.setSize(timerW, timerH);
-                timerText.setText(String.valueOf(step * delay / 1000));
+
+                timer.setSize((int) (start + (end - start) * t), timerH);
                 timer.revalidate();
                 timer.repaint();
-                if (step >= steps){
-                    timerW = end;
-                    timer.setSize(timerW, timerH);
+
+                if(step >= steps){
+                    timer.setSize(end , timerH);
                     timer.revalidate();
                     timer.repaint();
-                    timerText.setText(String.valueOf(step * delay / 1000));
+                    timeout = true;
                     timer1.stop();
                 }
+                if(finished){
+                    timer1.stop();
+                    return;
+                }
             }
-
         });
+        timer1.setInitialDelay(500);
         timer1.start();
         mainFrame.repaint();
     }
-
+    public boolean isTimeOut(){
+        return timeout;
+    }
+    public void increaseTimerStep(){
+        timerStep++;
+    }
+    @Override
+    public void run(){
+        Stage previousStage = stage1;
+        while(!finished && !timeout){
+            if(stage1.isFinished()){
+                if(stage2.isFinished()){
+                    if(stage3.isFinished()){
+                        if(stage4.isFinished()){
+                            finished = !finished;
+                        } else{
+                            nowStage = stage4;
+                        }
+                    }else{
+                        nowStage = stage3;
+                    }
+                } else{
+                    nowStage = stage2;
+                }
+            }
+            if(nowStage != previousStage && !finished){
+                kh.setNewStage(nowStage);
+                for (YanKeys yanKeys : nowStage.getYanKeysArray()) {
+                    yanKeys.setAsUnactive();
+                    comboBox.add(yanKeys.getImg());
+                }
+                previousStage = nowStage;
+            }
+            if(finished){
+                System.out.println("You Win!!!");
+            }
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(finished){
+            System.out.println("You Win!!!");
+        }
+        else {
+            System.out.println("You Losed!!");
+        }
+    }
 }
