@@ -75,6 +75,7 @@ public class SceneQTE_Choke extends Scene {
             long passTime = System.currentTimeMillis() - startTime;
             if (passTime > timeLimit) {
                 isQteActive = false;
+                sceneManager.getGamePanel().triggerDeath();
                 System.out.println("ระบบ : แพ้ โดนบีบคอตายไปดิ");
                 AudioManager.stopMusic();
                 AudioManager.playSFX("src/res/sound/LosePLork.wav", 0.0f);
@@ -90,6 +91,26 @@ public class SceneQTE_Choke extends Scene {
         if (buttonScale > 100) {
             buttonScale -= 5;
         }
+
+        if(isWinningFade) {
+
+            fadeWhiteAmount += (fadeWhiteAmount * 0.1) + 0.1;
+            if (fadeWhiteAmount >= 1) {
+                fadeWhiteAmount = 1;
+            }
+
+            if (fadeAlpha < 255) {
+                fadeAlpha += 5;
+
+                if (fadeAlpha >= 255) {
+                    fadeAlpha = 255;
+
+                    sceneManager.startTransition("scene_6", player, 900, 550);
+                }
+            }
+
+        }
+
         if (isWinningFade && fadeAlpha < 255) {
             fadeAlpha += 5;
             if (fadeAlpha > 255) fadeAlpha = 255;

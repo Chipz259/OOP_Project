@@ -24,6 +24,7 @@ public class MainGameFrame extends JFrame {
     private CutscenePanel cutscenePanel;
     private GamePanel gamePanel;
     private FadeTransition fadeTransition;
+    private GameOverPanel gameOverPanel;
 
     public MainGameFrame() {
         this.setUndecorated(true);
@@ -33,6 +34,10 @@ public class MainGameFrame extends JFrame {
         heightSystem = (int) screenSize.getHeight();
         settingPanel = new SettingPanel(this);
         settingPanel.setVisible(false);
+
+        gameOverPanel = new GameOverPanel(this);
+        gameOverPanel.setVisible(false);
+        gameOverPanel.setBounds(0, 0, widthSystem, heightSystem);
 
         fadeTransition = new FadeTransition();
         fadeTransition.setBounds(0,0, widthSystem, heightSystem);
@@ -52,6 +57,7 @@ public class MainGameFrame extends JFrame {
 
         layeredPane.add(mainCardPanel, JLayeredPane.DEFAULT_LAYER);      // ชั้นหลังสุด
         layeredPane.add(settingPanel, JLayeredPane.PALETTE_LAYER);      // ชั้นเมนู Setting (ต้องอยู่เหนือเมนูหลัก)
+        layeredPane.add(gameOverPanel, JLayeredPane.MODAL_LAYER);
         layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER);       // ชั้นหน้าสุดสำหรับฉาก Fade
 
         cardLayout.show(mainCardPanel, "MENU");
@@ -136,6 +142,9 @@ public class MainGameFrame extends JFrame {
         buttonStart.addActionListener(action);
         buttonSetting.addActionListener(action);
         buttonExit.addActionListener(action);
+        buttonStart.addMouseListener(action);
+        buttonSetting.addMouseListener(action);
+        buttonExit.addMouseListener(action);
 
         setTitle("Phawang");
     }
@@ -154,11 +163,55 @@ public class MainGameFrame extends JFrame {
         btn.setAlignmentX(Component.LEFT_ALIGNMENT); // บังคับปุ่มเกาะเส้นกึ่งกลาง
     }
 
-    public void toggleSetting(boolean show) {
-        settingPanel.setVisible(show);
+    public void toggleSetting(boolean show, boolean isInGame) {
+        if (show) {
+            // ก่อนจะโชว์ ให้สั่งตั้งค่าโหมดปุ่มก่อน
+            settingPanel.setInGameMode(isInGame);
+        }
         if (!show) {
-            // เมื่อปิดหน้า Setting ต้องคืนโฟกัสให้ GamePanel ทันทีเพื่อให้เดินได้
             gamePanel.requestFocusInWindow();
+        }
+
+        settingPanel.setVisible(show);
+        layeredPane.revalidate();
+        layeredPane.repaint();
+    }
+    // 1. เมื่อกดปุ่ม Setting จาก "หน้าเมนู"
+    public void openSettingFromMenu() {
+        // ส่ง false เข้าไปเพื่อบอกว่าไม่ได้อยู่ภายในเกม (จะโชว์แค่ปุ่ม Back)
+        toggleSetting(true, false);
+    }
+
+    // 2. เมื่อกดปุ่ม Esc จาก "ภายในเกม"
+    public void openSettingFromGame() {
+        // ส่ง true เข้าไปเพื่อบอกว่าอยู่ภายในเกม (จะโชว์ Back + Return คู่กัน)
+        toggleSetting(true, true);
+    }
+
+    // 3. อย่าลืมสร้างเมธอดกลางสำหรับกลับหน้าเมนูด้วยจ้ะ
+    public void returnToMainMenu() {
+        // 1. หยุดการทำงานของ GamePanel
+        gamePanel.stopGameThread();
+
+        // 2. สลับ CardLayout กลับไปที่หน้า MENU
+        cardLayout.show(mainCardPanel, "MENU");
+
+        // 3. เปลี่ยนเพลงประกอบกลับเป็นเพลงหน้าเมนู
+        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav", 0.0f);
+
+        // 4. บังคับให้หน้าเมนูรับโฟกัส (เพื่อให้กดปุ่มเริ่มเกมใหม่ได้)
+        imageBg.requestFocusInWindow();
+    }
+
+    public void showGameOver(boolean show) {
+        if (show) {
+            gamePanel.stopGameThread(); // หยุดลูปเกม
+            // คุณอาจจะสั่งซ่อนปุ่ม Setting ของ GamePanel ที่นี่ด้วย
+        }
+        gameOverPanel.setVisible(show);
+
+        if (show) {
+            gameOverPanel.requestFocusInWindow();
         }
         layeredPane.revalidate();
         layeredPane.repaint();
@@ -190,7 +243,6 @@ public class MainGameFrame extends JFrame {
             gamePanel.requestFocusInWindow();
         });
     }
-
 
     public static void main(String args[]) {
         System.setProperty("sun.java2d.uiScale", "1.0");

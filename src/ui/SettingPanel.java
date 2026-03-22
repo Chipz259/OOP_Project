@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class SettingPanel extends JPanel {
-    private JButton buttonBack;
+    private JButton buttonBack, buttonReturn;
     private JLabel settingTitle, bgmLabel, sfxLabel;
     private GridBagConstraints gbc;
     private JSlider slider, bgmSlider, sfxSlider;
@@ -84,11 +84,25 @@ public class SettingPanel extends JPanel {
         buttonBack.setOpaque(false); // ตั้งค่าความโปร่งใส
 
         buttonBack.setText("");
-        buttonBack.addActionListener(e -> parent.toggleSetting(false));
+        buttonBack.addActionListener(e -> parent.toggleSetting(false, false));
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; // อยู่แถวล่างสุด ยึด 2 คอลัมน์
         gbc.insets = new Insets(80, 20, 0, 20);
         gbc.anchor = GridBagConstraints.SOUTH;
-        add(buttonBack, gbc);
+//        add(buttonBack, gbc);
+
+        // Button Return
+        buttonReturn = new JButton("Return To Menu");
+        buttonReturn.addActionListener(e -> {
+            parent.toggleSetting(false, false); // ปิดหน้า Setting ก่อน
+            parent.returnToMainMenu();  // เรียกเมธอดกลางเพื่อกลับเมนู (ต้องไปสร้างใน Frame)
+        });
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0)); // เว้นระยะห่าง 30
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(buttonBack);
+        buttonPanel.add(buttonReturn);
+        add(buttonPanel, gbc);
+
 
         blocker = new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) { e.consume(); }
@@ -178,5 +192,19 @@ public class SettingPanel extends JPanel {
             g2.drawImage(bgImage, x, y, this);
         }
         g2.dispose();
+    }
+
+    public void setInGameMode(boolean isInGame) {
+        if (isInGame) {
+            buttonBack.setVisible(true);
+            buttonReturn.setVisible(true); // แสดงทั้งคู่
+        } else {
+            buttonBack.setVisible(true);   // แสดงแค่ Back
+            buttonReturn.setVisible(false); // ซ่อน Return
+        }
+
+        // สั่งให้ Panel วาดใหม่เพื่อให้ Layout จัดตำแหน่งตรงกลางให้ถูกต้อง
+        this.revalidate();
+        this.repaint();
     }
 }

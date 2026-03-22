@@ -1,16 +1,16 @@
 package entities;
 
 import scenes.SceneQTE_Choke;
-import system.FadeTransition;
 import scenes.SceneManager;
+import system.FadeTransition;
 import system.KeyHandler;
+import system.MouseHandler;
 import ui.MainGameFrame;
 import ui.SettingPanel;
+import ui.DiaryUi;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.InputStream;
 // import java.awt.event.KeyAdapter;
 
@@ -18,31 +18,36 @@ public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
     private boolean isRunning;
     // private int fps;
-    private Player mainPlayer;
-    private SceneManager sceneManager;
+    public Player mainPlayer;
+    public SceneManager sceneManager;
     private Inventory inventory;
     public static Font customFont;
     // private MouseAdapter mouseHandler;
-    // private KeyAdapter keyHandler;
+    private KeyHandler keyH;
     private SettingPanel settingPanel;
     private JLayeredPane layeredPane;
     private MainGameFrame parentFrame;
     private JButton btnSetting;
     private ImageIcon settingIcon, settingHoverIcon;
 
-    KeyHandler keyH = new KeyHandler();
-    private GameObject targetItem = null;
-    private FadeTransition fadeTransition;
+    public GameObject targetItem = null;
+    public FadeTransition fadeTransition;
 
     public GamePanel(MainGameFrame parentFrame, FadeTransition fadeTransition) {
         this.parentFrame = parentFrame;
         this.fadeTransition = fadeTransition;
+
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
-        this.addKeyListener(keyH);
-        this.setFocusable(true);
         this.setLayout(null);
+
+        keyH = new KeyHandler();
+        this.addKeyListener(keyH);
+
+        MouseHandler mouseH = new MouseHandler(this);
+        this.addMouseListener(mouseH);
+        this.addMouseMotionListener(mouseH);
 
         settingIcon = new ImageIcon(new ImageIcon("src/res/GamePanelNormalBtnSetting.png").getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
         settingHoverIcon = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
@@ -53,6 +58,12 @@ public class GamePanel extends JPanel implements Runnable {
         btnSetting.setFocusPainted(false);
         btnSetting.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnSetting.setBounds(1780, 20, 120, 120);
+        btnSetting.addActionListener(e -> {
+            stopPlayerMovement();
+            parentFrame.toggleSetting(true, true); // เปิดโหมดในเกม (มีปุ่ม Return)
+        });
+        this.add(btnSetting);
+        btnSetting.setFocusable(false);
 
         loadCustomFont();
         inventory = new Inventory("slots.png");
@@ -60,87 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
-
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (fadeTransition != null && fadeTransition.isFading()) {
-                    return;
-                }
-
-                if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()) {
-                    sceneManager.getOverlay().handleMouseClick();
-                    return;
-                }
-
-                if (mainPlayer != null && mainPlayer.getInventory() != null) {
-                    boolean clickedInventory = mainPlayer.getInventory().handleClick(e.getX(), e.getY(), getWidth(), getHeight());
-                    if (clickedInventory) {
-                        return; // คลิกโดน = หยุดการทำงาน
-                    }
-                }
-
-                if (sceneManager.getCurrentScene() != null) {
-                    for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
-
-                        if (obj.getHitbox().contains(e.getPoint()) && obj.isVisible() && obj instanceof Interactable
-                                && ((Interactable) obj).isInteractable()) {
-
-                            int playerCenter = mainPlayer.getX() + (mainPlayer.getWidth() / 2);
-                            int objCenter = obj.getX() + (obj.getWidth() / 2);
-
-                            int distance = Math.abs(playerCenter - objCenter);
-
-                            if (distance < 250) {
-                                ((Interactable) obj).onInteract(mainPlayer);
-                                targetItem = null;
-                                break;
-                            } else {
-                                // ถ้าคลิกไกลเกินจะแสดงการแจ้งเตือน
-                                System.out.println("ระบบ: กำลังเดินไปเก็บ " + obj);
-                                targetItem = obj;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        this.addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseMoved(MouseEvent e) {
-                boolean isHoveringAnyItem = false;
-
-                if (sceneManager != null && sceneManager.getCurrentScene() != null) {
-
-                    for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
-
-                        if (obj instanceof Item) {
-                            Item item = (Item) obj;
-
-                            if (item.getHitbox().contains(e.getPoint()) && item.isInteractable()) {
-                                item.setHovered(true);
-                                isHoveringAnyItem = true;
-                            } else {
-                                item.setHovered(false);
-                            }
-                        }
-                    }
-                }
-
-                if (isHoveringAnyItem) {
-                    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                } else {
-                    setCursor(Cursor.getDefaultCursor());
-                }
-            }
-        });
-
-        btnSetting.addActionListener(e -> {
-            stopPlayerMovement();
-            parentFrame.toggleSetting(true);
-        });
-        this.add(btnSetting);
+        sceneManager.setGamePanel(this);
     }
 
     public void loadCustomFont(){
@@ -159,6 +90,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         isRunning = true;
         gameThread.start();
+        this.requestFocusInWindow();
     }
 
     public void stopGameThread() {
@@ -188,18 +120,13 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         sceneManager.update();
 
-        // ดักถ้าเข้า Sceen QTE ให้ซ่อนปุ่ม Setting นะน้องนะ
-        if (sceneManager.getCurrentScene() instanceof SceneQTE_Choke) {
-            if (btnSetting.isVisible()) {
-                btnSetting.setVisible(false);
-            }
+        boolean isQTE = sceneManager.getCurrentScene() instanceof SceneQTE_Choke;
+        boolean isTalking = sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive();
+        boolean isFading = fadeTransition != null && fadeTransition.isFading();
+        if (isQTE || isTalking || isFading) {
+            if (btnSetting.isVisible()) btnSetting.setVisible(false);
         } else {
-            // ถ้าไม่ใช่ฉาก QTE และหน้าจอไม่ได้กำลัง Fade อยู่ ให้แสดงปุ่มตามปกติ
-            if (fadeTransition != null && !fadeTransition.isFading()) {
-                if (!btnSetting.isVisible()) {
-                    btnSetting.setVisible(true);
-                }
-            }
+            if (!btnSetting.isVisible()) btnSetting.setVisible(true);
         }
 
         if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()){
@@ -214,7 +141,7 @@ public class GamePanel extends JPanel implements Runnable {
                 mainPlayer.update();
             }
 
-            int speed = 8;
+            int speed = 100;
             boolean isWalking = false;
             boolean isFacingLeft = false;
 
@@ -336,6 +263,10 @@ public class GamePanel extends JPanel implements Runnable {
                 system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
             }
         }
+        DiaryUi.getInstance().draw(g2d, getWidth(), getHeight());
+    }
 
+    public void triggerDeath() {
+        parentFrame.showGameOver(true);
     }
 }
