@@ -206,7 +206,6 @@ public class MainGameFrame extends JFrame {
     public void showGameOver(boolean show) {
         if (show) {
             gamePanel.stopGameThread(); // หยุดลูปเกม
-            // คุณอาจจะสั่งซ่อนปุ่ม Setting ของ GamePanel ที่นี่ด้วย
         }
         gameOverPanel.setVisible(show);
 

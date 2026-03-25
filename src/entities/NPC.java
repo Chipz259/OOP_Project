@@ -84,9 +84,6 @@ public class NPC extends GameObject implements Interactable{
     @Override
     public void onInteract(Player p) {
         if (overlay != null && dialogueScript != null && !overlay.isActive()) {
-            int playerCenter = p.getX() + (p.getWidth() / 2);
-            int npcCenter = this.getX() + (this.getWidth() / 2);
-            this.isFacingLeft = (playerCenter < npcCenter);
 
             overlay.setCharacterTransform(dLeftX, dLeftY, dLeftW, dLeftH, dRightX, dRightY, dRightW, dRightH);
 
