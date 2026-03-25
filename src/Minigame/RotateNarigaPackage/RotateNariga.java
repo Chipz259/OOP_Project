@@ -14,11 +14,11 @@ public class RotateNariga {
         increaseH = new JButton("+ H");
         increaseM = new JButton("+ M");
         bg = new ImagePanel("Image/Nariga.png");
-        kemSmall = new KemImagePanel("Image/kemSmall.png", 6,0);
-        kemBig = new KemImagePanel("Image/kemBig.png", 30, 90);
+        kemSmall = new KemImagePanel("Image/kemSmall.png", 30,0);
+        kemBig = new KemImagePanel("Image/kemBig.png", 6, 90);
 
-        increaseH.addMouseListener(new RotateNarigaHandler(this, 30, kemBig));
-        increaseM.addMouseListener(new RotateNarigaHandler(this,6, kemSmall));
+        increaseH.addMouseListener(new RotateNarigaHandler(this, 30, kemSmall));
+        increaseM.addMouseListener(new RotateNarigaHandler(this,6, kemBig));
 
         btPanel.setLayout(new GridLayout(1,2,10,10));
         bg.setLayout(null);
