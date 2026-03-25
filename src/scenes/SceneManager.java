@@ -1,14 +1,8 @@
 package scenes;
 
-import entities.Item;
-import entities.NPC;
-import entities.Player;
-import entities.GamePanel;
-import system.AudioManager;
-import system.FadeTransition;
-import system.DialogueLine;
-import ui.DialogueOverlay;
-import ui.SceneTitleOverlay;
+import entities.*;
+import system.*;
+import ui.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -89,14 +83,14 @@ public class SceneManager {
                 imgRightArrow = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
                 imgLeftHover = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
                 imgRightHover = ImageIO.read(getClass().getResource("/res/Right_Hover.png"));
-                URL boxUrl = getClass().getResource("/res/Rectangle251.png");
+                URL boxUrl = getClass().getResource("/res/NPC/Textbox.png");
                 if (boxUrl != null) imgDialogBox = ImageIO.read(boxUrl);
             } catch (IOException e) {
                 System.err.println("โหลดรูปภาพไม่สำเร็จ");
             }
 
-            overlay = new DialogueOverlay(GamePanel.customFont, imgDialogBox);
-            titleOverlay = new SceneTitleOverlay(GamePanel.customFont);
+            overlay = new DialogueOverlay(FontManager.pspimpdeedIIIFont, imgDialogBox);
+            titleOverlay = new SceneTitleOverlay(FontManager.pspimpdeedIIIFont);
 
             // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
             for (int i = 1; i <= 11; i++) {
