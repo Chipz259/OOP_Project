@@ -7,6 +7,7 @@ import system.KeyHandler;
 import system.MouseHandler;
 import ui.MainGameFrame;
 import ui.SettingPanel;
+import ui.DiaryUi;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -35,6 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
     public GamePanel(MainGameFrame parentFrame, FadeTransition fadeTransition) {
         this.parentFrame = parentFrame;
         this.fadeTransition = fadeTransition;
+
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
@@ -69,6 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
+        sceneManager.setGamePanel(this);
     }
 
     public void loadCustomFont(){
@@ -138,7 +141,7 @@ public class GamePanel extends JPanel implements Runnable {
                 mainPlayer.update();
             }
 
-            int speed = 8;
+            int speed = 100;
             boolean isWalking = false;
             boolean isFacingLeft = false;
 
@@ -206,7 +209,6 @@ public class GamePanel extends JPanel implements Runnable {
                             obj.setVisible(true);
                         } else {
                             obj.setVisible(false);
-                            ((scenes.Door) obj).setIsHovered(false);
                         }
                     }
                 }
@@ -221,7 +223,6 @@ public class GamePanel extends JPanel implements Runnable {
                 for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
                     if (obj instanceof scenes.Door) {
                         obj.setVisible(false);
-                        ((scenes.Door) obj).setIsHovered(false);
                     }
                 }
             }
@@ -242,8 +243,8 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        if (sceneManager != null && sceneManager.getCurrentScene() != null) {
-            sceneManager.getCurrentScene().render(g2d);
+        if (sceneManager != null) {
+            sceneManager.render(g2d);
         }
 
         boolean isTalk = sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive();
@@ -262,23 +263,10 @@ public class GamePanel extends JPanel implements Runnable {
                 system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
             }
         }
+        DiaryUi.getInstance().draw(g2d, getWidth(), getHeight());
+    }
 
-        if (sceneManager != null && sceneManager.getCurrentScene() != null) {
-            for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
-                if (obj instanceof scenes.Door) {
-                    obj.render(g2d);
-                }
-            }
-        }
-
-        if (sceneManager != null) {
-            if (sceneManager.getTitleOverlay() != null) {
-                sceneManager.getTitleOverlay().render(g2d, getWidth());
-            }
-            if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()) {
-                sceneManager.getOverlay().render(g2d, getWidth(), getHeight());
-            }
-        }
-
+    public void triggerDeath() {
+        parentFrame.showGameOver(true);
     }
 }

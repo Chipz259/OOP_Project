@@ -26,6 +26,7 @@ public class SceneManager {
     private Scene currentScene;
     private DialogueOverlay overlay;
     private SceneTitleOverlay titleOverlay;
+    private GamePanel gamePanel;
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -159,16 +160,16 @@ public class SceneManager {
             }
         };
         //scene_6
-        Item Locker = new Item("locker", 1246, 700, 100, 100, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "candleStroke.png") {
+        Item Locker = new Item("locker", 1248, 550, 356, 303, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
               //this.setVisible(false);
             }
         };
-        Item Chest = new Item("chest", 1246, 500, 100, 100, "กล่อง", "กล่องพ่อ", "chest.png", "candleStroke.png") {
+        Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
-                //this.setVisible(false);
+                ui.DiaryUi.getInstance().openDiary();
             }
         };
 
@@ -336,6 +337,14 @@ public class SceneManager {
         else {
             System.out.println("น้องโหลดเพลงไม่ขึ้นจ้าาา");
         }
+    }
+
+    public void setGamePanel(GamePanel gp) {
+        this.gamePanel = gp;
+    }
+
+    public GamePanel getGamePanel() {
+        return this.gamePanel;
     }
 }
 

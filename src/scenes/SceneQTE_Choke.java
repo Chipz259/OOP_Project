@@ -75,6 +75,7 @@ public class SceneQTE_Choke extends Scene {
             long passTime = System.currentTimeMillis() - startTime;
             if (passTime > timeLimit) {
                 isQteActive = false;
+                sceneManager.getGamePanel().triggerDeath();
                 System.out.println("ระบบ : แพ้ โดนบีบคอตายไปดิ");
                 AudioManager.stopMusic();
                 AudioManager.playSFX("src/res/sound/LosePLork.wav", 0.0f);
