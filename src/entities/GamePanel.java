@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
             System.err.println("ระบบ: โหลดฟอนต์ไม่ได้");
             e.printStackTrace();
             customFont = new Font("Arial", Font.PLAIN, 24);
-        }   
+        }
     }
 
     public void startGameThread() {

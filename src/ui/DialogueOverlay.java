@@ -73,7 +73,7 @@ public class DialogueOverlay {
             g2d.drawImage(currenLine.rightImage, rightX, buttonRightY, rightW, rightH, null);
         }
 
-        int boxWidth = 1000, boxHeight = 300, boxX = (screenWidth - boxWidth) / 2, boxY = screenHeight - boxHeight - 20;
+        int boxWidth = 1100, boxHeight = 350, boxX = (screenWidth - boxWidth) / 2, boxY = screenHeight - boxHeight - 20;
 
         if (dialogBoxImage != null) {
             g2d.drawImage(dialogBoxImage, boxX, boxY, boxWidth, boxHeight, null);
@@ -86,12 +86,12 @@ public class DialogueOverlay {
             g2d.drawRoundRect(boxX, boxY, boxWidth, boxHeight, 30, 30);
         }
 
-        g2d.setFont(customFont.deriveFont(Font.BOLD, 55f));
+        g2d.setFont(customFont.deriveFont(Font.BOLD, 35f));
         g2d.setColor(Color.WHITE);
         //ชื่อตัวละคร
-        g2d.drawString(currenLine.speackerName, boxX + 60, boxY + 80);
+        g2d.drawString(currenLine.speackerName, boxX + 75, boxY + 74);
         //ตัวหนังสือบทพูด
-        textAnimator.draw(g2d, customFont, boxX + 60, boxY + 160, screenWidth);
+        textAnimator.draw(g2d, customFont, boxX + 75, boxY + 160, screenWidth);
     }
 
     public boolean isActive() {

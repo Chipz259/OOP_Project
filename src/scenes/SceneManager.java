@@ -1,14 +1,8 @@
 package scenes;
 
-import entities.Item;
-import entities.NPC;
-import entities.Player;
-import entities.GamePanel;
-import system.AudioManager;
-import system.FadeTransition;
-import system.DialogueLine;
-import ui.DialogueOverlay;
-import ui.SceneTitleOverlay;
+import entities.*;
+import system.*;
+import ui.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -89,14 +83,14 @@ public class SceneManager {
                 imgRightArrow = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
                 imgLeftHover = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
                 imgRightHover = ImageIO.read(getClass().getResource("/res/Right_Hover.png"));
-                URL boxUrl = getClass().getResource("/res/Rectangle251.png");
+                URL boxUrl = getClass().getResource("/res/NPC/Textbox.png");
                 if (boxUrl != null) imgDialogBox = ImageIO.read(boxUrl);
             } catch (IOException e) {
                 System.err.println("โหลดรูปภาพไม่สำเร็จ");
             }
 
-            overlay = new DialogueOverlay(GamePanel.customFont, imgDialogBox);
-            titleOverlay = new SceneTitleOverlay(GamePanel.customFont);
+            overlay = new DialogueOverlay(FontManager.pspimpdeedIIIFont, imgDialogBox);
+            titleOverlay = new SceneTitleOverlay(FontManager.pspimpdeedIIIFont);
 
             // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
             for (int i = 1; i <= 11; i++) {
@@ -173,30 +167,75 @@ public class SceneManager {
             }
         };
 
-            BufferedImage girlIdle = null, girlTalk = null, mainIdle = null, mainTalk = null;
+            BufferedImage girlIdle = null, girlTalk = null, mainIdle = null, mainTalk = null, evilIdle = null, evilTalk = null, npc3Idle = null, npc3Talk = null, npc2Idle = null, npc2Talk = null;
         try {
             URL urlGirlIdle = getClass().getResource("/res/NPC/NPC_ girl.png");
             URL urlGirlTalk = getClass().getResource("/res/NPC/NPC_ girl_talk.png");
+
             URL urlMainIdle = getClass().getResource("/res/NPC/Main_character.png");
             URL urlMainTalk = getClass().getResource("/res/NPC/Main_character_talk.png");
+
+            URL urlEvilIdle = getClass().getResource("/res/NPC/Evil_charactor.png");
+            URL urlEvilTalk = getClass().getResource("/res/NPC/Evil_talk.png");
+
+            URL urlNpc3Idle = getClass().getResource("/res/NPC/NPC3_ charactor.png");
+            URL urlNpc3Talk = getClass().getResource("/res/NPC/NPC3_talk.png");
+
+            URL urlNpc2Idle = getClass().getResource("/res/NPC/NPC2_character.png");
+            URL urlNpc2Talk = getClass().getResource("/res/NPC/NPC2_talk.png");
 
             if (urlGirlIdle != null) girlIdle = ImageIO.read(urlGirlIdle);
             if (urlGirlTalk != null) girlTalk = ImageIO.read(urlGirlTalk);
             if (urlMainIdle != null) mainIdle = ImageIO.read(urlMainIdle);
             if (urlMainTalk != null) mainTalk = ImageIO.read(urlMainTalk);
+            if (urlEvilIdle != null) evilIdle = ImageIO.read(urlEvilIdle);
+            if (urlEvilTalk != null) evilTalk = ImageIO.read(urlEvilTalk);
+            if (urlNpc3Idle != null) npc3Idle = ImageIO.read(urlNpc3Idle);
+            if (urlNpc3Talk != null) npc3Talk = ImageIO.read(urlNpc3Talk);
+            if (urlNpc2Idle != null) npc2Idle = ImageIO.read(urlNpc2Idle);
+            if (urlNpc2Talk != null) npc2Talk = ImageIO.read(urlNpc2Talk);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        NPC npcGirl = new NPC("Girl", 1300, 550, 150, 313, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
+        NPC npcGirl = new NPC("Girl", 580, 530, 150, 313, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
+        NPC evil = new NPC("Evil", 150, 535, 160, 323, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
+        NPC npc3 = new NPC("Npc3", 1350, 530, 150, 313, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
+        NPC npc2 = new NPC("Npc2", 1500, 535, 150, 313, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
 
         DialogueLine[] npcGirlScript = {
-            new DialogueLine("น้ำตาล", "พ่อตายแล้วน้าฮือๆๆๆ", girlTalk, mainIdle),
-            new DialogueLine("พระเอก", "อุก้ะๆๆๆๆๆๆ", girlIdle, mainTalk),
-            new DialogueLine("น้ำตาล", "ไปงานศพด้วยจ้าเพื่อน", girlTalk, mainIdle)
+                new DialogueLine("เด็กสาวปริศนา", "พ่อตายแล้วน้าฮือๆๆๆ", girlTalk, mainIdle),
+                new DialogueLine("พระเอก", "อุก้ะๆๆๆๆๆๆ", girlIdle, mainTalk),
+                new DialogueLine("เด็กสาวปริศนา", "ไปงานศพด้วยจ้าเพื่อน", girlTalk, mainIdle)
         };
         npcGirl.setVNDialogue(npcGirlScript, overlay);
         npcGirl.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+
+        DialogueLine[] evilScript = {
+                new DialogueLine("พระเอก", "สวัสดีฮ้าฟฟู่วววว", evilIdle, mainTalk),
+                new DialogueLine("ผู้ใหญ่บ้าน", "ฮ่าๆๆๆๆๆๆๆ", evilTalk, mainIdle),
+                new DialogueLine("พระเอก", "เป็นอะไร๊", evilIdle, mainTalk),
+                new DialogueLine("ผู้ใหญ่บ้าน", "555555555", evilTalk, mainIdle),
+                new DialogueLine("พระเอก", "เป็นบ้าอะไร งง", evilIdle, mainIdle)
+        };
+        evil.setVNDialogue(evilScript, overlay);
+        evil.setDialogTransform(50, 0, 900, 941, 1200, 0, 706, 941);
+
+        DialogueLine[] npc3Script = {
+                new DialogueLine("คุณตา", "เห้ออออออ", npc3Talk, npc2Idle),
+                new DialogueLine("คุณยาย", "ห๊าาาาาา", npc3Idle, npc2Talk),
+                new DialogueLine("คุณตา", "อุอิอุอิอิ๊", npc3Talk, npc2Idle)
+        };
+        npc3.setVNDialogue(npc3Script, overlay);
+        npc3.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+
+        DialogueLine[] npc2Script = {
+                new DialogueLine("คุณตา", "เห้ออออออ", npc3Talk, npc2Idle),
+                new DialogueLine("คุณยาย", "ห๊าาาาาา", npc3Idle, npc2Talk),
+                new DialogueLine("คุณตา", "อุอิอุอิอิ๊", npc3Talk, npc2Idle)
+        };
+        npc2.setVNDialogue(npc2Script, overlay);
+        npc2.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
 
         Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
@@ -205,6 +244,9 @@ public class SceneManager {
         if (scene_1 != null) {
             scene_1.addGameObject(Daddy);
             scene_1.addGameObject(npcGirl);
+            scene_1.addGameObject(evil);
+            scene_1.addGameObject(npc3);
+            scene_1.addGameObject(npc2);
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Candle);
