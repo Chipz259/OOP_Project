@@ -1,9 +1,9 @@
 package Minigame.JigsawPackage;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 public class JigsawPartHandler extends MouseAdapter {
@@ -26,6 +26,13 @@ public class JigsawPartHandler extends MouseAdapter {
             if (alpha > 0){
                 int newX = panel.getX() + e.getX() - offset.x;
                 int newY = panel.getY() + e.getY() - offset.y;
+                Container parent = panel.getParent();
+                if (parent != null) {
+                    int maxX = parent.getWidth() - panel.getWidth();
+                    int maxY = parent.getHeight() - panel.getHeight();
+                    newX = Math.max(0, Math.min(newX, maxX));
+                    newY = Math.max(0, Math.min(newY, maxY));
+                }
                 panel.setLocation(newX, newY );
                 panel.getParent().repaint();
                 ((JigsawParts) panel).setReachTartget(true);

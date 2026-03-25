@@ -12,9 +12,9 @@ public class SettingPanel extends JPanel {
     private GridBagConstraints gbc;
     private JSlider slider, bgmSlider, sfxSlider;
     private Graphics2D g2d, g2;
-    private Image trackRed, trackGray, scorllingImage, bgImage, titleImg, bgmTextImg, sfxTextImg, backNormalBtnImg, backHoverBtnImg;
+    private Image trackRed, trackGray, scorllingImage, bgImage, titleImg, bgmTextImg, sfxTextImg, backNormalBtnImg, backHoverBtnImg, returnNormalBtnImg, returnHoverBtnImg;
     private BasicSliderUI customUI;
-    private ImageIcon normalIcon, hoverIcon;
+    private ImageIcon normalIconBack, hoverIconBack, normalIconReturn, hoverIconReturn;
     private MouseAdapter blocker;
 
     public SettingPanel(MainGameFrame parent) {
@@ -32,6 +32,8 @@ public class SettingPanel extends JPanel {
         sfxTextImg = new ImageIcon("src/res/SettingSFXText.png").getImage();
         backNormalBtnImg = new ImageIcon("src/res/SettingBtnBack01.png").getImage();
         backHoverBtnImg = new ImageIcon("src/res/SettingBtnBack02.png").getImage();
+        returnNormalBtnImg = new ImageIcon("src/res/SettingBtnReturn01.png").getImage();
+        returnHoverBtnImg = new ImageIcon("src/res/SettingBtnReturn02.png").getImage();
 
 
         setBackground(new Color(232, 94, 94, 200));
@@ -45,7 +47,7 @@ public class SettingPanel extends JPanel {
         add(settingTitle, gbc);
 
         // Adjust BGM
-        bgmLabel.setIcon(new ImageIcon(bgmTextImg.getScaledInstance(300, 40, Image.SCALE_SMOOTH)));
+        bgmLabel.setIcon(new ImageIcon(bgmTextImg.getScaledInstance(303, 62, Image.SCALE_SMOOTH)));
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1; // คอลัมน์ซ้าย แถวที่ 2
         gbc.anchor = GridBagConstraints.EAST; // ชิดขวามาหาหลอด
         add(bgmLabel, gbc);
@@ -60,7 +62,7 @@ public class SettingPanel extends JPanel {
         add(bgmSlider, gbc);
 
         // Adjust SFX
-        sfxLabel.setIcon(new ImageIcon(sfxTextImg.getScaledInstance(300, 40, Image.SCALE_SMOOTH)));
+        sfxLabel.setIcon(new ImageIcon(sfxTextImg.getScaledInstance(295, 62, Image.SCALE_SMOOTH)));
         gbc.gridx = 0; gbc.gridy = 2; // คอลัมน์ซ้าย แถวที่ 3
         gbc.anchor = GridBagConstraints.EAST;
         add(sfxLabel, gbc);
@@ -74,10 +76,10 @@ public class SettingPanel extends JPanel {
         add(sfxSlider, gbc);
 
         // Button Back
-        normalIcon = new ImageIcon(backNormalBtnImg.getScaledInstance(130, 60, Image.SCALE_SMOOTH));
-        hoverIcon = new ImageIcon(backHoverBtnImg.getScaledInstance(130, 60, Image.SCALE_SMOOTH));
-        buttonBack = new JButton(normalIcon);
-        buttonBack.setRolloverIcon(hoverIcon);
+        normalIconBack = new ImageIcon(backNormalBtnImg.getScaledInstance(135, 61, Image.SCALE_SMOOTH));
+        hoverIconBack = new ImageIcon(backHoverBtnImg.getScaledInstance(135, 61, Image.SCALE_SMOOTH));
+        buttonBack = new JButton(normalIconBack);
+        buttonBack.setRolloverIcon(hoverIconBack);
         buttonBack.setBorderPainted(false); // ไม่วาดขอบปุ่ม
         buttonBack.setContentAreaFilled(false); // ไม่วาดสีพื้นหลังปุ่ม
         buttonBack.setFocusable(false); // เอาเส้นประตอนเลือกออก
@@ -88,10 +90,18 @@ public class SettingPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; // อยู่แถวล่างสุด ยึด 2 คอลัมน์
         gbc.insets = new Insets(80, 20, 0, 20);
         gbc.anchor = GridBagConstraints.SOUTH;
-//        add(buttonBack, gbc);
 
         // Button Return
-        buttonReturn = new JButton("Return To Menu");
+        normalIconReturn = new ImageIcon(returnNormalBtnImg.getScaledInstance(192, 61, Image.SCALE_SMOOTH));
+        hoverIconReturn = new ImageIcon(returnHoverBtnImg.getScaledInstance(192, 61, Image.SCALE_SMOOTH));
+        buttonReturn = new JButton(normalIconReturn);
+        buttonReturn.setRolloverIcon(hoverIconReturn);
+        buttonReturn.setBorderPainted(false);
+        buttonReturn.setContentAreaFilled(false);
+        buttonReturn.setFocusable(false);
+        buttonReturn.setOpaque(false);
+
+        buttonReturn.setText("");
         buttonReturn.addActionListener(e -> {
             parent.toggleSetting(false, false); // ปิดหน้า Setting ก่อน
             parent.returnToMainMenu();  // เรียกเมธอดกลางเพื่อกลับเมนู (ต้องไปสร้างใน Frame)
