@@ -4,12 +4,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public class JigsawFrame {
-    private JFrame mainFrame;
     private JPanel sup,picFrame;
     private JPanel jigsawPart1, jigsawPart2, jigsawPart3, jigsawPart4, jigsawPart5, jigsawPart6, jigsawPart7;
     public JigsawFrame(){
         //Container create
-        mainFrame = new JFrame();
         sup = new JPanel();
         picFrame = new JPanel();
 
@@ -27,22 +25,13 @@ public class JigsawFrame {
         picFrame.setBackground(new Color(127,127,127,255));
         sup.setBackground(new Color(37,28,9,255));
         sup.setLayout(null);
-        mainFrame.setLayout(null);
-        ((JComponent) mainFrame.getContentPane()).setBorder(BorderFactory.createEmptyBorder(40,240,40,240));
-//        mainFrame.setUndecorated(true);
-        mainFrame.setResizable(false);
 
-
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        gd.setFullScreenWindow(mainFrame);
-        sup.setBounds((int)((mainFrame.getWidth() - 1320) / 2),(int)((mainFrame.getHeight() - 990) / 2),1320,990);
+        sup.setSize(1320,990);
 
         sup.add(jigsawPart1); sup.add(jigsawPart2); sup.add(jigsawPart3);
         sup.add(jigsawPart4); sup.add(jigsawPart5); sup.add(jigsawPart6);
         sup.add(jigsawPart7);
         sup.add(picFrame);
-        mainFrame.add(sup);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setVisible(true);
+
     }
 }

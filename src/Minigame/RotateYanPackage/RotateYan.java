@@ -85,9 +85,9 @@ public class RotateYan {
         int endVborder = 127;
         int endHborder = 98;
         int end = 0;
-        int duration = 500;
+        int duration = 1000;
         int fps = 60;
-        int delay = 900 / fps;
+        int delay = 1000 / fps;
         int steps = (int) (duration / delay);
 
         Timer timer = new Timer(delay, null);
