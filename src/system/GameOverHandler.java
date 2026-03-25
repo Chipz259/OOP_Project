@@ -16,7 +16,12 @@ public class GameOverHandler implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         gui.setVisible(false);
+
+        if (gui.getParentFrame() != null) {
+            gui.getParentFrame().retryFromGameOver();
+        }
     }
 
     @Override
