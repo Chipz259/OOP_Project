@@ -54,6 +54,7 @@ public class SceneQTE_Choke extends Scene {
         this.isWinningFade = false;
         this.fadeWhiteAmount = 0;
         this.buttonScale = 100;
+        this.fadeAlpha = 0;
         AudioManager.playMusic("src/res/sound/DonPLork.wav", 0.0f);
     }
     public void registerClick() {
@@ -64,6 +65,7 @@ public class SceneQTE_Choke extends Scene {
     }
     public void update() {
         if (sceneManager.getFadeTransition() != null && sceneManager.getFadeTransition().isFading()) {
+            hasStarted = false;
             return;
         }
 
@@ -75,6 +77,7 @@ public class SceneQTE_Choke extends Scene {
             long passTime = System.currentTimeMillis() - startTime;
             if (passTime > timeLimit) {
                 isQteActive = false;
+
                 sceneManager.getGamePanel().triggerDeath();
                 System.out.println("ระบบ : แพ้ โดนบีบคอตายไปดิ");
                 AudioManager.stopMusic();
@@ -108,23 +111,9 @@ public class SceneQTE_Choke extends Scene {
                     sceneManager.startTransition("scene_6", player, 900, 550);
                 }
             }
-
-        }
-
-        if (isWinningFade && fadeAlpha < 255) {
-            fadeAlpha += 5;
-            if (fadeAlpha > 255) fadeAlpha = 255;
-        }
-        if (isWinningFade && fadeAlpha >= 255) {
-            sceneManager.startTransition("scene_4", player, 1650, 550);
-        }
-        if (isWinningFade) {
-            fadeWhiteAmount += (fadeWhiteAmount * 0.1) + 0.01;
-            if (fadeWhiteAmount >= 1) {
-                fadeWhiteAmount = 1; // จอสว่าง
-            }
         }
     }
+
     public void render(Graphics2D g2d) {
         int renderOffsetX = 0;
         int renderOffsetY = 0;

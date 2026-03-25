@@ -292,6 +292,7 @@ public class SceneManager {
             case "scene_9" : return "หน้าบ้าน";
             case "scene_10" : return "ป่า";
             case "scene_11" : return "ป่า";
+            case "qte_choke" : return null;
             default: return  sceneId;
         }
     }
