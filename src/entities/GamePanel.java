@@ -263,6 +263,15 @@ public class GamePanel extends JPanel implements Runnable {
                 system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
             }
         }
+
+        if (sceneManager != null && sceneManager.getCurrentScene() != null) {
+            for (GameObject obj : sceneManager.getCurrentScene().getObjectsInScene()) {
+                if (obj instanceof scenes.Door) {
+                    obj.render(g2d);
+                }
+            }
+        }
+
         DiaryUi.getInstance().draw(g2d, getWidth(), getHeight());
     }
 

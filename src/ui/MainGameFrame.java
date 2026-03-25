@@ -243,6 +243,18 @@ public class MainGameFrame extends JFrame {
         });
     }
 
+    public void retryFromGameOver() {
+        cardLayout.show(mainCardPanel, "GAME");
+
+        if (gamePanel != null) {
+            gamePanel.startGameThread();
+        }
+
+        gamePanel.sceneManager.startTransition("scene_5", gamePanel.mainPlayer, 800, 550);
+
+        gamePanel.requestFocusInWindow();
+    }
+
     public static void main(String args[]) {
         System.setProperty("sun.java2d.uiScale", "1.0");
         try {
