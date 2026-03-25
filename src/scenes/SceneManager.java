@@ -137,7 +137,9 @@ public class SceneManager {
         //scene_1
         Item Candle = new Item("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
         Item Water = new Item("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "candleStroke.png");
-        Item Candle2 = new Item("candle2", 600, 700, 100, 100, "เทียนไข2", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
+        Item Knife = new Item("knife", 1200, 700, 100, 100, "มีดอาคม", "มีดอวยคม", "magicKnife.png", "magicKnife.png");
+        Item Rosary = new Item("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "medmed.png", "medmed.png");
+        Item Parasite = new Item("parasite", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย",  "kafak.jpg", "kafak.jpg");
 
         //scene_5
         Item Bed = new Item("bed", 900, 700, 100, 100, "เตียง", "เตียงนะจ๊ะ", "candle.png", "candleStroke.png") {
@@ -250,8 +252,10 @@ public class SceneManager {
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Candle);
-            scene_2.addGameObject(Candle2);
+            scene_2.addGameObject(Knife);
             scene_2.addGameObject(Water);
+            scene_2.addGameObject(Rosary);
+            scene_2.addGameObject(Parasite);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
