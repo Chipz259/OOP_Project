@@ -13,7 +13,8 @@ public class DiaryUi {
 
     private String[] pages = {
             "วันที่ 32 ธันกรายน 2568\nอุอิอิอา",
-            "วันที่ 0 มีฤศิราคม 0001\nว้ากๆๆๆๆ"
+            "วันที่ 0 มีฤศิราคม 0001\nว้ากๆๆๆๆ",
+            "เทสๆๆๆ\nเทส12321321321312"
     };
 
     private Image bookImg;
@@ -43,7 +44,7 @@ public class DiaryUi {
             diaryFont = new Font("Arial", Font.PLAIN, 28);
         }
         try {
-            bookImg = ImageIO.read(getClass().getResource("/res/diary_bg.png"));
+            //bookImg = ImageIO.read(getClass().getResource("/res/diary_bg.png"));
 
             arrowNextImg = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
             arrowPrevImg = ImageIO.read(getClass().getResource("/res/Left_Default.png"));
@@ -53,7 +54,7 @@ public class DiaryUi {
             arrowPrevHoverImg = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
             closeBtnHoverImg = ImageIO.read(getClass().getResource("/res/SettingBtnBack02.png"));
 
-            bookImg = bookImg.getScaledInstance(800, 600, Image.SCALE_SMOOTH);
+            //bookImg = bookImg.getScaledInstance(800, 600, Image.SCALE_SMOOTH);
 
             arrowNextImg = arrowNextImg.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             arrowNextHoverImg = arrowNextHoverImg.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -65,7 +66,7 @@ public class DiaryUi {
             closeBtnHoverImg = closeBtnHoverImg.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 
         } catch (Exception ex) {
-            diaryFont = new Font("Arial", Font.PLAIN, 24);
+            //diaryFont = new Font("Arial", Font.PLAIN, 24);
             ex.printStackTrace();
         }
     }
@@ -109,11 +110,15 @@ public class DiaryUi {
             currentPage--;
             return true;
         }
-        return true;
+        if (isCloseHovered == true || isNextHovered == true || isPrevHovered == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    public void handleMouseMove(int mouseX, int mouseY) {
+    public boolean handleMouseMove(int mouseX, int mouseY) {
         // หยุดการทำงาน
-        if (isVisible == false) return;
+        if (isVisible == false) return false;
 
         isNextHovered = false;
         isPrevHovered = false;
@@ -128,6 +133,7 @@ public class DiaryUi {
         if (leftRect != null && leftRect.contains(mouseX, mouseY)) {
             isPrevHovered = true;
         }
+        return isCloseHovered;
     }
 
     public void draw(Graphics g2d, int screenWidth, int screenHeight) {
@@ -149,7 +155,7 @@ public class DiaryUi {
 
         // วาดข้อความ
         g2d.setFont(diaryFont);
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.WHITE);
         int textX = startX + 100;
         int textY = startY + 100;
 
