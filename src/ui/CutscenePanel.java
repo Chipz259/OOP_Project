@@ -1,6 +1,7 @@
 package ui;
 
 import system.MenuActionHandler;
+import system.FontManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +11,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class CutscenePanel extends JPanel { ;
-    private Font customFont;
     private Timer timer;
     private TextAnimator textAnimator = new TextAnimator();
 
-    public CutscenePanel(Font font){
-        this.customFont = font;
+    public CutscenePanel(){
+
         this.setBackground(Color.BLACK);
 
         this.addMouseListener(new MouseAdapter() {
@@ -49,6 +49,6 @@ public class CutscenePanel extends JPanel { ;
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        textAnimator.draw(g2d, customFont, -1, (getHeight() / 2), getWidth());
+        textAnimator.draw(g2d, FontManager.customFont, -1, (getHeight() / 2), getWidth());
     }
 }

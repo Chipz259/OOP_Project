@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.*;
+import system.FontManager;
 
 public class TextAnimator {
     private String[] storyLines;

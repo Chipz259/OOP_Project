@@ -39,7 +39,7 @@ public class MainGameFrame extends JFrame {
         initMenuPanel();
 
         gamePanel = new GamePanel(this, fadeTransition);
-        cutscenePanel = new CutscenePanel(GamePanel.customFont);
+        cutscenePanel = new CutscenePanel();
         cardLayout = new CardLayout();
         mainCardPanel = new JPanel(cardLayout);
         mainCardPanel.setBounds(0, 0, widthSystem, heightSystem);
