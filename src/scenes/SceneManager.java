@@ -1,5 +1,6 @@
 package scenes;
 
+import Minigame.RotateNarigaPackage.RotateNariga;
 import entities.*;
 import system.*;
 import ui.*;
@@ -141,6 +142,13 @@ public class SceneManager {
         Item Rosary = new Item("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "medmed.png", "medmed.png");
         Item Parasite = new Item("parasite", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย",  "kafak.jpg", "kafak.jpg");
 
+        //scene_4
+        Item Clock = new Item("clock", 900, 700, 100, 100, "นาฬิกา", "นาฬิกาคุณปู่", "candle.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+
+            }
+        };
         //scene_5
         Item Bed = new Item("bed", 900, 700, 100, 100, "เตียง", "เตียงนะจ๊ะ", "candle.png", "candleStroke.png") {
             @Override
@@ -241,6 +249,7 @@ public class SceneManager {
 
         Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
+        Scene scene_4 = scenes.get("scene_4");
         Scene scene_5 = scenes.get("scene_5");
         Scene scene_6 = scenes.get("scene_6");
         if (scene_1 != null) {
@@ -256,6 +265,9 @@ public class SceneManager {
             scene_2.addGameObject(Water);
             scene_2.addGameObject(Rosary);
             scene_2.addGameObject(Parasite);
+        }
+        if (scene_4 != null) {
+            scene_4.addGameObject(Clock);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
