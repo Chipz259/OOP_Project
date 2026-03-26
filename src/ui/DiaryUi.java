@@ -11,6 +11,7 @@ public class DiaryUi extends JPanel {
     private int currentPage = 0;
 
     private String[] pages = {
+            "วันที่ 26 มีนาคม 2569\nนักศึกษากลุ่มต่อไปนี้ ผมรบกวนย้ายเวลาจองคิวนำเสนอใน Jlearn\nให้อาจารย์หน่อยครับ  VAULT, Phawang, P'J Cafe และ Tower Debug \nพอดีผมติดธุระช่วง 08:45 - 10:15 น. นะครับ",
             "วันที่ 32 ธันกรายน 2568\nอุอิอิอา",
             "วันที่ 0 มีฤศิราคม 0001\nว้ากๆๆๆๆ",
             "เทสๆๆๆ\nเทส12321321321312"
@@ -37,8 +38,8 @@ public class DiaryUi extends JPanel {
             iconLeftHover = new ImageIcon(new ImageIcon("src/res/Left_Hover.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
             iconRightNormal = new ImageIcon(new ImageIcon("src/res/Right_Default.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
             iconRightHover = new ImageIcon(new ImageIcon("src/res/Right_Hover.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
-            iconCloseNormal = new ImageIcon(new ImageIcon("src/res/GamePanelNormalBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-            iconCloseHover = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+            iconCloseNormal = new ImageIcon(new ImageIcon("src/res/DiaryExitBtn.png").getImage().getScaledInstance(25, 26, Image.SCALE_SMOOTH));
+//            iconCloseHover = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
         } catch (Exception ex) {
             ex.printStackTrace();
             diaryFont = new Font("Arial", Font.PLAIN, 24);
@@ -102,9 +103,9 @@ public class DiaryUi extends JPanel {
         int startX = (getWidth() - 800) / 2;
         int startY = (getHeight() - 600) / 2;
 
-        btnLeft.setBounds(startX + 50, startY + 470, 35, 100);
-        btnRight.setBounds(startX + 800 - 87, startY + 470, 35, 100);
-        btnClose.setBounds(startX + 800 - 70, startY + 10, 100, 100);
+        btnLeft.setBounds(startX + 50, startY + 250, 35, 100);
+        btnRight.setBounds(startX + 713, startY + 250, 35, 100);
+        btnClose.setBounds(startX + 725, startY + 40, 25, 26);
 
         // ซ่อน/โชว์ตามจำนวนหน้า
         btnLeft.setVisible(currentPage > 0);

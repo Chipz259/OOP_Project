@@ -1,40 +1,66 @@
 package system;
+
 import javax.sound.sampled.*;
 import java.io.File;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public class AudioManager {
     public static int bgmVolume = 50;
     public static int sfxVolume = 50;
-    private static Clip bgMusic;
-    private static java.util.List<Clip> activeSfx = new java.util.concurrent.CopyOnWriteArrayList<>();
 
-    // เพิ่มตัวแปรเก็บค่า Offset ล่าสุดของ BGM เพื่อให้เวลาเลื่อน Slider แล้วเสียงยังสมดุลอยู่
+    private static Clip bgMusic;
+    // ใช้เก็บ Clip SFX ที่กำลังเล่นอยู่ เพื่อให้ปรับเสียงแบบ Real-time ได้ถ้าต้องการ
+    private static List<Clip> activeSfx = new CopyOnWriteArrayList<>();
+
+    // หัวใจสำคัญ: เก็บ Offset ล่าสุดของเพลง BGM ที่กำลังเล่นอยู่
     private static float currentBgmOffset = 0.0f;
 
+    /**
+     * ใช้สำหรับ Slider ปรับเสียงเพลง Background
+     */
     public static void setBgmVolume(int volume) {
         bgmVolume = volume;
-        // เรียกใช้เมธอดคำนวณเสียงโดยใช้ Offset ล่าสุดที่ตั้งไว้
-        applyVolume(bgMusic, bgmVolume, currentBgmOffset);
+        if (bgMusic != null && bgMusic.isOpen()) {
+            // ต้องส่ง currentBgmOffset เข้าไปด้วยเสมอ เพื่อรักษาความสมดุล (-16.0f)
+            applyVolume(bgMusic, bgmVolume, currentBgmOffset);
+        }
     }
 
+    /**
+     * ใช้สำหรับ Slider ปรับเสียง Effect
+     */
     public static void setSfxVolume(int volume) {
         sfxVolume = volume;
+        // ปรับเสียง SFX ทุกตัวที่ยังเล่นไม่จบตาม Slider ทันที
+        for (Clip clip : activeSfx) {
+            if (clip.isOpen()) {
+                // สำหรับ SFX ปกติ offset มักเป็น 0 หรือค่าเฉพาะตัว
+                // ในที่นี้ถ้าไม่ได้เก็บแยก จะใช้ base volume ไปก่อน
+                applyVolume(clip, sfxVolume, 0.0f);
+            }
+        }
     }
 
-    // แก้ไขให้รับ offsetDB: + สำหรับเร่งเสียงที่เบา, - สำหรับลดเสียงที่ดังเกิน
     public static void playMusic(String path, float offsetDB) {
-        // ป้องกันเพลงเล่นซ้อนถ้าเป็นไฟล์เดิม
-        if (bgMusic != null && bgMusic.isRunning()) return;
+        // ถ้าเป็นเพลงเดิมที่กำลังเล่นอยู่ ไม่ต้องเริ่มใหม่ แค่ปรับ Volume
+        if (bgMusic != null && bgMusic.isRunning()) {
+            // ถ้าน้องอยากเปลี่ยน Offset กลางคันให้ใส่ตรงนี้ แต่ปกติจะ return
+            return;
+        }
 
         try {
-            File musicPath = new File(path);
-            if (musicPath.exists()) {
-                currentBgmOffset = offsetDB; // จำค่า offset ของเพลงนี้ไว้
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+            File musicFile = new File(path);
+            if (musicFile.exists()) {
+                stopMusic(); // ปิดตัวเก่าก่อนเสมอ
+
+                currentBgmOffset = offsetDB; // บันทึกค่า Offset ของเพลงนี้ (-16.0f)
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
                 bgMusic = AudioSystem.getClip();
                 bgMusic.open(audioInput);
                 bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
 
-                applyVolume(bgMusic, bgmVolume, offsetDB);
+                applyVolume(bgMusic, bgmVolume, currentBgmOffset);
                 bgMusic.start();
             }
         } catch (Exception e) {
@@ -42,7 +68,6 @@ public class AudioManager {
         }
     }
 
-    // ปรับปรุง SFX ให้รับค่า Offset เฉพาะไฟล์ได้เช่นกัน
     public static void playSFX(String path, float offsetDB) {
         try {
             File sfxFile = new File(path);
@@ -50,17 +75,18 @@ public class AudioManager {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(sfxFile);
                 Clip sfxClip = AudioSystem.getClip();
                 sfxClip.open(audioInput);
+
+                // ใช้ sfxVolume ร่วมกับ offset เฉพาะไฟล์
                 applyVolume(sfxClip, sfxVolume, offsetDB);
 
-                // เพิ่ม Clip เข้าไปในรายการที่กำลังทำงาน
                 activeSfx.add(sfxClip);
-
                 sfxClip.start();
 
+                // ปิดและลบออกจาก List เมื่อเล่นจบ
                 sfxClip.addLineListener(event -> {
                     if (event.getType() == LineEvent.Type.STOP) {
                         sfxClip.close();
-                        activeSfx.remove(sfxClip); // ลบออกเมื่อเล่นจบ
+                        activeSfx.remove(sfxClip);
                     }
                 });
             }
@@ -69,33 +95,33 @@ public class AudioManager {
         }
     }
 
-    // เมธอดกลางที่ใช้คำนวณระดับเสียง (ใช้ร่วมกันทั้ง BGM และ SFX)
     private static void applyVolume(Clip clip, int volume, float offsetDB) {
-        if (clip != null && clip.isOpen()) {
-            try {
+        if (clip == null || !clip.isOpen()) return;
+
+        try {
+            if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
                 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
-                // 1. คำนวณ dB จากค่า 0-100
-                float baseDB = (float) (Math.log(volume != 0 ? volume / 100.0 : 0.0001) / Math.log(10.0) * 20.0);
+                // สูตรคำนวณ dB: เปลี่ยนจาก Linear (0-100) เป็น Logarithmic (dB)
+                float baseDB = (float) (Math.log10(Math.max(volume, 0.0001) / 100.0) * 20.0);
 
-                // 2. บวกค่า Offset เฉพาะไฟล์เข้าไป
+                // รวมค่าพื้นฐานกับ Offset
                 float finalDB = baseDB + offsetDB;
 
-                // 3. ป้องกันค่าเกินขีดจำกัดของ Hardware
-                if (finalDB < gainControl.getMinimum()) finalDB = gainControl.getMinimum();
-                if (finalDB > gainControl.getMaximum()) finalDB = gainControl.getMaximum();
+                // Clamp ค่าให้อยู่ในช่วงที่ Hardware รับได้
+                finalDB = Math.max(gainControl.getMinimum(), Math.min(finalDB, gainControl.getMaximum()));
 
                 gainControl.setValue(finalDB);
-            } catch (IllegalArgumentException e) {
-                // กรณี Hardware ไม่รองรับ MASTER_GAIN
             }
+        } catch (Exception e) {
+            System.err.println("Error applying volume: " + e.getMessage());
         }
     }
 
     public static void stopMusic() {
         if (bgMusic != null) {
             bgMusic.stop();
-            bgMusic.setFramePosition(0);
+            bgMusic.close(); // ปล่อย Resource ทุกครั้งที่หยุดเพื่อเปลี่ยนเพลง
         }
     }
 

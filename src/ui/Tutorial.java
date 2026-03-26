@@ -22,12 +22,13 @@ public class Tutorial extends JPanel {
     public Tutorial(MainGameFrame parent) {
         this.parent = parent;
 
-        tutorialStartImage = new BufferedImage[3];
+        tutorialStartImage = new BufferedImage[4];
         tutorialCombineImage = new BufferedImage[2];
         try {
             tutorialStartImage[0] = ImageIO.read(getClass().getResource("/res/Tutorial1.png"));
             tutorialStartImage[1] = ImageIO.read(getClass().getResource("/res/Tutorial2.png"));
             tutorialStartImage[2] = ImageIO.read(getClass().getResource("/res/Tutorial3.png"));
+            tutorialStartImage[3] = ImageIO.read(getClass().getResource("/res/Tutorial4.png"));
 
             tutorialCombineImage[0] = ImageIO.read(getClass().getResource("/res/Tutorial4.png"));
             tutorialCombineImage[1] = ImageIO.read(getClass().getResource("/res/Tutorial5.png"));
