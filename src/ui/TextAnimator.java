@@ -1,6 +1,8 @@
 package ui;
 
 import java.awt.*;
+
+import system.AudioManager;
 import system.FontManager;
 
 public class TextAnimator {
@@ -35,12 +37,17 @@ public class TextAnimator {
         String fullLine = storyLines[currentLineIndex];
 
         if (charIndex < fullLine.length()) {
+            if (charIndex == 0) {
+                AudioManager.playMusic("src/res/sound/SoundEffectCutsceen.wav", 1.0f);
+            }
+
             currentDisplay += fullLine.charAt(charIndex);
             charIndex++;
             isLineFinished = false;
         }
         else {
             isLineFinished = true;
+            AudioManager.stopMusic();
             if (isAuto) {
                 waitCounter++;
                 if (waitCounter >= 40) {

@@ -1,5 +1,6 @@
 package entities;
 
+import ui.MainGameFrame;
 import ui.Tutorial;
 
 import javax.imageio.ImageIO;
@@ -13,8 +14,11 @@ public class Inventory {
     private BufferedImage slotHoverSprite;
     private Item[] slots;
     private Tutorial tutorial;
+    private Boolean isShowCombine;
 
-    public Inventory(String slotSpritePath) {
+    public Inventory(String slotSpritePath, Tutorial tutorial) {
+        this.tutorial = tutorial;
+        isShowCombine = false;
         slots = new Item[5];
         try {
             URL slotURL = getClass().getResource("/res/" + slotSpritePath);
@@ -51,9 +55,9 @@ public class Inventory {
         return false;
     }
     public void checkSpecialEvents() {
-        if (hasItem("candel") && hasItem("water")) {
+        if (!isShowCombine && hasItem("candle") && hasItem("water")) {
             tutorial.showTutorial("Combine");
-            System.out.println("PopUp Tutorial Nowwwwwww");
+            isShowCombine = true;
         }
     }
     public boolean removeItemId(String itemName) {
