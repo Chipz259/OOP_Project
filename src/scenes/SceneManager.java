@@ -70,8 +70,39 @@ public class SceneManager {
                 String thName = getSceneDisplayName(sceneId);
                 titleOverlay.showTitle(thName);
             }
+            checkSceneEnterEvents(sceneId);
         } else {
             System.out.println("ไม่พบฉาก");
+        }
+    }
+    public void checkSceneEnterEvents(String sceneId) {
+        if (sceneId.equals("scene_1")) {
+
+        }
+        else if (sceneId.equals("scene_2")) {
+
+        }
+        else if (sceneId.equals("scene_3")) {
+            DialogueLine[] scene3Intro = {
+                    new DialogueLine("พระเอก", "ถึงบ้านซะที... บรรยากาศดูแปลกๆ ไปนะ", null, mainTalk)
+            };
+            overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+            overlay.startDialogue(scene3Intro, () -> {
+            });
+        }
+        else if (sceneId.equals("scene_4")) {
+
+        }
+        else if (sceneId.equals("scene_5")) {
+
+        }
+        else if (sceneId.equals("scene_6")) {
+            DialogueLine[] scene3Intro = {
+                    new DialogueLine("พระเอก", "อะเจ้ยยย ผีหลอกกกก", null, mainTalk)
+            };
+            overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+            overlay.startDialogue(scene3Intro, () -> {
+            });
         }
     }
 
@@ -99,7 +130,7 @@ public class SceneManager {
         titleOverlay = new SceneTitleOverlay(FontManager.pspimpdeedIIIFont);
 
         // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
-        for (int i = 1; i <= 11; i++) {
+        for (int i = 1; i <= 13; i++) {
             String sceneId = "scene_" + i;
             Scene newScene = new Scene(sceneId);
 
@@ -115,7 +146,9 @@ public class SceneManager {
 
         // กำหนดลูกศรซ้าย-ขวา
         setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_2", "scene_1", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_2", "scene_1", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_12", null, "scene_13", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_13", "scene_12", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_4", "scene_5", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_5", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
@@ -130,8 +163,8 @@ public class SceneManager {
 
         setupSpecificObjects();
 
-        for (entities.GameObject obj : scenes.get("scene_2").getObjectsInScene()) {
-            if (obj instanceof Door && obj.getID().equals("right_scene_2")) {
+        for (entities.GameObject obj : scenes.get("scene_13").getObjectsInScene()) {
+            if (obj instanceof Door && obj.getID().equals("right_scene_13")) {
                 ((Door) obj).setSpawnX(1550);
                 break;
             }
@@ -146,23 +179,26 @@ public class SceneManager {
                 if (this.isCollected()) {
                     return;
                 }
+                p.getInventory().addItem(this);
+                this.setCollected(true);
+                this.setVisible(false);
 
                 DialogueLine[] script = {
                         new DialogueLine("ระบบ", "คุณได้รับ [" + name + "]", null, null)
                 };
 
                 overlay.setCharacterTransform(0, 0, 0, 0, 0, 0, 0, 0);
-
-                overlay.startDialogue(script, () -> {
-                    if (p.getInventory().addItem(this)) {
-                        System.out.println("ระบบ: เก็บ " + name + " เข้ากระเป๋าแล้ว");
-//                        p.getInventory().checkSpecialEvents();
-                        this.setCollected(true);
-                        this.setVisible(false);
-                    } else {
-                        System.out.println("ระบบ: กระเป๋าเต็ม!");
-                    }
-                });
+                overlay.startDialogue(script, null);
+//                Lambda Expression
+//                overlay.startDialogue(script, () -> {
+//                    if (p.getInventory().addItem(this)) {
+//                        System.out.println("ระบบ: เก็บ " + name + " เข้ากระเป๋าแล้ว");
+//                        this.setCollected(true);
+//                        this.setVisible(false);
+//                    } else {
+//                        System.out.println("ระบบ: กระเป๋าเต็ม!");
+//                    }
+//                });
             }
         };
     }
@@ -224,21 +260,49 @@ public class SceneManager {
         //scene_1
         Item Candle = createPickUpItem("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
         Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "candleStroke.png");
-        Item Knife = createPickUpItem("knife", 1200, 700, 100, 100, "มีดอาคม", "มีดอวยคม", "magicKnife.png", "magicKnife.png");
         Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "medmed.png", "medmed.png");
         Item Parasite = createPickUpItem("parasite", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.jpg", "kafak.jpg");
         DialogueLine[] flowerScript = {
                 new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
                 new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
         };
-        Item Flower = createStoryItem("flower", 1500, 700, 100, 100, "ดอกไม้จันทน์", "ดอกไม้จันทน์", "flowerJun.png", "flowerJun.png", flowerScript);
+        Item Flower = createStoryItem("flower", 665, 620, 110, 110, "ดอกไม้จันทน์", "ดอกไม้จันทน์", "flowerJun.png", "flowerJun.png", flowerScript);
         //scene_2
-        Item Daddy = new Item("daddy", 900, 700, 100, 100, "แด๊ดดี้", "พ่อเองงับ", "daddy.png", "candleStroke.png") {
+        Item Daddy_Pic = new Item("daddyPic", 842, 520, 230, 350, "รูปภาพพ่อ", "             รูปภาพพ่อ", "fatherPicture.PNG", "fatherPicture.PNG") {
+
+            private boolean isFlower = false;
+
             @Override
             public void onInteract(Player p) {
+
+                if (isFlower) return;
+
                 if (p.getInventory().hasItem("flower")) {
+                    DialogueLine[] flowerScript = {
+                            new DialogueLine("พระเอก", "ขอให้ไปสู่สุคตินะครับคุณพ่อ", null, mainTalk),
+                            new DialogueLine("พระเอก", "วันนี้เหนื่อยจังเลยนะ...", null, mainTalk),
+                            new DialogueLine("พระเอก", "กลับบ้านไปนอนดีกว่า", null, mainTalk)
+                    };
+                    overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                    overlay.startDialogue(flowerScript, () -> {
+                    });
                     system.ObjectiveManager.getInstance().advanceObjective();
                     p.getInventory().removeItemId("flower");
+                    isFlower = true;
+                    if (fadeTransition != null && !fadeTransition.isFading()) {
+                        fadeTransition.executeFade(700, 0, 500, () -> {
+                            loadScene("scene_12");
+                            DialogueLine[] PlayerScript = {
+                                    new DialogueLine("พระเอก", "....", null, mainIdle),
+                                    new DialogueLine("พระเอก", "งานศพจบแล้ว ทุกคนกลับหมดแล้ว", null, mainTalk),
+                                    new DialogueLine("พระเอก", "เหนื่อยมากเลย ฉันควรกลับบ้านไปนอน", null, mainTalk),
+                            };
+                            overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                            overlay.startDialogue(PlayerScript, () -> {
+                            });
+                        });
+                    }
+
                 } else {
                     DialogueLine[] flowerScript = {
                             new DialogueLine("พระเอก", "ฉันน่าจะต้องไปเอาดอกไม้จันทน์มาวางตรงนี้นะ", null, mainTalk),
@@ -248,12 +312,10 @@ public class SceneManager {
                     });
                 }
             }
-        };
-        //scene_4
-        Item Clock = new Item("clock", 900, 700, 100, 100, "นาฬิกา", "นาฬิกาคุณปู่", "candle.png", "candleStroke.png") {
-            @Override
-            public void onInteract(Player p) {
 
+            @Override
+            public boolean isInteractable() {
+                return !isFlower;
             }
         };
         //scene_5
@@ -349,13 +411,12 @@ public class SceneManager {
         //เพิ่มของเข้า Scenes
         Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
-        Scene scene_4 = scenes.get("scene_4");
         Scene scene_5 = scenes.get("scene_5");
         Scene scene_6 = scenes.get("scene_6");
         Scene scene_8 = scenes.get("scene_8");
 
         if (scene_1 != null) {
-            scene_1.addGameObject(Daddy);
+            scene_1.addGameObject(Daddy_Pic);
             scene_1.addGameObject(npcGirl);
             scene_1.addGameObject(evil);
             scene_1.addGameObject(npc3);
@@ -363,11 +424,6 @@ public class SceneManager {
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
-            scene_2.addGameObject(Candle);
-            scene_2.addGameObject(Water);
-        }
-        if (scene_4 != null) {
-            scene_4.addGameObject(Clock);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
@@ -396,6 +452,8 @@ public class SceneManager {
             case "scene_9" : return "หน้าบ้าน";
             case "scene_10" : return "ป่า";
             case "scene_11" : return "ป่า";
+            case "scene_12" : return "หน้าเมรุ";
+            case "scene_13" : return "ด้านข้างเมรุ";
             case "qte_choke" : return null;
             default: return  sceneId;
         }

@@ -21,16 +21,18 @@ public class SlotJPanel extends JPanel {
             e.printStackTrace();
         }
         setOpaque(false);
-        setSize(img.getWidth(), img.getHeight() / 3);
-        height = img.getHeight() / 3;
+        setSize(img.getWidth(), img.getHeight() / 7);
+        height = img.getHeight() / 7;
     }
     public void updateSlot(int num){
-        nowSlot = (nowSlot + num) % 3;
+        nowSlot = (nowSlot + num) % 7;
         if (nowSlot < 0){
-            nowSlot = (nowSlot + 3) % 3;
+            nowSlot = (nowSlot + 7) % 7;
         }
         targetY = nowSlot * height;
         repaint();
+        getParent().validate();
+        getParent().repaint();
     }
     @Override
     public void paintComponent(Graphics g){
@@ -39,5 +41,8 @@ public class SlotJPanel extends JPanel {
         g2d.translate(0, -targetY);
         g2d.drawImage(img, 0, 0, this);
         g2d.dispose();
+    }
+    public int getNowSlot() {
+        return nowSlot;
     }
 }
