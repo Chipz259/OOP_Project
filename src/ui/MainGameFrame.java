@@ -25,6 +25,7 @@ public class MainGameFrame extends JFrame {
     private GamePanel gamePanel;
     private FadeTransition fadeTransition;
     private GameOverPanel gameOverPanel;
+    private Tutorial tutorial;
 
     public MainGameFrame() {
         this.setUndecorated(true);
@@ -49,6 +50,9 @@ public class MainGameFrame extends JFrame {
         mainCardPanel = new JPanel(cardLayout);
         mainCardPanel.setBounds(0, 0, widthSystem, heightSystem);
 
+        tutorial = new Tutorial(this);
+        tutorial.setBounds(0, 0, widthSystem, heightSystem);
+
         mainCardPanel.add(imageBg, "MENU");
         mainCardPanel.add(cutscenePanel, "CUTSCENE");
         mainCardPanel.add(gamePanel, "GAME");
@@ -58,6 +62,7 @@ public class MainGameFrame extends JFrame {
         layeredPane.add(mainCardPanel, JLayeredPane.DEFAULT_LAYER);      // ชั้นหลังสุด
         layeredPane.add(settingPanel, JLayeredPane.PALETTE_LAYER);      // ชั้นเมนู Setting (ต้องอยู่เหนือเมนูหลัก)
         layeredPane.add(gameOverPanel, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(tutorial, JLayeredPane.POPUP_LAYER);
         layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER);       // ชั้นหน้าสุดสำหรับฉาก Fade
 
         cardLayout.show(mainCardPanel, "MENU");
@@ -240,6 +245,8 @@ public class MainGameFrame extends JFrame {
             cardLayout.show(mainCardPanel, "GAME");
             gamePanel.startGameThread();
             gamePanel.requestFocusInWindow();
+
+            tutorial.showTutorial();
         });
     }
 
@@ -280,6 +287,9 @@ public class MainGameFrame extends JFrame {
                 gamePanel.requestFocusInWindow();
             }
         });
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 
     public static void main(String args[]) {
