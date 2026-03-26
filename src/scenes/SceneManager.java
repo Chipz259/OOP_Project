@@ -238,7 +238,6 @@ public class SceneManager {
                 if (p.getInventory().hasItem("flower")) {
                     system.ObjectiveManager.getInstance().advanceObjective();
                     p.getInventory().removeItemId("flower");
-                    unlockArrow("scene_2", "right_scene_2");
                 } else {
                     DialogueLine[] flowerScript = {
                             new DialogueLine("พระเอก", "ฉันน่าจะต้องไปเอาดอกไม้จันทน์มาวางตรงนี้นะ", null, mainTalk),
@@ -377,37 +376,6 @@ public class SceneManager {
         if (scene_8 != null) {
             scene_8.addGameObject(miniGameClock);
             scene_8.addGameObject(Knife2);
-        }
-
-        //ล็อค Scene 2
-        DialogueLine[] lockScript = {
-                new DialogueLine("พระเอก", "ฉันยังไปตอนนี้ไม่ได้ ต้องเอาดอกไม้จันทน์ไปวางให้พ่อก่อน...", null, mainTalk)
-        };
-        lockArrow("scene_2", "right_scene_2", lockScript);
-    }
-
-
-    public void lockArrow(String sceneId, String arrowId, DialogueLine[] script) {
-        Scene scene = scenes.get(sceneId);
-        if (scene != null) {
-            for (GameObject obj : scene.getObjectsInScene()) {
-                if (obj instanceof Door && obj.getID().equals(arrowId)) {
-                    ((Door) obj).setLockedDialog(script);
-                    break;
-                }
-            }
-        }
-    }
-
-    public void unlockArrow(String sceneId, String arrowId) {
-        Scene scene = scenes.get(sceneId);
-        if (scene != null) {
-            for (GameObject obj : scene.getObjectsInScene()) {
-                if (obj instanceof Door && obj.getID().equals(arrowId)) {
-                    ((Door) obj).unlock();
-                    break;
-                }
-            }
         }
     }
 
