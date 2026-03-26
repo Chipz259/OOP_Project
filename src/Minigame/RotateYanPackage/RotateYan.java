@@ -1,5 +1,7 @@
 package Minigame.RotateYanPackage;
 
+import ui.MainGameFrame;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +11,9 @@ import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-public class RotateYan {
-    private JFrame mainFrame;
+public class RotateYan extends JPanel{
+    private MainGameFrame mainGameFrame;
+    private Runnable onWinCallBack;
     private JPanel sup;
     private JPanel panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8, panel9, panel10, panel11, panel12;
     private boolean success = false;
@@ -18,9 +21,11 @@ public class RotateYan {
     int borderV = 104;
     int borderH = 83;
 
-    public RotateYan(){
+    public RotateYan(MainGameFrame mainGameFrame, Runnable onWinCallBack){
+        this.mainGameFrame = mainGameFrame;
+        this.onWinCallBack = onWinCallBack;
+
 //        this.loadFlipSound();
-        mainFrame = new JFrame();
         sup = new JPanel();
 
         panel1 = new ImagePanel("YanImage/yan1.png", this, null);
@@ -36,21 +41,19 @@ public class RotateYan {
         panel11 = new ImagePanel("YanImage/yan11.png", this, null);
         panel12 = new ImagePanel("YanImage/yan12.png", this, null);
 
-
         sup.setBackground(new Color(214,84,84,255));
-        mainFrame.getContentPane().setBackground(new Color(255, 255, 255, 100));
+
+        this.setBackground(new Color(255, 255, 255, 100));
+        this.setLayout(new BorderLayout());
+        this.setBorder(BorderFactory.createEmptyBorder(40,240,40,240));
 
         sup.setBorder(BorderFactory.createEmptyBorder(borderH, borderV, borderH + 1, borderV + 1));
         sup.setLayout(new GridLayout(3,4,gap,gap));
 
-        mainFrame.setLayout(new BorderLayout());
-        ((JComponent) mainFrame.getContentPane()).setBorder(BorderFactory.createEmptyBorder(40,240,40,240));
 //        mainFrame.setUndecorated(true);
-        mainFrame.setResizable(false);
-
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        gd.setFullScreenWindow(mainFrame);
-
+//        mainFrame.setResizable(false);
+//        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+//        gd.setFullScreenWindow(mainFrame);
 
         sup.add(panel1); sup.add(panel2);
         sup.add(panel3); sup.add(panel4);
@@ -58,9 +61,11 @@ public class RotateYan {
         sup.add(panel7); sup.add(panel8);
         sup.add(panel9); sup.add(panel10);
         sup.add(panel11); sup.add(panel12);
-        mainFrame.add(sup, BorderLayout.CENTER);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setVisible(true);
+
+        this.add(sup, BorderLayout.CENTER);
+
+//        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        mainFrame.setVisible(true);
     }
 
     public int[] getPanelAngle(){
@@ -119,13 +124,21 @@ public class RotateYan {
                     sup.revalidate();
                     sup.repaint();
                     timer.stop();
+
+                    //พอแอนิเมชันชนะเล่นจบ รอ 1 วิ แล้วปิดหน้าต่างมินิเกมอัตโนมัติ
+                    Timer closeTime = new Timer(1000, evt -> {
+                        if (onWinCallBack != null) onWinCallBack.run();
+                        mainGameFrame.closeMinigame();
+                    });
+                    closeTime.setRepeats(false);
+                    closeTime.start();
                 }
 
             }
         });
         timer.start();
-        mainFrame.repaint();
+        this.repaint();
     }
 
-    public JFrame getMainFrame(){return mainFrame;}
+//    public JFrame getMainFrame(){return mainFrame;}
 }

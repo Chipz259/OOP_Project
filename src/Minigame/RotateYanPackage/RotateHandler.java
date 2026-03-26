@@ -22,7 +22,7 @@ public class RotateHandler extends MouseAdapter {
             this.playYanFlipSound();
             ImagePanel p = (ImagePanel) e.getSource();
             p.rotateImage();
-            rotateYan.getMainFrame().repaint();
+            rotateYan.repaint();
             int targetAngle[] = {180, 180, 270, 0, 0, 180, 180, 270, 180, 180, 90, 180};
 
             int nowAngle[] = rotateYan.getPanelAngle();
