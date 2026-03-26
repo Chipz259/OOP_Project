@@ -25,9 +25,6 @@ public class SceneManager {
     private GamePanel gamePanel;
     private BufferedImage girlIdle, girlTalk, mainIdle, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
     private boolean isFirstTimeScene3 = true, isFirstTimeScene14 = true;
-    private String[] ritualItems = {"", "", "", ""};
-    private final String[] RITUAL_ANSWERS = {"candle", "water", "knife", "rosary"};
-    private Item[] ritualSlots = new Item[4];
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -160,7 +157,7 @@ public class SceneManager {
 
         // กำหนดลูกศรซ้าย-ขวา
         setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_2", "scene_1", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_2", "scene_1", "scene_7", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_12", null, "scene_13", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_13", "scene_12", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
@@ -275,9 +272,9 @@ public class SceneManager {
 
         //scene_1
         Item Candle = createPickUpItem("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleHover.png");
-        Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "candleStroke.png");
-        Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "medmed.png", "medmed.png");
-        Item Parasite = createPickUpItem("parasite", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.jpg", "kafak.jpg");
+        Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "water.png", "candleStroke.png");
+        Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "rosary.png", "rosary.png");
+        Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.jpg", "kafak.jpg");
         DialogueLine[] flowerScript = {
                 new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
                 new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
@@ -357,8 +354,8 @@ public class SceneManager {
         };
 
         //scene_8
-        Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "magicKnife.png", "magicKnife.png");
-        Knife2.setVisible(false);
+        Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
+        Knife2.setVisible(true);
 
         Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
 
@@ -429,6 +426,7 @@ public class SceneManager {
         Scene scene_2 = scenes.get("scene_2");
         Scene scene_5 = scenes.get("scene_5");
         Scene scene_6 = scenes.get("scene_6");
+        Scene scene_7 = scenes.get("scene_7");
         Scene scene_8 = scenes.get("scene_8");
 
         if (scene_1 != null) {
@@ -441,6 +439,10 @@ public class SceneManager {
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
             scene_2.addGameObject(Candle);
+            scene_2.addGameObject(Water);
+            scene_2.addGameObject(Rosary);
+            scene_2.addGameObject(Parasite);
+            scene_2.addGameObject(Knife2);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
@@ -449,73 +451,11 @@ public class SceneManager {
             scene_6.addGameObject(Locker);
             scene_6.addGameObject(Chest);
         }
+        if (scene_7 != null) {
+        }
         if (scene_8 != null) {
             scene_8.addGameObject(miniGameClock);
             scene_8.addGameObject(Knife2);
-        }
-    }
-    public Item createRitualSlot(int index, int x, int y, String hint) {
-        ritualSlots[index] = new Item("slot_" + index, x, y, 150, 150, "แท่นที่ " + (index + 1), hint, "slot_empty.png", "slot_hover.png") {
-            @Override
-            public void onInteract(Player p) {
-
-                if (!ritualItems[index].equals("")) {
-                    String itemID = ritualItems[index];
-
-                    Item newItem = new Item(itemID, 0, 0, 100, 100, "", "", itemID + ".png", "");
-                    if (p.getInventory().addItem(newItem)) {
-                        ritualItems[index] = "";
-                        this.changeImage(x, y, 150, 150, "slot_empty.png", "slot_empty.png");
-                        System.out.println("ระบบ: หยิบของคืนจากช่องที่ " + (index + 1));
-                    }
-                    return;
-                }
-
-                int selIdx = p.getInventory().getSelectedSlot();
-                if (selIdx != -1 && p.getInventory().getSlots()[selIdx] != null) {
-                    Item inHand = p.getInventory().getSlots()[selIdx];
-
-                    ritualItems[index] = inHand.getObjectId();
-
-                    this.changeImage(x, y, 150, 150, inHand.getObjectId() + "_placed.png", inHand.getObjectId() + "_placed.png");
-
-                    p.getInventory().removeSelectedItem();
-                    System.out.println("ระบบ: วาง " + ritualItems[index] + " ลงช่องที่ " + (index + 1));
-
-                    if (isAllSlotsFilled()) {
-                        checkRitualFinal();
-                    }
-                }
-            }
-        };
-        return ritualSlots[index];
-    }
-    private boolean isAllSlotsFilled() {
-        for (String item : ritualItems) {
-            if (item.equals("")) return false;
-        }
-        return true;
-    }
-
-    private void checkRitualFinal() {
-        boolean isCorrect = true;
-        for (int i = 0; i < RITUAL_ANSWERS.length; i++) {
-            if (!ritualItems[i].equals(RITUAL_ANSWERS[i])) {
-                isCorrect = false;
-                break;
-            }
-        }
-
-        if (isCorrect) {
-            overlay.startDialogue(new DialogueLine[]{
-                    new DialogueLine("พระเอก", "เมื่อวางชิ้นสุดท้ายลงไป... แท่นพิธีก็เริ่มส่องแสงประหลาด!", null, mainTalk)
-            }, () -> {
-                startTransition("scene_final", pendingPlayer, 960, 540);
-            });
-        } else {
-            overlay.startDialogue(new DialogueLine[]{
-                    new DialogueLine("พระเอก", "ฉันวางของจนครบแล้ว... แต่ดูเหมือนจะไม่มีอะไรเกิดขึ้นเลย หรือลำดับจะผิดนะ?", null, mainTalk)
-            }, null);
         }
     }
 
