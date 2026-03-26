@@ -7,13 +7,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 public class Inventory {
     private int selectedSlot = -1;
     private BufferedImage slotSprite;
     private BufferedImage slotHoverSprite;
-    private ArrayList<Item> itemlist;
-    private int maxCapacity;
     private Item[] slots;
     private Tutorial tutorial;
 
@@ -37,20 +34,8 @@ public class Inventory {
         }
     }
 
-    public ArrayList<Item> getItemList() {
-        return itemlist; //ใส่ไว้ก่อน กัน error
-    }
-
-    public void setItemList(ArrayList<Item> itemList) {
-
-    }
-
-    public int getMaxCapacity() {
-        return maxCapacity;
-    }
-
-    public void setMaxCapacity(int maxCapacity) {
-        this.maxCapacity = maxCapacity;
+    public Item[] getSlots() {
+        return slots;
     }
 
     public boolean addItem(Item item) {
@@ -69,13 +54,16 @@ public class Inventory {
         if (hasItem("candel") && hasItem("water")) {
             tutorial.showTutorial("Combine");
             System.out.println("PopUp Tutorial Nowwwwwww");
-        }
     }
-    public Item[] getSlots() {
-        return slots;
-    }
-    public void removeItem(Item item) {
-
+    public boolean removeItemId(String itemName) {
+        for (int i = 0; i < slots.length; i++) {
+            if (slots[i] != null) {
+                if (slots[i].getObjectId().equals(itemName)) {
+                    slots[i] = null;
+                    return true;
+                }
+            }
+        } return false;
     }
     public boolean hasItem(String itemName) {
         for (int i = 0; i < slots.length; i++) {
@@ -93,7 +81,6 @@ public class Inventory {
             System.out.println("ระบบ : ทำน้ำมนต์สำมะเร็จเสร็จสิ้น");
             return new Item("holyWater", 0, 0, 100, 100, "น้ำมนต์", "น้ำมนต์กินแล้วตาย", "holyWater.png", "holyWater.png");
         }
-        // if อันต่อไป
         return null;
     }
     public boolean handleClick(int mouseX, int mouseY, int screenWidth, int screenHeight) {
