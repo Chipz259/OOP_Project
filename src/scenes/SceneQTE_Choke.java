@@ -13,7 +13,7 @@ import java.net.URL;
 public class SceneQTE_Choke extends Scene {
     private SceneManager sceneManager;
     private int clickCount = 0;
-    private int targetClicks = 20;
+    private int targetClicks = 20; // กดกี่ครั้ง
     private long startTime;
     private int timeLimit = 5000;
     private boolean isQteActive = false;

@@ -99,6 +99,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void run() {
+        // 1 วินาที มี 1,000,000,000 นาโนวินาที / FPS
         double drawInterval = 1000000000 / 60;
         double nextDrawTime = System.nanoTime() + drawInterval;
 
@@ -109,6 +110,7 @@ public class GamePanel extends JPanel implements Runnable {
                 double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;
                 if (remainingTime < 0)
                     remainingTime = 0;
+                //สั่ง sleep ถ้าทำงานเสร็จก่อนเวลา ถ้าไม่ก็จะทำงานรอบต่อไปทันที
                 Thread.sleep((long) remainingTime);
                 nextDrawTime += drawInterval;
             } catch (InterruptedException e) {
@@ -250,16 +252,16 @@ public class GamePanel extends JPanel implements Runnable {
         boolean isTalk = sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive();
 
 
-        if (!(sceneManager.getCurrentScene() instanceof SceneQTE_Choke) && !isTalk) {
+        if (!(sceneManager.getCurrentScene() instanceof SceneQTE_Choke)) {
 
             if (mainPlayer != null) {
                 mainPlayer.render(g2d);
 
-                if (mainPlayer.getInventory() != null) {
+                if (mainPlayer.getInventory() != null && !isTalk) {
                     mainPlayer.getInventory().render(g2d, getWidth(), getHeight());
                 }
             }
-            if (mainPlayer != null && mainPlayer.getInventory() != null) {
+            if (mainPlayer != null && mainPlayer.getInventory() != null && !isTalk) {
                 system.ObjectiveManager.getInstance().draw(g2d, mainPlayer.getInventory());
             }
         }
@@ -270,6 +272,10 @@ public class GamePanel extends JPanel implements Runnable {
                     obj.render(g2d);
                 }
             }
+        }
+
+        if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()) {
+            sceneManager.getOverlay().render(g2d, 1920, 1080);
         }
 
         DiaryUi.getInstance().draw(g2d, getWidth(), getHeight());

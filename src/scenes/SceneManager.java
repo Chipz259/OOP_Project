@@ -22,6 +22,7 @@ public class SceneManager {
     private DialogueOverlay overlay;
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
+    private BufferedImage girlIdle, girlTalk, mainIdle, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -134,50 +135,56 @@ public class SceneManager {
         currentScene = scenes.get("scene_2");
     }
 
+    public Item createPickUpItem(String id, int x, int y, int w, int h, String name, String desc, String img, String hoverImg) {
+        return new Item(id, x, y, w, h, name, desc, img, hoverImg) {
+            @Override
+            public void onInteract(Player p) {
+                if (this.isCollected()) {
+                    return;
+                }
+
+                DialogueLine[] script = {
+                        new DialogueLine("ระบบ", "คุณได้รับ ["+ name +"]", null, null)
+                };
+
+                overlay.setCharacterTransform(0, 0, 0, 0, 0, 0, 0, 0);
+
+                overlay.startDialogue(script, () -> {
+                    if (p.getInventory().addItem(this)) {
+                        System.out.println("ระบบ: เก็บ " + name + " เข้ากระเป๋าแล้ว");
+                        this.setCollected(true);
+                        this.setVisible(false);
+                    } else {
+                        System.out.println("ระบบ: กระเป๋าเต็ม!");
+                    }
+                });
+            }
+        };
+    }
+
+    private Item createStoryItem(String id, int x, int y, int w, int h, String name, String desc, String img, String hoverImg, DialogueLine[] customScript) {
+
+        return new Item(id, x, y, w, h, name, desc, img, hoverImg) {
+            @Override
+            public void onInteract(Player p) {
+                if (this.isCollected()) {
+                    return;
+                }
+                overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                overlay.startDialogue(customScript, () -> {
+                    if (p.getInventory().addItem(this)) {
+                        System.out.println("ระบบ: เก็บ " + name + " เข้ากระเป๋าแล้ว");
+                        this.setCollected(true);
+                        this.setVisible(false);
+                    } else {
+                        System.out.println("ระบบ: กระเป๋าเต็ม!");
+                    }
+                });
+            }
+        };
+    }
+
     public void setupSpecificObjects() {
-        //scene_1
-        Item Candle = new Item("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
-        Item Water = new Item("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "candleStroke.png");
-        Item Knife = new Item("knife", 1200, 700, 100, 100, "มีดอาคม", "มีดอวยคม", "magicKnife.png", "magicKnife.png");
-        Item Rosary = new Item("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "medmed.png", "medmed.png");
-        Item Parasite = new Item("parasite", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย",  "kafak.jpg", "kafak.jpg");
-
-        //scene_4
-        Item Clock = new Item("clock", 900, 700, 100, 100, "นาฬิกา", "นาฬิกาคุณปู่", "candle.png", "candleStroke.png") {
-            @Override
-            public void onInteract(Player p) {
-
-            }
-        };
-        //scene_5
-        Item Bed = new Item("bed", 900, 700, 100, 100, "เตียง", "เตียงนะจ๊ะ", "candle.png", "candleStroke.png") {
-            @Override
-            public void onInteract(Player p) {
-                //this.setVisible(false);
-                startQTETransition("qte_choke");
-            }
-        };
-        Item Daddy = new Item("daddy", 900, 700, 100, 100, "แด๊ดดี้", "พ่อเองงับ", "daddy.png", "candleStroke.png") {
-            @Override
-            public void onInteract(Player p) {
-                system.ObjectiveManager.getInstance().advanceObjective();
-            }
-        };
-        //scene_6
-        Item Locker = new Item("locker", 1248, 550, 356, 303, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "candleStroke.png") {
-            @Override
-            public void onInteract(Player p) {
-              //this.setVisible(false);
-            }
-        };
-        Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "candleStroke.png") {
-            @Override
-            public void onInteract(Player p) {
-                ui.DiaryUi.getInstance().openDiary();
-            }
-        };
-
-            BufferedImage girlIdle = null, girlTalk = null, mainIdle = null, mainTalk = null, evilIdle = null, evilTalk = null, npc3Idle = null, npc3Talk = null, npc2Idle = null, npc2Talk = null;
         try {
             URL urlGirlIdle = getClass().getResource("/res/NPC/NPC_ girl.png");
             URL urlGirlTalk = getClass().getResource("/res/NPC/NPC_ girl_talk.png");
@@ -207,6 +214,65 @@ public class SceneManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //scene_1
+        Item Candle = createPickUpItem("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
+        Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "candleStroke.png");
+        Item Knife = createPickUpItem("knife", 1200, 700, 100, 100, "มีดอาคม", "มีดอวยคม", "magicKnife.png", "magicKnife.png");
+        Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "medmed.png", "medmed.png");
+        Item Parasite = createPickUpItem("parasite", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย",  "kafak.jpg", "kafak.jpg");
+        DialogueLine[] flowerScript = {
+                new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
+                new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
+        };
+        Item Flower = createStoryItem("flower", 1500, 700, 100, 100, "ดอกไม้จันทน์", "ดอกไม้จันทน์",  "flowerJun.png", "flowerJun.png", flowerScript);
+        //scene_2
+        Item Daddy = new Item("daddy", 900, 700, 100, 100, "แด๊ดดี้", "พ่อเองงับ", "daddy.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+                if (p.getInventory().hasItem("flower")) {
+                    system.ObjectiveManager.getInstance().advanceObjective();
+                    p.getInventory().removeItemId("flower");
+                    unlockArrow("scene_2", "right_scene_2");
+                }
+                else {
+                    DialogueLine[] flowerScript = {
+                        new DialogueLine("พระเอก", "ฉันน่าจะต้องไปเอาดอกไม้จันทน์มาวางตรงนี้นะ", null, mainTalk),
+                    };
+                    overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                    overlay.startDialogue(flowerScript, () -> {
+                    });
+                }
+            }
+        };
+        //scene_4
+        Item Clock = new Item("clock", 900, 700, 100, 100, "นาฬิกา", "นาฬิกาคุณปู่", "candle.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+
+            }
+        };
+        //scene_5
+        Item Bed = new Item("bed", 900, 700, 100, 100, "เตียง", "เตียงนะจ๊ะ", "candle.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+                //this.setVisible(false);
+                startQTETransition("qte_choke");
+            }
+        };
+        //scene_6
+        Item Locker = new Item("locker", 1248, 550, 356, 303, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+              //this.setVisible(false);
+            }
+        };
+        Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "candleStroke.png") {
+            @Override
+            public void onInteract(Player p) {
+                ui.DiaryUi.getInstance().openDiary();
+            }
+        };
 
         NPC npcGirl = new NPC("Girl", 580, 530, 150, 313, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
         NPC evil = new NPC("Evil", 150, 535, 160, 323, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
@@ -247,6 +313,7 @@ public class SceneManager {
         npc2.setVNDialogue(npc2Script, overlay);
         npc2.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
 
+        //เพิ่มของเข้า Scenes
         Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
         Scene scene_4 = scenes.get("scene_4");
@@ -260,11 +327,7 @@ public class SceneManager {
             scene_1.addGameObject(npc2);
         }
         if (scene_2 != null) {
-            scene_2.addGameObject(Candle);
-            scene_2.addGameObject(Knife);
-            scene_2.addGameObject(Water);
-            scene_2.addGameObject(Rosary);
-            scene_2.addGameObject(Parasite);
+            scene_2.addGameObject(Flower);
         }
         if (scene_4 != null) {
             scene_4.addGameObject(Clock);
@@ -275,6 +338,36 @@ public class SceneManager {
         if (scene_6 != null) {
             scene_6.addGameObject(Locker);
             scene_6.addGameObject(Chest);
+        }
+
+        //ล็อค Scene
+        DialogueLine[] lockScript = {
+                new DialogueLine("พระเอก", "ฉันยังไปตอนนี้ไม่ได้ ต้องเอาดอกไม้จันทน์ไปวางให้พ่อก่อน...", null, mainTalk)
+        };
+        lockArrow("scene_2", "right_scene_2", lockScript);
+    }
+
+    public void lockArrow(String sceneId, String arrowId, DialogueLine[] script) {
+        Scene scene = scenes.get(sceneId);
+        if (scene != null) {
+            for (GameObject obj : scene.getObjectsInScene()) {
+                if (obj instanceof Door && obj.getID().equals(arrowId)) {
+                    ((Door) obj).setLockedDialog(script);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void unlockArrow(String sceneId, String arrowId) {
+        Scene scene = scenes.get(sceneId);
+        if (scene != null) {
+            for (GameObject obj : scene.getObjectsInScene()) {
+                if (obj instanceof Door && obj.getID().equals(arrowId)) {
+                    ((Door) obj).unlock();
+                    break;
+                }
+            }
         }
     }
 
@@ -366,11 +459,11 @@ public class SceneManager {
         if (titleOverlay != null) {
             titleOverlay.update();
         }
+        if (getCurrentScene() != null) {
+            currentScene.update();
+        }
         if (overlay != null && overlay.isActive()) {
             overlay.update();
-        }
-        else if (getCurrentScene() != null) {
-            currentScene.update();
         }
 
     }
@@ -382,10 +475,6 @@ public class SceneManager {
 
         if (titleOverlay != null) {
             titleOverlay.render(g2d, 1920);
-        }
-
-        if (overlay != null && overlay.isActive()) {
-            overlay.render(g2d, 1920, 1080);
         }
     }
 

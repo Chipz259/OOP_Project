@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import entities.*;
+import system.DialogueLine;
 import system.FadeTransition;
 
 public class Door extends GameObject implements Interactable {
@@ -14,6 +15,8 @@ public class Door extends GameObject implements Interactable {
     private SceneManager sceneM;
     private BufferedImage hoverSpite;
     private boolean isHovered = false;
+    private boolean isLocked = false;
+    private DialogueLine[] lockedScript;
 
     public Door(String id, int x, int y, int width, int height, String destName , String nextSceneId, SceneManager sceneM, BufferedImage arrowImage, int spawnX, int spawnY) {
         super(id, x, y, width, height);
@@ -53,6 +56,13 @@ public class Door extends GameObject implements Interactable {
     }
     public void setIsHovered(Boolean isHovered){
         this.isHovered = isHovered;
+    }
+    public void setLockedDialog(DialogueLine[] script) {
+        this.isLocked = true;
+        this.lockedScript = script;
+    }
+    public void unlock() {
+        this.isLocked = false;
     }
 
     @Override
@@ -97,9 +107,18 @@ public class Door extends GameObject implements Interactable {
 
     @Override
     public void onInteract(Player p) {
-        System.out.println("ผู้เล่นคลิกลูกศร: เปลี่ยนไปฉาก " + this.getNextSceneId());
-        if (sceneM != null) {
-            sceneM.startTransition(this.getNextSceneId(), p, this.getSpawnX(), this.getSpawnY());
+        if (isLocked) {
+            if (sceneM != null && sceneM.getOverlay() != null && lockedScript != null) {
+                System.out.println("ระบบ: ประตูล็อคอยู่! โชว์ข้อความ...");
+                sceneM.getOverlay().setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                sceneM.getOverlay().startDialogue(lockedScript, () -> {
+                });
+            }
+        } else {
+            System.out.println("ผู้เล่นคลิกลูกศร: เปลี่ยนไปฉาก " + this.getNextSceneId());
+            if (sceneM != null) {
+                sceneM.startTransition(this.getNextSceneId(), p, this.getSpawnX(), this.getSpawnY());
+            }
         }
     }
 
