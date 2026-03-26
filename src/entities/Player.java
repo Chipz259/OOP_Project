@@ -1,5 +1,7 @@
 package entities;
 
+import ui.Tutorial;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -19,9 +21,9 @@ public class Player extends GameObject {
     private int spriteCounter = 0;
     private int spriteNum = 0;
     private final int ANIMATION_SPEED = 4;
-    public Player(String id, int x, int y, int width, int height) {
+    public Player(String id, int x, int y, int width, int height, Tutorial tutorial) {
         super(id, x, y, width, height);
-        inventory = new Inventory("slots.png");
+        inventory = new Inventory("slots.png", tutorial);
         loadAnimation();
     }
     private void loadAnimation() {

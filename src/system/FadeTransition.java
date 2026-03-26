@@ -52,7 +52,7 @@ public class FadeTransition extends JPanel {
 
         fadeTimer = new Timer(fpsDelay, new ActionListener() {
             int state = 0; // 0 : fade Out, 1 = Wait, 2 = Fade In
-            int currenWait = 0;
+            int currentWait = 0;
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -70,8 +70,8 @@ public class FadeTransition extends JPanel {
                 }
                 //wait
                 else if (state == 1) {
-                    currenWait++;
-                    if (currenWait >= wait){
+                    currentWait++;
+                    if (currentWait >= wait){
                         state = 2; //เปลี่ยนสถานะ
                     }
                 }

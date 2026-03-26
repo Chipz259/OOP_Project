@@ -44,14 +44,15 @@ public class MainGameFrame extends JFrame {
         fadeTransition.setBounds(0, 0, widthSystem, heightSystem);
         initMenuPanel();
 
+        tutorial = new Tutorial(this);
+        tutorial.setBounds(0, 0, widthSystem, heightSystem);
+
         gamePanel = new GamePanel(this, fadeTransition);
         cutscenePanel = new CutscenePanel();
         cardLayout = new CardLayout();
         mainCardPanel = new JPanel(cardLayout);
         mainCardPanel.setBounds(0, 0, widthSystem, heightSystem);
 
-        tutorial = new Tutorial(this);
-        tutorial.setBounds(0, 0, widthSystem, heightSystem);
 
         mainCardPanel.add(imageBg, "MENU");
         mainCardPanel.add(cutscenePanel, "CUTSCENE");
@@ -181,19 +182,6 @@ public class MainGameFrame extends JFrame {
         layeredPane.repaint();
     }
 
-    // 1. เมื่อกดปุ่ม Setting จาก "หน้าเมนู"
-    public void openSettingFromMenu() {
-        // ส่ง false เข้าไปเพื่อบอกว่าไม่ได้อยู่ภายในเกม (จะโชว์แค่ปุ่ม Back)
-        toggleSetting(true, false);
-    }
-
-    // 2. เมื่อกดปุ่ม Esc จาก "ภายในเกม"
-    public void openSettingFromGame() {
-        // ส่ง true เข้าไปเพื่อบอกว่าอยู่ภายในเกม (จะโชว์ Back + Return คู่กัน)
-        toggleSetting(true, true);
-    }
-
-    // 3. อย่าลืมสร้างเมธอดกลางสำหรับกลับหน้าเมนูด้วยจ้ะ
     public void returnToMainMenu() {
         // 1. หยุดการทำงานของ GamePanel
         gamePanel.stopGameThread();
@@ -291,6 +279,10 @@ public class MainGameFrame extends JFrame {
 
     public GamePanel getGamePanel() {
         return gamePanel;
+    }
+
+    public Tutorial getTutorial() {
+        return tutorial;
     }
 
     public static void main (String args[]){
