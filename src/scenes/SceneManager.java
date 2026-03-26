@@ -99,7 +99,7 @@ public class SceneManager {
         titleOverlay = new SceneTitleOverlay(FontManager.pspimpdeedIIIFont);
 
         // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
-        for (int i = 1; i <= 11; i++) {
+        for (int i = 1; i <= 13; i++) {
             String sceneId = "scene_" + i;
             Scene newScene = new Scene(sceneId);
 
@@ -115,7 +115,9 @@ public class SceneManager {
 
         // กำหนดลูกศรซ้าย-ขวา
         setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_2", "scene_1", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_2", "scene_1", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_12", null, "scene_13", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_13", "scene_12", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_4", "scene_5", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_5", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
@@ -230,14 +232,35 @@ public class SceneManager {
                 new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
                 new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
         };
-        Item Flower = createStoryItem("flower", 1500, 700, 100, 100, "ดอกไม้จันทน์", "ดอกไม้จันทน์", "flowerJun.png", "flowerJun.png", flowerScript);
+        Item Flower = createStoryItem("flower", 665, 620, 110, 110, "ดอกไม้จันทน์", "ดอกไม้จันทน์", "flowerJun.png", "flowerJun.png", flowerScript);
         //scene_2
-        Item Daddy = new Item("daddy", 900, 700, 100, 100, "แด๊ดดี้", "พ่อเองงับ", "daddy.png", "candleStroke.png") {
+        Item Daddy_Pic = new Item("daddyPic", 842, 520, 230, 350, "รูปภาพพ่อ", "             รูปภาพพ่อ", "fatherPicture.PNG", "fatherPicture.PNG") {
+
+            private boolean isFlower = false;
+
             @Override
             public void onInteract(Player p) {
+
+                if (isFlower) return;
+
                 if (p.getInventory().hasItem("flower")) {
                     system.ObjectiveManager.getInstance().advanceObjective();
                     p.getInventory().removeItemId("flower");
+                    isFlower = true;
+                    if (fadeTransition != null && !fadeTransition.isFading()) {
+                        fadeTransition.executeFade(700, 0, 500, () -> {
+                            loadScene("scene_12");
+                            DialogueLine[] flowerScript = {
+                                    new DialogueLine("พระเอก", "....", null, mainIdle),
+                                    new DialogueLine("พระเอก", "งานศพจบแล้ว ทุกคนกลับหมดแล้ว", null, mainTalk),
+                                    new DialogueLine("พระเอก", "เหนื่อยมากเลย ฉันควรกลับบ้านไปนอน", null, mainTalk),
+                            };
+                            overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                            overlay.startDialogue(flowerScript, () -> {
+                            });
+                        });
+                    }
+
                 } else {
                     DialogueLine[] flowerScript = {
                             new DialogueLine("พระเอก", "ฉันน่าจะต้องไปเอาดอกไม้จันทน์มาวางตรงนี้นะ", null, mainTalk),
@@ -246,6 +269,11 @@ public class SceneManager {
                     overlay.startDialogue(flowerScript, () -> {
                     });
                 }
+            }
+
+            @Override
+            public boolean isInteractable() {
+                return !isFlower;
             }
         };
         //scene_4
@@ -354,7 +382,7 @@ public class SceneManager {
         Scene scene_8 = scenes.get("scene_8");
 
         if (scene_1 != null) {
-            scene_1.addGameObject(Daddy);
+            scene_1.addGameObject(Daddy_Pic);
             scene_1.addGameObject(npcGirl);
             scene_1.addGameObject(evil);
             scene_1.addGameObject(npc3);
@@ -393,6 +421,8 @@ public class SceneManager {
             case "scene_9" : return "หน้าบ้าน";
             case "scene_10" : return "ป่า";
             case "scene_11" : return "ป่า";
+            case "scene_12" : return "หน้าเมรุ";
+            case "scene_13" : return "ด้านข้างเมรุ";
             case "qte_choke" : return null;
             default: return  sceneId;
         }
