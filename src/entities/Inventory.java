@@ -1,5 +1,7 @@
 package entities;
 
+import ui.Tutorial;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,6 +12,7 @@ public class Inventory {
     private BufferedImage slotSprite;
     private BufferedImage slotHoverSprite;
     private Item[] slots;
+    private Tutorial tutorial;
 
     public Inventory(String slotSpritePath) {
         slots = new Item[5];
@@ -48,8 +51,9 @@ public class Inventory {
         return false;
     }
     public void checkSpecialEvents() {
-        if (hasItem("candle") && hasItem("water")) {
-
+        if (hasItem("candel") && hasItem("water")) {
+            tutorial.showTutorial("Combine");
+            System.out.println("PopUp Tutorial Nowwwwwww");
         }
     }
     public boolean removeItemId(String itemName) {

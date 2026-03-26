@@ -246,7 +246,7 @@ public class MainGameFrame extends JFrame {
             gamePanel.startGameThread();
             gamePanel.requestFocusInWindow();
 
-            tutorial.showTutorial();
+            tutorial.showTutorial("StartGame");
         });
     }
 
