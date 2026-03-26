@@ -154,7 +154,7 @@ public class Tutorial extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.setColor(new Color(0, 0, 0, 200));
+        g2d.setColor(new Color(30, 30, 30, 200));
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
         if (currentSceen.equals("StartGame")) {
