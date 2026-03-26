@@ -1,13 +1,12 @@
 package ui;
 
 import java.awt.*;
-import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
-public class DiaryUi {
+public class DiaryUi extends JPanel {
     private static DiaryUi instance;
-
     private boolean isVisible = false;
     private int currentPage = 0;
 
@@ -18,185 +17,153 @@ public class DiaryUi {
     };
 
     private Image bookImg;
-    private Image arrowPrevImg, arrowPrevHoverImg;
-    private Image arrowNextImg, arrowNextHoverImg;
-    private Image closeBtnImg, closeBtnHoverImg;
+    private ImageIcon iconLeftNormal, iconLeftHover, iconRightNormal, iconRightHover, iconCloseNormal, iconCloseHover;
+    private JButton btnLeft, btnRight, btnClose;
 
     private Font diaryFont;
-    private Rectangle rightRect, leftRect, closeRect;
-
-    private boolean isNextHovered = false;
-    private boolean isPrevHovered = false;
-    private boolean isCloseHovered = false;
 
     private DiaryUi() {
         try {
             InputStream is = getClass().getResourceAsStream("/res/Font/DSNSM__.TTF");
-            if (is == null) {
-                System.err.println("ระบบสมุด: หาไฟล์ฟอนต์ไม่เจอ!");
-                diaryFont = new Font("Arial", Font.PLAIN, 28);
+            if (is != null) {
+                diaryFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN, 28f);
             } else {
-                Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
-                diaryFont = baseFont.deriveFont(Font.PLAIN, 28f);
+                diaryFont = new Font("Arial", Font.PLAIN, 28);
             }
+
+            bookImg = ImageIO.read(getClass().getResource("/res/DiaryBG.png"));
+
+            iconLeftNormal = new ImageIcon(new ImageIcon("src/res/Left_Default.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
+            iconLeftHover = new ImageIcon(new ImageIcon("src/res/Left_Hover.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
+            iconRightNormal = new ImageIcon(new ImageIcon("src/res/Right_Default.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
+            iconRightHover = new ImageIcon(new ImageIcon("src/res/Right_Hover.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
+            iconCloseNormal = new ImageIcon(new ImageIcon("src/res/GamePanelNormalBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+            iconCloseHover = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
         } catch (Exception ex) {
-            System.err.println("ระบบสมุด: โหลดฟอนต์พัง!");
-            diaryFont = new Font("Arial", Font.PLAIN, 28);
-        }
-        try {
-            //bookImg = ImageIO.read(getClass().getResource("/res/diary_bg.png"));
-
-            arrowNextImg = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
-            arrowPrevImg = ImageIO.read(getClass().getResource("/res/Left_Default.png"));
-            closeBtnImg = ImageIO.read(getClass().getResource("/res/SettingBtnBack01.png"));
-
-            arrowNextHoverImg = ImageIO.read(getClass().getResource("/res/Right_Hover.png"));
-            arrowPrevHoverImg = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
-            closeBtnHoverImg = ImageIO.read(getClass().getResource("/res/SettingBtnBack02.png"));
-
-            //bookImg = bookImg.getScaledInstance(800, 600, Image.SCALE_SMOOTH);
-
-            arrowNextImg = arrowNextImg.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-            arrowNextHoverImg = arrowNextHoverImg.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-
-            arrowPrevImg = arrowPrevImg.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-            arrowPrevHoverImg = arrowPrevHoverImg.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-
-            closeBtnImg = closeBtnImg.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-            closeBtnHoverImg = closeBtnHoverImg.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-
-        } catch (Exception ex) {
-            //diaryFont = new Font("Arial", Font.PLAIN, 24);
             ex.printStackTrace();
+            diaryFont = new Font("Arial", Font.PLAIN, 24);
+        }
+
+        btnLeft = new JButton(iconLeftNormal);
+        setupButtonStyle(btnLeft);
+        btnLeft.setRolloverIcon(iconLeftHover);
+        btnLeft.addActionListener(e -> prevPage());
+        this.add(btnLeft);
+
+        btnRight = new JButton(iconRightNormal);
+        setupButtonStyle(btnRight);
+        btnRight.setRolloverIcon(iconRightHover);
+        btnRight.addActionListener(e -> nextPage());
+        this.add(btnRight);
+
+        btnClose = new JButton(iconCloseNormal);
+        setupButtonStyle(btnClose);
+        btnClose.setRolloverIcon(iconCloseHover);
+        btnClose.addActionListener(e -> closeDiary());
+        this.add(btnClose);
+
+        this.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                // ไม่ต้องเขียนอะไร แค่มีไว้เพื่อดัก Event
+            }
+        });
+
+        this.setLayout(null);
+        this.setOpaque(false);
+        this.setVisible(false);
+    }
+
+    private void setupButtonStyle(JButton btn) {
+        btn.setBorderPainted(false);
+        btn.setContentAreaFilled(false);
+        btn.setFocusPainted(false);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+    private void nextPage() {
+        if (currentPage < pages.length - 1) {
+            currentPage++;
+            updateButtonLayout(); // อัปเดตการแสดงผลปุ่ม
+            repaint(); // สั่งให้วาดข้อความใหม่ของหน้าที่เลือก
         }
     }
-    public static DiaryUi getInstance() {
-        if (instance == null) {
-            instance = new DiaryUi();
+
+    private void prevPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            updateButtonLayout();
+            repaint();
         }
+    }
+
+    private void updateButtonLayout() {
+        // คำนวณตำแหน่งปุ่มให้สัมพันธ์กับตัวสมุดกึ่งกลางจอ
+        int startX = (getWidth() - 800) / 2;
+        int startY = (getHeight() - 600) / 2;
+
+        btnLeft.setBounds(startX + 50, startY + 470, 35, 100);
+        btnRight.setBounds(startX + 800 - 87, startY + 470, 35, 100);
+        btnClose.setBounds(startX + 800 - 70, startY + 10, 100, 100);
+
+        // ซ่อน/โชว์ตามจำนวนหน้า
+        btnLeft.setVisible(currentPage > 0);
+        btnRight.setVisible(currentPage < pages.length - 1);
+    }
+
+    public static DiaryUi getInstance() {
+        if (instance == null) instance = new DiaryUi();
         return instance;
     }
 
     public void openDiary() {
         isVisible = true;
         currentPage = 0;
-
-        isNextHovered = false;
-        isPrevHovered = false;
-        isCloseHovered = false;
+        this.setVisible(true);
+        updateButtonLayout();
+        this.requestFocusInWindow();
+        repaint();
     }
 
     public void closeDiary() {
         isVisible = false;
-    }
-
-    public boolean isVisible() {
-        return isVisible;
-    }
-
-    public boolean handleClick(int mouseX, int mouseY) {
-        if (isVisible == false) {
-            return false;
-        }
-        if (closeRect != null && closeRect.contains(mouseX, mouseY)) {
-            closeDiary();
-            return true;
-        }
-        if (rightRect != null && rightRect.contains(mouseX, mouseY) && currentPage < pages.length - 1) {
-            currentPage++;
-            return true;
-        }
-        if (leftRect != null && leftRect.contains(mouseX, mouseY) && currentPage > 0) {
-            currentPage--;
-            return true;
-        }
-        if (isCloseHovered == true || isNextHovered == true || isPrevHovered == true) {
-            return true;
-        } else {
-            return false;
+        this.setVisible(false);
+        if (MainGameFrame.getInstance() != null && MainGameFrame.getInstance().getGamePanel() != null) {
+            MainGameFrame.getInstance().getGamePanel().requestFocusInWindow();
         }
     }
-    public boolean handleMouseMove(int mouseX, int mouseY) {
-        // หยุดการทำงาน
-        if (isVisible == false) return false;
 
-        isNextHovered = false;
-        isPrevHovered = false;
-        isCloseHovered = false;
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
 
-        if (closeRect != null && closeRect.contains(mouseX, mouseY)) {
-            isCloseHovered = true;
-        }
-        if (rightRect != null && rightRect.contains(mouseX, mouseY)) {
-            isNextHovered = true;
-        }
-        if (leftRect != null && leftRect.contains(mouseX, mouseY)) {
-            isPrevHovered = true;
-        }
-        return isCloseHovered;
-    }
+        if (!isVisible()) return;
 
-    public void draw(Graphics g2d, int screenWidth, int screenHeight) {
-        //หยุดการทำงาน
-        if (isVisible == false) return;
+        // 1. Draw Background Dim
+        g2d.setColor(new Color(30, 30, 30, 200));
+        g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        // พื้นหลังสีดำโปร่งแสง
-        g2d.setColor(new Color(0, 0, 0, 150));
-        g2d.fillRect(0, 0, screenWidth, screenHeight);
-
+        // 2. Draw Book
         int bookWidth = 800;
         int bookHeight = 600;
-        int startX = (screenWidth - bookWidth) / 2;
-        int startY = (screenHeight - bookHeight) / 2;
+        int startX = (getWidth() - bookWidth) / 2;
+        int startY = (getHeight() - bookHeight) / 2;
 
         if (bookImg != null) {
-            g2d.drawImage(bookImg, startX, startY, null);
+            g2d.drawImage(bookImg, startX, startY, bookWidth, bookHeight, null);
         }
 
-        // วาดข้อความ
+        // 3. Draw Text
         g2d.setFont(diaryFont);
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(Color.BLACK); // สีหมึกปากกา
         int textX = startX + 100;
-        int textY = startY + 100;
+        int textY = startY + 120;
 
         String[] lines = pages[currentPage].split("\n");
-        for (int i = 0; i < lines.length; i++) {
-            g2d.drawString(lines[i], textX, textY);
-            textY += 40;
-        }
-
-        int btnY = startY + bookHeight - 80;
-
-        // วาดปุ่มย้อนกลับ
-        if (currentPage > 0) {
-            leftRect = new Rectangle(startX + 50, btnY, 50, 50);
-            if (isPrevHovered == true) {
-                g2d.drawImage(arrowPrevHoverImg, leftRect.x, leftRect.y, null);
-            } else {
-                g2d.drawImage(arrowPrevImg, leftRect.x, leftRect.y, null);
-            }
-        } else {
-            leftRect = null;
-        }
-
-        // วาดปุ่มถัดไป
-        if (currentPage < pages.length - 1) {
-            rightRect = new Rectangle(startX + bookWidth - 100, btnY, 50, 50);
-            if (isNextHovered == true) {
-                g2d.drawImage(arrowNextHoverImg, rightRect.x, rightRect.y, null);
-            } else {
-                g2d.drawImage(arrowNextImg, rightRect.x, rightRect.y, null);
-            }
-        } else {
-            rightRect = null;
-        }
-
-        // วาดปุ่มปิด
-        closeRect = new Rectangle(startX + bookWidth - 60, startY + 20, 40, 40);
-        if (isCloseHovered == true) {
-            g2d.drawImage(closeBtnHoverImg, closeRect.x, closeRect.y, null);
-        } else {
-            g2d.drawImage(closeBtnImg, closeRect.x, closeRect.y, null);
+        for (String line : lines) {
+            g2d.drawString(line, textX, textY);
+            textY += 45; // ระยะบรรทัด
         }
     }
 }

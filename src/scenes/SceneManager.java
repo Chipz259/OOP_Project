@@ -382,10 +382,10 @@ public class SceneManager {
             }
         };
 
-        NPC npcGirl = new NPC("Girl", 580, 530, 150, 313, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
-        NPC evil = new NPC("Evil", 150, 535, 160, 323, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
-        NPC npc3 = new NPC("Npc3", 1350, 530, 150, 313, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
-        NPC npc2 = new NPC("Npc2", 1500, 535, 150, 313, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
+        NPC npcGirl = new NPC("Girl", 580, 530, 170, 333, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
+        NPC evil = new NPC("Evil", 150, 525, 190, 368, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
+        NPC npc3 = new NPC("Npc3", 1350, 530, 170, 333, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
+        NPC npc2 = new NPC("Npc2", 1500, 535, 170, 333, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
 
         DialogueLine[] npcGirlScript = {
                 new DialogueLine("เด็กสาวปริศนา", "พ่อตายแล้วน้าฮือๆๆๆ", girlTalk, mainIdle),
@@ -482,7 +482,7 @@ public class SceneManager {
             String leftName = getSceneDisplayName(leftDestId);
 
             Door leftArrow = new Door("left_" + targetSceneId, 50, 490, leftWidth, leftHeight, leftName, leftDestId,  this,
-                    imgLeft, 1550, 550);
+                    imgLeft, 1550, 530);
             leftArrow.setVisible(false);
             leftArrow.setHoverSpite(imgLeftHover);
             scene.addGameObject(leftArrow);
@@ -496,7 +496,7 @@ public class SceneManager {
             int rightX = 1920 - rightWidth - 50;
 
             Door rightArrow = new Door("right_" + targetSceneId, rightX, 490, rightWidth, rightHeight, rightName, rightDestId ,
-                    this, imgRight, 200, 550);
+                    this, imgRight, 200, 530);
             rightArrow.setVisible(false);
             rightArrow.setHoverSpite(imgRightHover);
             scene.addGameObject(rightArrow);

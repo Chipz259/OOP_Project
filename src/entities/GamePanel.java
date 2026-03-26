@@ -73,7 +73,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         loadCustomFont();
         inventory = new Inventory("slots.png", tutorialRef);
-        mainPlayer = new Player("player", 1650, 550, 150, 313, tutorialRef);
+        mainPlayer = new Player("player", 1650, 530, 180, 360, tutorialRef);
+
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
@@ -130,11 +131,21 @@ public class GamePanel extends JPanel implements Runnable {
 
         boolean isQTE = sceneManager.getCurrentScene() instanceof SceneQTE_Choke;
         boolean isTalking = sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive();
-        boolean isFading = fadeTransition != null && fadeTransition.isFading();
-        if (isQTE || isTalking || isFading) {
-            if (btnSetting.isVisible()) btnSetting.setVisible(false);
+        boolean isDiaryOpen = DiaryUi.getInstance().isVisible();
+        if (isQTE || isTalking) {
+            if (btnSetting.isVisible()) {
+                btnSetting.setVisible(false);
+            }
         } else {
-            if (!btnSetting.isVisible()) btnSetting.setVisible(true);
+            if (!btnSetting.isVisible()){
+                btnSetting.setVisible(true);
+            }
+        }
+
+        if (isDiaryOpen) {
+            if (mainPlayer != null) mainPlayer.setMoving(false);
+            stopPlayerMovement();
+            return;
         }
 
         if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()){
@@ -283,8 +294,6 @@ public class GamePanel extends JPanel implements Runnable {
         if (sceneManager.getOverlay() != null && sceneManager.getOverlay().isActive()) {
             sceneManager.getOverlay().render(g2d, 1920, 1080);
         }
-
-        DiaryUi.getInstance().draw(g2d, getWidth(), getHeight());
     }
 
     public void triggerDeath() {
