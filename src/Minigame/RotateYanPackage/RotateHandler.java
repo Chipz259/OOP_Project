@@ -20,7 +20,6 @@ public class RotateHandler extends MouseAdapter {
             YanJPanel p = (YanJPanel) e.getSource();
             p.rotateImage();
             rotateYan.repaint();
-            System.out.println(p.getAngle());
             int targetAngle[] = {180, 270, 180, 0, 0, 180, 180, 270, 180, 180, 90, 180};
 
             int nowAngle[] = rotateYan.getPanelAngle();
