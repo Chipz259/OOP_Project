@@ -26,7 +26,7 @@ public class UnlockBox implements Runnable {
             new SlotJPanel("Image/Box4.png"),
         };
         try{
-            background = ImageIO.read(getClass().getResource("Image/BG.png"));
+            background = ImageIO.read(getClass().getResource("Image/BG BOX.png"));
             slotBackground = ImageIO.read(getClass().getResource("Image/BoxBox.png"));
         } catch (IOException e) {
             e.printStackTrace();
