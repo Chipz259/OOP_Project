@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class SceneManager {
     private FadeTransition fadeTransition;
@@ -29,11 +30,13 @@ public class SceneManager {
         this.pendingPlayer = player;
         initScenes(); // สั่งสร้างและประกอบฉากทันทีที่เปิดเกม
     }
+
     public void setFadeTransition(FadeTransition fadeTransition) {
         this.fadeTransition = fadeTransition;
     }
-    public FadeTransition getFadeTransition(){
-        return  this.fadeTransition;
+
+    public FadeTransition getFadeTransition() {
+        return this.fadeTransition;
     }
 
     public DialogueOverlay getOverlay() {
@@ -43,6 +46,7 @@ public class SceneManager {
     public Scene getCurrentScene() {
         return currentScene;
     }
+
     public SceneTitleOverlay getTitleOverlay() {
         return this.titleOverlay;
     }
@@ -73,65 +77,65 @@ public class SceneManager {
 
     // ระบบประกอบร่างฉาก
     public void initScenes() {
-            BufferedImage imgLeftArrow = null;
-            BufferedImage imgRightArrow = null;
-            BufferedImage imgLeftHover = null;
-            BufferedImage imgRightHover = null;
-            BufferedImage imgDialogBox = null;
+        BufferedImage imgLeftArrow = null;
+        BufferedImage imgRightArrow = null;
+        BufferedImage imgLeftHover = null;
+        BufferedImage imgRightHover = null;
+        BufferedImage imgDialogBox = null;
 
-            // โหลดรูปลูกศร
+        // โหลดรูปลูกศร
+        try {
+            imgLeftArrow = ImageIO.read(getClass().getResource("/res/Left_Default.png"));
+            imgRightArrow = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
+            imgLeftHover = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
+            imgRightHover = ImageIO.read(getClass().getResource("/res/Right_Hover.png"));
+            URL boxUrl = getClass().getResource("/res/NPC/Textbox.png");
+            if (boxUrl != null) imgDialogBox = ImageIO.read(boxUrl);
+        } catch (IOException e) {
+            System.err.println("โหลดรูปภาพไม่สำเร็จ");
+        }
+
+        overlay = new DialogueOverlay(FontManager.pspimpdeedIIIFont, imgDialogBox);
+        titleOverlay = new SceneTitleOverlay(FontManager.pspimpdeedIIIFont);
+
+        // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
+        for (int i = 1; i <= 11; i++) {
+            String sceneId = "scene_" + i;
+            Scene newScene = new Scene(sceneId);
+
             try {
-                imgLeftArrow = ImageIO.read(getClass().getResource("/res/Left_Default.png"));
-                imgRightArrow = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
-                imgLeftHover = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
-                imgRightHover = ImageIO.read(getClass().getResource("/res/Right_Hover.png"));
-                URL boxUrl = getClass().getResource("/res/NPC/Textbox.png");
-                if (boxUrl != null) imgDialogBox = ImageIO.read(boxUrl);
-            } catch (IOException e) {
-                System.err.println("โหลดรูปภาพไม่สำเร็จ");
+                BufferedImage bgImage = ImageIO.read(getClass().getResource("/res/bg/bg_" + i + ".png"));
+                newScene.setBackgroundImage(bgImage);
+            } catch (Exception e) {
+                System.err.println("หารูปไม่เจอ");
             }
 
-            overlay = new DialogueOverlay(FontManager.pspimpdeedIIIFont, imgDialogBox);
-            titleOverlay = new SceneTitleOverlay(FontManager.pspimpdeedIIIFont);
+            scenes.put(sceneId, newScene);
+        }
 
-            // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
-            for (int i = 1; i <= 11; i++) {
-                String sceneId = "scene_" + i;
-                Scene newScene = new Scene(sceneId);
+        // กำหนดลูกศรซ้าย-ขวา
+        setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_2", "scene_1", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_4", "scene_5", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_5", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_6", "scene_7", "scene_8", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_7", null, "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_8", "scene_6", "scene_9", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_9", "scene_8", "scene_10", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_10", "scene_9", "scene_11", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_11", "scene_10", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
 
-                try {
-                    BufferedImage bgImage = ImageIO.read(getClass().getResource("/res/bg_" + i + ".png"));
-                    newScene.setBackgroundImage(bgImage);
-                } catch (Exception e) {
-                    System.err.println("หารูปไม่เจอ");
-                }
+        scenes.put("qte_choke", new SceneQTE_Choke("qte_choke", this, this.pendingPlayer));
 
-                scenes.put(sceneId, newScene);
+        setupSpecificObjects();
+
+        for (entities.GameObject obj : scenes.get("scene_2").getObjectsInScene()) {
+            if (obj instanceof Door && obj.getID().equals("right_scene_2")) {
+                ((Door) obj).setSpawnX(1550);
+                break;
             }
-
-            // กำหนดลูกศรซ้าย-ขวา
-            setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_2", "scene_1", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_4", "scene_5", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_5", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_6", "scene_7", "scene_8", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_7", null, "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_8", "scene_6", "scene_9", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_9", "scene_8", "scene_10", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_10", "scene_9", "scene_11", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-            setupArrows("scene_11", "scene_10", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-
-            scenes.put("qte_choke", new SceneQTE_Choke("qte_choke", this, this.pendingPlayer));
-
-            setupSpecificObjects();
-
-            for (entities.GameObject obj : scenes.get("scene_2").getObjectsInScene()) {
-                if (obj instanceof Door && obj.getID().equals("right_scene_2")) {
-                    ((Door) obj).setSpawnX(1550);
-                    break;
-                }
-            }
+        }
         currentScene = scenes.get("scene_2");
     }
 
@@ -144,7 +148,7 @@ public class SceneManager {
                 }
 
                 DialogueLine[] script = {
-                        new DialogueLine("ระบบ", "คุณได้รับ ["+ name +"]", null, null)
+                        new DialogueLine("ระบบ", "คุณได้รับ [" + name + "]", null, null)
                 };
 
                 overlay.setCharacterTransform(0, 0, 0, 0, 0, 0, 0, 0);
@@ -185,6 +189,7 @@ public class SceneManager {
     }
 
     public void setupSpecificObjects() {
+
         try {
             URL urlGirlIdle = getClass().getResource("/res/NPC/NPC_ girl.png");
             URL urlGirlTalk = getClass().getResource("/res/NPC/NPC_ girl_talk.png");
@@ -220,12 +225,12 @@ public class SceneManager {
         Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "candleStroke.png");
         Item Knife = createPickUpItem("knife", 1200, 700, 100, 100, "มีดอาคม", "มีดอวยคม", "magicKnife.png", "magicKnife.png");
         Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "medmed.png", "medmed.png");
-        Item Parasite = createPickUpItem("parasite", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย",  "kafak.jpg", "kafak.jpg");
+        Item Parasite = createPickUpItem("parasite", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.jpg", "kafak.jpg");
         DialogueLine[] flowerScript = {
                 new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
                 new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
         };
-        Item Flower = createStoryItem("flower", 1500, 700, 100, 100, "ดอกไม้จันทน์", "ดอกไม้จันทน์",  "flowerJun.png", "flowerJun.png", flowerScript);
+        Item Flower = createStoryItem("flower", 1500, 700, 100, 100, "ดอกไม้จันทน์", "ดอกไม้จันทน์", "flowerJun.png", "flowerJun.png", flowerScript);
         //scene_2
         Item Daddy = new Item("daddy", 900, 700, 100, 100, "แด๊ดดี้", "พ่อเองงับ", "daddy.png", "candleStroke.png") {
             @Override
@@ -234,10 +239,9 @@ public class SceneManager {
                     system.ObjectiveManager.getInstance().advanceObjective();
                     p.getInventory().removeItemId("flower");
                     unlockArrow("scene_2", "right_scene_2");
-                }
-                else {
+                } else {
                     DialogueLine[] flowerScript = {
-                        new DialogueLine("พระเอก", "ฉันน่าจะต้องไปเอาดอกไม้จันทน์มาวางตรงนี้นะ", null, mainTalk),
+                            new DialogueLine("พระเอก", "ฉันน่าจะต้องไปเอาดอกไม้จันทน์มาวางตรงนี้นะ", null, mainTalk),
                     };
                     overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                     overlay.startDialogue(flowerScript, () -> {
@@ -264,13 +268,42 @@ public class SceneManager {
         Item Locker = new Item("locker", 1248, 550, 356, 303, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
-              //this.setVisible(false);
+                //this.setVisible(false);
             }
         };
         Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "candleStroke.png") {
             @Override
             public void onInteract(Player p) {
                 ui.DiaryUi.getInstance().openDiary();
+            }
+        };
+
+        //scene_8
+        Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "magicKnife.png", "magicKnife.png");
+        Knife2.setVisible(false);
+
+        Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
+
+            private boolean[] isSolved = {false};
+            private int[] savedAngles = {0, 90};
+
+            @Override
+            public void onInteract(Player p) {
+                if (!isSolved[0]) {
+                    ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                    RotateNariga minigame = new RotateNariga(mainFrame, savedAngles, isSolved, () -> {
+
+                        this.changeImage(334, 223, 195, 593,"picClockOpen.png", "picClockOpen.png");
+                        // โชว์มีดอาคม
+                        Knife2.setVisible(true);
+                    });
+                    mainFrame.openMinigame(minigame);
+                }
+            }
+
+            @Override
+            public boolean isInteractable() {
+                return !isSolved[0];
             }
         };
 
@@ -319,6 +352,8 @@ public class SceneManager {
         Scene scene_4 = scenes.get("scene_4");
         Scene scene_5 = scenes.get("scene_5");
         Scene scene_6 = scenes.get("scene_6");
+        Scene scene_8 = scenes.get("scene_8");
+
         if (scene_1 != null) {
             scene_1.addGameObject(Daddy);
             scene_1.addGameObject(npcGirl);
@@ -339,6 +374,10 @@ public class SceneManager {
             scene_6.addGameObject(Locker);
             scene_6.addGameObject(Chest);
         }
+        if (scene_8 != null) {
+            scene_8.addGameObject(miniGameClock);
+            scene_8.addGameObject(Knife2);
+        }
 
         //ล็อค Scene 2
         DialogueLine[] lockScript = {
@@ -346,6 +385,7 @@ public class SceneManager {
         };
         lockArrow("scene_2", "right_scene_2", lockScript);
     }
+
 
     public void lockArrow(String sceneId, String arrowId, DialogueLine[] script) {
         Scene scene = scenes.get(sceneId);
@@ -475,6 +515,10 @@ public class SceneManager {
 
         if (titleOverlay != null) {
             titleOverlay.render(g2d, 1920);
+        }
+
+        if (overlay != null && overlay.isActive()) {
+            overlay.render(g2d, 1920, 1080);
         }
     }
 
