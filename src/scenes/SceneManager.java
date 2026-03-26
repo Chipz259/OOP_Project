@@ -163,8 +163,8 @@ public class SceneManager {
 
         setupSpecificObjects();
 
-        for (entities.GameObject obj : scenes.get("scene_2").getObjectsInScene()) {
-            if (obj instanceof Door && obj.getID().equals("right_scene_2")) {
+        for (entities.GameObject obj : scenes.get("scene_13").getObjectsInScene()) {
+            if (obj instanceof Door && obj.getID().equals("right_scene_13")) {
                 ((Door) obj).setSpawnX(1550);
                 break;
             }
@@ -260,7 +260,6 @@ public class SceneManager {
         //scene_1
         Item Candle = createPickUpItem("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleStroke.png");
         Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "waterBottle.png", "candleStroke.png");
-        Item Knife = createPickUpItem("knife", 1200, 700, 100, 100, "มีดอาคม", "มีดอวยคม", "magicKnife.png", "magicKnife.png");
         Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "medmed.png", "medmed.png");
         Item Parasite = createPickUpItem("parasite", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.jpg", "kafak.jpg");
         DialogueLine[] flowerScript = {
@@ -293,13 +292,13 @@ public class SceneManager {
                     if (fadeTransition != null && !fadeTransition.isFading()) {
                         fadeTransition.executeFade(700, 0, 500, () -> {
                             loadScene("scene_12");
-                            DialogueLine[] flowerScript = {
+                            DialogueLine[] PlayerScript = {
                                     new DialogueLine("พระเอก", "....", null, mainIdle),
                                     new DialogueLine("พระเอก", "งานศพจบแล้ว ทุกคนกลับหมดแล้ว", null, mainTalk),
                                     new DialogueLine("พระเอก", "เหนื่อยมากเลย ฉันควรกลับบ้านไปนอน", null, mainTalk),
                             };
                             overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
-                            overlay.startDialogue(flowerScript, () -> {
+                            overlay.startDialogue(PlayerScript, () -> {
                             });
                         });
                     }
@@ -317,13 +316,6 @@ public class SceneManager {
             @Override
             public boolean isInteractable() {
                 return !isFlower;
-            }
-        };
-        //scene_4
-        Item Clock = new Item("clock", 900, 700, 100, 100, "นาฬิกา", "นาฬิกาคุณปู่", "candle.png", "candleStroke.png") {
-            @Override
-            public void onInteract(Player p) {
-
             }
         };
         //scene_5
@@ -419,7 +411,6 @@ public class SceneManager {
         //เพิ่มของเข้า Scenes
         Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
-        Scene scene_4 = scenes.get("scene_4");
         Scene scene_5 = scenes.get("scene_5");
         Scene scene_6 = scenes.get("scene_6");
         Scene scene_8 = scenes.get("scene_8");
@@ -433,9 +424,6 @@ public class SceneManager {
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
-        }
-        if (scene_4 != null) {
-            scene_4.addGameObject(Clock);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
