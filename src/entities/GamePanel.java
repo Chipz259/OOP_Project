@@ -231,7 +231,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    private void stopPlayerMovement() {
+    public void stopPlayerMovement() {
         keyH.left = false;
         keyH.right = false;
 

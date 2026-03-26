@@ -24,7 +24,7 @@ public class RotateNarigaHandler extends MouseAdapter {
             int nowAngle [] = (rn.getKemAngle());
             System.out.println(((KemImagePanel) panel).getAngle());
             if (Arrays.equals(targetAngle, nowAngle)) {
-                rn.setFinishRotateNariga(true);
+                rn.winClose();
                 System.out.println("You win");
             }
         }
