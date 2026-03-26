@@ -73,7 +73,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         loadCustomFont();
         inventory = new Inventory("slots.png", tutorialRef);
-        mainPlayer = new Player("player", 1650, 550, 150, 313, tutorialRef);
+        mainPlayer = new Player("player", 1650, 530, 180, 360, tutorialRef);
+
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
