@@ -12,9 +12,11 @@ public class ActionHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String opp = e.getActionCommand();
-        switch (opp) {
-            case "Down" -> slot.updateSlot(-1);
-            case "Up" -> slot.updateSlot(1);
+        if(!UnlockBox.isFinished()){
+            switch (opp) {
+                case "Down" -> slot.updateSlot(-1);
+                case "Up" -> slot.updateSlot(1);
+            }
         }
     }
 }
