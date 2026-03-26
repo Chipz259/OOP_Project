@@ -54,6 +54,7 @@ public class Inventory {
         if (hasItem("candel") && hasItem("water")) {
             tutorial.showTutorial("Combine");
             System.out.println("PopUp Tutorial Nowwwwwww");
+        }
     }
     public boolean removeItemId(String itemName) {
         for (int i = 0; i < slots.length; i++) {
