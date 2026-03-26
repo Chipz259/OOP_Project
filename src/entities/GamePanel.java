@@ -8,6 +8,8 @@ import system.MouseHandler;
 import ui.MainGameFrame;
 import ui.SettingPanel;
 import ui.DiaryUi;
+import ui.Tutorial;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -29,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
     private MainGameFrame parentFrame;
     private JButton btnSetting;
     private ImageIcon settingIcon, settingHoverIcon;
+    Tutorial tutorialRef = null;
 
     public GameObject targetItem = null;
     public FadeTransition fadeTransition;
@@ -36,6 +39,9 @@ public class GamePanel extends JPanel implements Runnable {
     public GamePanel(MainGameFrame parentFrame, FadeTransition fadeTransition) {
         this.parentFrame = parentFrame;
         this.fadeTransition = fadeTransition;
+        if (parentFrame != null) {
+            tutorialRef = parentFrame.getTutorial();
+        }
 
         this.setPreferredSize(new Dimension(1920, 1080));
         this.setBackground(Color.BLACK);
@@ -66,8 +72,8 @@ public class GamePanel extends JPanel implements Runnable {
         btnSetting.setFocusable(false);
 
         loadCustomFont();
-        inventory = new Inventory("slots.png");
-        mainPlayer = new Player("player", 1650, 550, 150, 313);
+        inventory = new Inventory("slots.png", tutorialRef);
+        mainPlayer = new Player("player", 1650, 550, 150, 313, tutorialRef);
         sceneManager = new SceneManager(mainPlayer);
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);

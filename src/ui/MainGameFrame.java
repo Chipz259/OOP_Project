@@ -44,14 +44,15 @@ public class MainGameFrame extends JFrame {
         fadeTransition.setBounds(0, 0, widthSystem, heightSystem);
         initMenuPanel();
 
+        tutorial = new Tutorial(this);
+        tutorial.setBounds(0, 0, widthSystem, heightSystem);
+
         gamePanel = new GamePanel(this, fadeTransition);
         cutscenePanel = new CutscenePanel();
         cardLayout = new CardLayout();
         mainCardPanel = new JPanel(cardLayout);
         mainCardPanel.setBounds(0, 0, widthSystem, heightSystem);
 
-        tutorial = new Tutorial(this);
-        tutorial.setBounds(0, 0, widthSystem, heightSystem);
 
         mainCardPanel.add(imageBg, "MENU");
         mainCardPanel.add(cutscenePanel, "CUTSCENE");
@@ -291,6 +292,10 @@ public class MainGameFrame extends JFrame {
 
     public GamePanel getGamePanel() {
         return gamePanel;
+    }
+
+    public Tutorial getTutorial() {
+        return tutorial;
     }
 
     public static void main (String args[]){

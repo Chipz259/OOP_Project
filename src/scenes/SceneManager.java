@@ -156,6 +156,7 @@ public class SceneManager {
                 overlay.startDialogue(script, () -> {
                     if (p.getInventory().addItem(this)) {
                         System.out.println("ระบบ: เก็บ " + name + " เข้ากระเป๋าแล้ว");
+//                        p.getInventory().checkSpecialEvents();
                         this.setCollected(true);
                         this.setVisible(false);
                     } else {
@@ -363,6 +364,8 @@ public class SceneManager {
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
+            scene_2.addGameObject(Candle);
+            scene_2.addGameObject(Water);
         }
         if (scene_4 != null) {
             scene_4.addGameObject(Clock);
