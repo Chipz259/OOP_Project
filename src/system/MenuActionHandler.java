@@ -39,7 +39,7 @@ public class MenuActionHandler implements ActionListener, MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        AudioManager.playSFX("src/res/sound/MouseHover.wav", -10.0f);
+        AudioManager.playSFX("src/res/sound/MouseHover.wav", -30.0f);
     }
 
     @Override

@@ -42,6 +42,10 @@ public class Inventory {
         return slots;
     }
 
+    public int getSelectedSlot() {
+        return selectedSlot;
+    }
+
     public boolean addItem(Item item) {
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] == null) {
@@ -78,6 +82,18 @@ public class Inventory {
                 }
             }
         } return false;
+    }
+    public boolean isItemSelected(String itemName) {
+        if (selectedSlot != -1 && slots[selectedSlot] != null) {
+            return slots[selectedSlot].getObjectId().equals(itemName);
+        }
+        return false;
+    }
+    public void removeSelectedItem() {
+        if (selectedSlot != -1) {
+            slots[selectedSlot] = null;
+            selectedSlot = -1;
+        }
     }
     public Item combineItems(Item item1, Item item2) {
         String id1 = item1.getObjectId();
