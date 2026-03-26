@@ -31,6 +31,5 @@ public class UpDownButton extends JButton {
         addActionListener(new ActionHandler(activateSlot));
         setIcon(new ImageIcon(img));
         setHorizontalAlignment(JLabel.CENTER);
-        setOpaque(false);
     }
 }

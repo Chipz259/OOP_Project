@@ -293,13 +293,13 @@ public class SceneManager {
                     if (fadeTransition != null && !fadeTransition.isFading()) {
                         fadeTransition.executeFade(700, 0, 500, () -> {
                             loadScene("scene_12");
-                            DialogueLine[] flowerScript = {
+                            DialogueLine[] fScript = {
                                     new DialogueLine("พระเอก", "....", null, mainIdle),
                                     new DialogueLine("พระเอก", "งานศพจบแล้ว ทุกคนกลับหมดแล้ว", null, mainTalk),
                                     new DialogueLine("พระเอก", "เหนื่อยมากเลย ฉันควรกลับบ้านไปนอน", null, mainTalk),
                             };
                             overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
-                            overlay.startDialogue(flowerScript, () -> {
+                            overlay.startDialogue(fScript, () -> {
                             });
                         });
                     }
