@@ -275,7 +275,7 @@ public class SceneManager {
         Item Candle = createPickUpItem("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleHover.png");
         Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "water.png", "candleStroke.png");
         Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "rosary.png", "rosary.png");
-        Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.jpg", "kafak.jpg");
+        Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.png", "kafak.png");
         DialogueLine[] flowerScript = {
                 new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
                 new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
@@ -307,7 +307,7 @@ public class SceneManager {
                         fadeTransition.executeFade(700, 0, 500, () -> {
                             loadScene("scene_12");
                             DialogueLine[] PlayerScript = {
-                                    new DialogueLine("พระเอก", "....", null, mainIdle),
+                                    new DialogueLine("พระเอก", "....", null, mainTalk),
                                     new DialogueLine("พระเอก", "งานศพจบแล้ว ทุกคนกลับหมดแล้ว", null, mainTalk),
                                     new DialogueLine("พระเอก", "เหนื่อยมากเลย ฉันควรกลับบ้านไปนอน", null, mainTalk),
                             };
@@ -347,7 +347,7 @@ public class SceneManager {
                 //this.setVisible(false);
             }
         };
-        Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "candleStroke.png") {
+        Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "chestHover.png") {
             @Override
             public void onInteract(Player p) {
                 ui.DiaryUi.getInstance().openDiary();
