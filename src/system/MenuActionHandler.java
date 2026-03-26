@@ -2,6 +2,8 @@ package system;
 
 import ui.CutscenePanel;
 import ui.MainGameFrame;
+
+import javax.swing.*;
 import java.awt.event.*;
 
 public class MenuActionHandler implements ActionListener, MouseListener {
@@ -15,13 +17,16 @@ public class MenuActionHandler implements ActionListener, MouseListener {
     public void actionPerformed(ActionEvent e) {
         String scanAction = e.getActionCommand();
 
-        if (scanAction.equals("Start")){
+        if (scanAction.equals("Start")) {
             action.startCutscene();
         }
-        else if (scanAction.equals("Setting")){
+        else if (scanAction.equals("Resume")) {
+            action.transitionToGame();
+        }
+        else if (scanAction.equals("Setting")) {
             action.toggleSetting(true, false);
         }
-        else if (scanAction.equals("Exit")){
+        else if (scanAction.equals("Exit")) {
             System.exit(0);
         }
     }

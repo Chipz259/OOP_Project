@@ -33,11 +33,14 @@ public class GameOverPanel extends JPanel {
         btnRetry.setIcon(retryNormal);
         btnRetry.setRolloverIcon(retryHover);
 
-        btnRetry.setBounds(860, 590, retryNormal.getIconWidth(), retryNormal.getIconHeight());
+        int startX = (getWidth() - 800) / 2;
+        int startY = (getHeight() - 600) / 2;
+
+        btnRetry.setBounds(startX + 1260, startY + 888, retryNormal.getIconWidth(), retryNormal.getIconHeight());
         btnRetry.setBorderPainted(false);
         btnRetry.setContentAreaFilled(false);
         btnRetry.setFocusPainted(false);
-        btnRetry.setFocusable(false); // ป้องกันการแย่ง Focus
+        btnRetry.setFocusable(false);
         btnRetry.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.add(btnRetry);
 
