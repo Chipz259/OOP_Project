@@ -26,8 +26,10 @@ public class MainGameFrame extends JFrame {
     private FadeTransition fadeTransition;
     private GameOverPanel gameOverPanel;
     private Tutorial tutorial;
+    private static MainGameFrame instance;
 
     public MainGameFrame() {
+        instance = this;
         this.setUndecorated(true);
         layeredPane = new JLayeredPane();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -64,7 +66,10 @@ public class MainGameFrame extends JFrame {
         layeredPane.add(settingPanel, JLayeredPane.PALETTE_LAYER);      // ชั้นเมนู Setting (ต้องอยู่เหนือเมนูหลัก)
         layeredPane.add(gameOverPanel, JLayeredPane.MODAL_LAYER);
         layeredPane.add(tutorial, JLayeredPane.POPUP_LAYER);
+        layeredPane.add(DiaryUi.getInstance(), JLayeredPane.DRAG_LAYER);
         layeredPane.add(fadeTransition, JLayeredPane.DRAG_LAYER);       // ชั้นหน้าสุดสำหรับฉาก Fade
+
+        DiaryUi.getInstance().setBounds(0, 0, widthSystem, heightSystem);
 
         cardLayout.show(mainCardPanel, "MENU");
         this.setContentPane(layeredPane);
@@ -279,6 +284,10 @@ public class MainGameFrame extends JFrame {
 
     public GamePanel getGamePanel() {
         return gamePanel;
+    }
+
+    public static MainGameFrame getInstance() {
+        return instance;
     }
 
     public Tutorial getTutorial() {
