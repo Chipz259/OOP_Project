@@ -24,6 +24,7 @@ public class SceneManager {
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
     private BufferedImage girlIdle, girlTalk, mainIdle, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
+    private boolean isFirstTimeScene3 = true, isFirstTimeScene14 = true;
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -83,12 +84,18 @@ public class SceneManager {
 
         }
         else if (sceneId.equals("scene_3")) {
-            DialogueLine[] scene3Intro = {
-                    new DialogueLine("พระเอก", "ถึงบ้านซะที... บรรยากาศดูแปลกๆ ไปนะ", null, mainTalk)
-            };
-            overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
-            overlay.startDialogue(scene3Intro, () -> {
-            });
+
+            if (isFirstTimeScene3) {
+                DialogueLine[] scene3Intro = {
+                        new DialogueLine("พระเอก", "ถึงบ้านซะที... บรรยากาศดูแปลกๆ ไปนะ", null, mainTalk)
+                };
+                overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                overlay.startDialogue(scene3Intro, () -> {
+                });
+
+                isFirstTimeScene3 = false;
+            }
+
         }
         else if (sceneId.equals("scene_4")) {
 
@@ -96,13 +103,17 @@ public class SceneManager {
         else if (sceneId.equals("scene_5")) {
 
         }
-        else if (sceneId.equals("scene_6")) {
-            DialogueLine[] scene3Intro = {
-                    new DialogueLine("พระเอก", "อะเจ้ยยย ผีหลอกกกก", null, mainTalk)
-            };
-            overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
-            overlay.startDialogue(scene3Intro, () -> {
-            });
+        else if (sceneId.equals("scene_14")) {
+            if (isFirstTimeScene14) {
+                DialogueLine[] scene3Intro = {
+                        new DialogueLine("พระเอก", "อะเจ้ยยย ผีหลอกกกก", null, mainTalk)
+                };
+                overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                overlay.startDialogue(scene3Intro, () -> {
+                });
+
+                isFirstTimeScene14 = false;
+            }
         }
     }
 
@@ -130,7 +141,7 @@ public class SceneManager {
         titleOverlay = new SceneTitleOverlay(FontManager.pspimpdeedIIIFont);
 
         // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
-        for (int i = 1; i <= 13; i++) {
+        for (int i = 1; i <= 15; i++) {
             String sceneId = "scene_" + i;
             Scene newScene = new Scene(sceneId);
 
@@ -152,6 +163,8 @@ public class SceneManager {
         setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_4", "scene_5", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_5", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_14", null, "scene_15", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_15", "scene_14", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_6", "scene_7", "scene_8", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_7", null, "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_8", "scene_6", "scene_9", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);

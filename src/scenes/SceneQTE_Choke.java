@@ -108,7 +108,7 @@ public class SceneQTE_Choke extends Scene {
                 if (fadeAlpha >= 255) {
                     fadeAlpha = 255;
 
-                    sceneManager.startTransition("scene_6", player, 900, 550);
+                    sceneManager.startTransition("scene_14", player, 900, 550);
                 }
             }
         }
