@@ -449,6 +449,7 @@ public class SceneManager {
         //เพิ่มของเข้า Scenes
         Scene scene_1 = scenes.get("scene_1");
         Scene scene_2 = scenes.get("scene_2");
+        Scene scene_4 = scenes.get("scene_4");
         Scene scene_5 = scenes.get("scene_5");
         Scene scene_6 = scenes.get("scene_6");
         Scene scene_8 = scenes.get("scene_8");
@@ -464,6 +465,10 @@ public class SceneManager {
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
             scene_2.addGameObject(Candle);
+        }
+        if (scene_4 != null) {
+            scene_4.addGameObject(miniGameClock);
+            scene_4.addGameObject(Knife2);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
