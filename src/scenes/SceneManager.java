@@ -1,6 +1,7 @@
 package scenes;
 
 import Minigame.RotateNarigaPackage.RotateNariga;
+import Minigame.RotateYanPackage.RotateYan;
 import entities.*;
 import system.*;
 import ui.*;
@@ -332,7 +333,7 @@ public class SceneManager {
             }
         };
         //scene_5
-        Item Bed = new Item("bed", 900, 700, 100, 100, "เตียง", "เตียงนะจ๊ะ", "candle.png", "candleStroke.png") {
+        Item Bed = new Item("bed", 110, 490, 842, 315, "เตียง", "เตียงนะจ๊ะ", "bed.png", "bed.png") {
             @Override
             public void onInteract(Player p) {
                 //this.setVisible(false);
@@ -382,6 +383,27 @@ public class SceneManager {
             }
         };
 
+        Item Door = new Item("miniGameYan", 1850, 365, 72, 708,"ประตู", "", "DoorPic.png", "DoorPic.png") {
+
+            private boolean[] isSolved = {false};
+
+            @Override
+            public void onInteract(Player p) {
+                ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                RotateYan minigame = new RotateYan(mainFrame, () -> {
+                    isSolved[0] = true;
+                });
+                mainFrame.openMinigame(minigame);
+            }
+
+            @Override
+            public boolean isInteractable() {
+                return !isSolved[0];
+            }
+
+        };
+
+
         NPC npcGirl = new NPC("Girl", 580, 530, 170, 333, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
         NPC evil = new NPC("Evil", 150, 525, 190, 368, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
         NPC npc3 = new NPC("Npc3", 1350, 530, 170, 333, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
@@ -427,6 +449,7 @@ public class SceneManager {
         Scene scene_5 = scenes.get("scene_5");
         Scene scene_6 = scenes.get("scene_6");
         Scene scene_8 = scenes.get("scene_8");
+        Scene scene_15 = scenes.get("scene_15");
 
         if (scene_1 != null) {
             scene_1.addGameObject(Daddy_Pic);
@@ -449,6 +472,9 @@ public class SceneManager {
             scene_8.addGameObject(miniGameClock);
             scene_8.addGameObject(Knife2);
         }
+        if (scene_15 != null) {
+            scene_15.addGameObject(Door);
+        }
     }
 
     private String getSceneDisplayName(String sceneId) {
@@ -467,6 +493,8 @@ public class SceneManager {
             case "scene_11" : return "ป่า";
             case "scene_12" : return "หน้าเมรุ";
             case "scene_13" : return "ด้านข้างเมรุ";
+            case "scene_14" : return "ห้องนอน";
+            case "scene_15" : return "ห้องโถง";
             case "qte_choke" : return null;
             default: return  sceneId;
         }
