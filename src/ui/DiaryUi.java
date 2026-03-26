@@ -103,9 +103,9 @@ public class DiaryUi extends JPanel {
         int startX = (getWidth() - 800) / 2;
         int startY = (getHeight() - 600) / 2;
 
-        btnLeft.setBounds(startX + 50, startY + 250, 35, 100);
-        btnRight.setBounds(startX + 713, startY + 250, 35, 100);
-        btnClose.setBounds(startX + 725, startY + 40, 25, 26);
+        btnLeft.setBounds(startX + 50, startY + 250, iconLeftNormal.getIconWidth(), iconLeftNormal.getIconHeight());
+        btnRight.setBounds(startX + 713, startY + 250, iconRightNormal.getIconWidth(), iconRightNormal.getIconHeight());
+        btnClose.setBounds(startX + 725, startY + 40, iconCloseNormal.getIconWidth(), iconCloseNormal.getIconHeight());
 
         // ซ่อน/โชว์ตามจำนวนหน้า
         btnLeft.setVisible(currentPage > 0);
