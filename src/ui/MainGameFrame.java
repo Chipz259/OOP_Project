@@ -272,7 +272,7 @@ public class MainGameFrame extends JFrame {
         }
     }
 
-    public void closeMinigame(){
+    public void closeMinigame() {
         cardLayout.show(mainCardPanel, "GAME");
         SwingUtilities.invokeLater(() -> {
             if (currentMinigamePanel != null) {
@@ -287,6 +287,7 @@ public class MainGameFrame extends JFrame {
                 gamePanel.requestFocusInWindow();
             }
         });
+    }
 
     public GamePanel getGamePanel() {
         return gamePanel;

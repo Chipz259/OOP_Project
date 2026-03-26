@@ -100,7 +100,7 @@ public class SceneManager {
                 Scene newScene = new Scene(sceneId);
 
                 try {
-                    BufferedImage bgImage = ImageIO.read(getClass().getResource("/res/bg_" + i + ".png"));
+                    BufferedImage bgImage = ImageIO.read(getClass().getResource("/res/bg/bg_" + i + ".png"));
                     newScene.setBackgroundImage(bgImage);
                 } catch (Exception e) {
                     System.err.println("หารูปไม่เจอ");
@@ -179,6 +179,9 @@ public class SceneManager {
         };
 
         //Scene_8
+        Item Knife2 = new Item("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "magicKnife.png", "magicKnife.png");
+        Knife2.setVisible(false);
+
         Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
 
             private boolean[] isSolved = {false};
@@ -190,6 +193,7 @@ public class SceneManager {
                     ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(getGamePanel());
                     RotateNariga minigame = new RotateNariga(mainFrame, savedAngles, isSolved, () -> {
                         this.changeImage(334, 223, 195, 593,"picClockOpen.png", "picClockOpen.png");
+                        Knife2.setVisible(true);
                     });
                     mainFrame.openMinigame(minigame);
                 }
@@ -199,6 +203,7 @@ public class SceneManager {
 
             }
         };
+
 
             BufferedImage girlIdle = null, girlTalk = null, mainIdle = null, mainTalk = null, evilIdle = null, evilTalk = null, npc3Idle = null, npc3Talk = null, npc2Idle = null, npc2Talk = null;
         try {
@@ -302,6 +307,7 @@ public class SceneManager {
         }
         if (scene_8 != null) {
             scene_8.addGameObject(miniGameClock);
+            scene_8.addGameObject(Knife2);
         }
     }
 
