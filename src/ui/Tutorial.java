@@ -12,22 +12,26 @@ import java.io.IOException;
 
 public class Tutorial extends JPanel {
     private MainGameFrame parent;
-    private BufferedImage[] tutorialImage;
+    private BufferedImage[] tutorialStartImage, tutorialCombineImage;
     private int currentImage = 0;
     private JButton btnLeft, btnRight, btnClose;
     private ImageIcon iconLeft, iconRight, iconCloseNormal, iconCloseHover;
     private Boolean isActive = false;
+    private String currentSceen;
 
     public Tutorial(MainGameFrame parent) {
         this.parent = parent;
+        currentSceen = "StartGame";
 
-        tutorialImage = new BufferedImage[5];
+        tutorialStartImage = new BufferedImage[3];
+        tutorialCombineImage = new BufferedImage[2];
         try {
-            tutorialImage[0] = ImageIO.read(getClass().getResource("/res/Tutorial1.png"));
-            tutorialImage[1] = ImageIO.read(getClass().getResource("/res/Tutorial2.png"));
-            tutorialImage[2] = ImageIO.read(getClass().getResource("/res/Tutorial3.png"));
-            tutorialImage[3] = ImageIO.read(getClass().getResource("/res/Tutorial4.png"));
-            tutorialImage[4] = ImageIO.read(getClass().getResource("/res/Tutorial5.png"));
+            tutorialStartImage[0] = ImageIO.read(getClass().getResource("/res/Tutorial1.png"));
+            tutorialStartImage[1] = ImageIO.read(getClass().getResource("/res/Tutorial2.png"));
+            tutorialStartImage[2] = ImageIO.read(getClass().getResource("/res/Tutorial3.png"));
+
+            tutorialCombineImage[0] = ImageIO.read(getClass().getResource("/res/Tutorial4.png"));
+            tutorialCombineImage[1] = ImageIO.read(getClass().getResource("/res/Tutorial5.png"));
 
             iconLeft = new ImageIcon(new ImageIcon("src/res/TutorialBtnLeft.png").getImage().getScaledInstance(110, 74, Image.SCALE_SMOOTH));
             iconRight = new ImageIcon(new ImageIcon("src/res/TutorialBtnRight.png").getImage().getScaledInstance(110, 74, Image.SCALE_SMOOTH));
@@ -43,14 +47,14 @@ public class Tutorial extends JPanel {
         btnLeft = new JButton(iconLeft);
         setupButtonStyle(btnLeft);
         btnLeft.setBounds(400, 490, 110, 74);
-        btnLeft.addActionListener(e -> prevPage());
+        btnLeft.addActionListener(e -> prevPage(currentSceen));
         this.add(btnLeft);
 
         // Button Right
         btnRight = new JButton(iconRight);
         setupButtonStyle(btnRight);
         btnRight.setBounds(1410, 490, 110, 74);
-        btnRight.addActionListener(e -> nextPage());
+        btnRight.addActionListener(e -> nextPage(currentSceen));
         this.add(btnRight);
 
         // Button Close
@@ -77,32 +81,60 @@ public class Tutorial extends JPanel {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
-    private void nextPage() {
-        if (currentImage < tutorialImage.length - 1) {
-            currentImage++;
-            updateButtonStates();
-            repaint();
+    private void nextPage(String sceen) {
+        if (sceen.equals("StartGame")) {
+            if (currentImage < tutorialStartImage.length - 1) {
+                currentImage++;
+                updateButtonStates(sceen);
+                repaint();
+            }
+        }
+        else if (sceen.equals("Combine")) {
+            if (currentImage < tutorialCombineImage.length - 1) {
+                currentImage++;
+                updateButtonStates(sceen);
+                repaint();
+            }
         }
     }
 
-    private void prevPage() {
-        if (currentImage > 0) {
-            currentImage--;
-            updateButtonStates();
-            repaint();
+    private void prevPage(String sceen) {
+        if (sceen.equals("StartGame")) {
+            if (currentImage > 0) {
+                currentImage--;
+                updateButtonStates(sceen);
+                repaint();
+            }
         }
+        else if (sceen.equals("Combine")) {
+            if (currentImage > 0) {
+                currentImage--;
+                updateButtonStates(sceen);
+                repaint();
+            }
+        }
+
     }
 
-    private void updateButtonStates() {
-        btnLeft.setVisible(currentImage > 0);
-        btnRight.setVisible(currentImage < tutorialImage.length - 1);
-        btnClose.setVisible(currentImage == tutorialImage.length - 1);
+    private void updateButtonStates(String sceen) {
+        if (sceen.equals("StartGame")) {
+            btnLeft.setVisible(currentImage > 0);
+            btnRight.setVisible(currentImage < tutorialStartImage.length - 1);
+            btnClose.setVisible(currentImage == tutorialStartImage.length - 1);
+        }
+        else if (sceen.equals("Combine")) {
+            btnLeft.setVisible(currentImage > 0);
+            btnRight.setVisible(currentImage < tutorialCombineImage.length - 1);
+            btnClose.setVisible(currentImage == tutorialCombineImage.length - 1);
+        }
+
     }
 
-    public void showTutorial() {
+    public void showTutorial(String sceen) {
+        currentSceen = sceen;
         this.currentImage = 0;
         this.isActive = true;
-        updateButtonStates();
+        updateButtonStates(currentSceen);
         this.setVisible(true);
         this.requestFocusInWindow();
         repaint();
@@ -126,22 +158,43 @@ public class Tutorial extends JPanel {
         g2d.setColor(new Color(0, 0, 0, 200));
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        if (tutorialImage != null && tutorialImage[currentImage] != null) {
-            BufferedImage img = tutorialImage[currentImage];
+        if (currentSceen.equals("StartGame")) {
+            if (tutorialStartImage != null && tutorialStartImage[currentImage] != null) {
+                BufferedImage img = tutorialStartImage[currentImage];
 
-            // ขนาด 80%
-            int newW = (int) (getWidth() * 0.8);
-            int newH = (int) (newW * ((double) img.getHeight() / img.getWidth()));
+                // ขนาด 80%
+                int newW = (int) (getWidth() * 0.8);
+                int newH = (int) (newW * ((double) img.getHeight() / img.getWidth()));
 
-            if (newH > getHeight() * 0.8) {
-                newH = (int) (getHeight() * 0.8);
-                newW = (int) (newH * ((double) img.getWidth() / img.getHeight()));
+                if (newH > getHeight() * 0.8) {
+                    newH = (int) (getHeight() * 0.8);
+                    newW = (int) (newH * ((double) img.getWidth() / img.getHeight()));
+                }
+
+                int x = (getWidth() - newW) / 2;
+                int y = (getHeight() - newH) / 2;
+
+                g2d.drawImage(img, x, y, newW, newH, null);
             }
+        }
+        else if (currentSceen.equals("Combine")) {
+            if (tutorialCombineImage != null && tutorialCombineImage[currentImage] != null) {
+                BufferedImage img = tutorialCombineImage[currentImage];
 
-            int x = (getWidth() - newW) / 2;
-            int y = (getHeight() - newH) / 2;
+                // ขนาด 80%
+                int newW = (int) (getWidth() * 0.8);
+                int newH = (int) (newW * ((double) img.getHeight() / img.getWidth()));
 
-            g2d.drawImage(img, x, y, newW, newH, null);
+                if (newH > getHeight() * 0.8) {
+                    newH = (int) (getHeight() * 0.8);
+                    newW = (int) (newH * ((double) img.getWidth() / img.getHeight()));
+                }
+
+                int x = (getWidth() - newW) / 2;
+                int y = (getHeight() - newH) / 2;
+
+                g2d.drawImage(img, x, y, newW, newH, null);
+            }
         }
     }
 }
