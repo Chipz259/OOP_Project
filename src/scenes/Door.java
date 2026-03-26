@@ -109,7 +109,7 @@ public class Door extends GameObject implements Interactable {
     public void onInteract(Player p) {
         if (isLocked) {
             if (sceneM != null && sceneM.getOverlay() != null && lockedScript != null) {
-                System.out.println("ระบบ: ประตูล็อคอยู่! โชว์ข้อความ...");
+                System.out.println("ระบบ: ล็อคอยู่ ไปไม่ได้");
                 sceneM.getOverlay().setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                 sceneM.getOverlay().startDialogue(lockedScript, () -> {
                 });

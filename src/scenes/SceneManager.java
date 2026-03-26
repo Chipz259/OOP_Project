@@ -340,7 +340,7 @@ public class SceneManager {
             scene_6.addGameObject(Chest);
         }
 
-        //ล็อค Scene
+        //ล็อค Scene 2
         DialogueLine[] lockScript = {
                 new DialogueLine("พระเอก", "ฉันยังไปตอนนี้ไม่ได้ ต้องเอาดอกไม้จันทน์ไปวางให้พ่อก่อน...", null, mainTalk)
         };
