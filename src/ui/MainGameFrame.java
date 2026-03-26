@@ -20,7 +20,7 @@ public class MainGameFrame extends JFrame {
     private Dimension screenSize;
     private int widthSystem, heightSystem, settingW, settingH;
     private CardLayout cardLayout;
-    private JPanel mainCardPanel;
+    private JPanel mainCardPanel, currentMinigamePanel = null;
     private CutscenePanel cutscenePanel;
     private GamePanel gamePanel;
     private FadeTransition fadeTransition;
@@ -253,6 +253,33 @@ public class MainGameFrame extends JFrame {
         gamePanel.sceneManager.startTransition("scene_5", gamePanel.mainPlayer, 800, 550);
 
         gamePanel.requestFocusInWindow();
+    }
+
+    public void openMinigame(JPanel minigamePanel) {
+        this.currentMinigamePanel = minigamePanel;
+        mainCardPanel.add(minigamePanel, "MINIGAME");
+        cardLayout.show(mainCardPanel, "MINIGAME");
+
+        if (gamePanel != null) {
+            gamePanel.stopPlayerMovement();
+        }
+    }
+
+    public void closeMinigame(){
+        cardLayout.show(mainCardPanel, "GAME");
+        SwingUtilities.invokeLater(() -> {
+            if (currentMinigamePanel != null) {
+                mainCardPanel.remove(currentMinigamePanel);
+                currentMinigamePanel = null;
+            }
+
+            mainCardPanel.revalidate();
+            mainCardPanel.repaint();
+
+            if (gamePanel != null) {
+                gamePanel.requestFocusInWindow();
+            }
+        });
     }
 
     public static void main(String args[]) {

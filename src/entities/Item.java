@@ -98,6 +98,30 @@ public class Item extends GameObject implements Interactable {
         }
     }
 
+    public void changeImage(int x, int y, int width, int height, String newDefaultImg, String newHoverImg) {
+        try {
+            URL defaulUrl = getClass().getResource("/res/" + newDefaultImg);
+            URL hoverUrl = getClass().getResource("/res/" + newHoverImg);
+
+            if (defaulUrl != null) {
+                BufferedImage image = ImageIO.read(defaulUrl);
+                setSprite(image);
+            }
+
+            if (hoverUrl != null) {
+                this.hoverSprite = ImageIO.read(hoverUrl);
+            }
+
+            setX(x);
+            setY(y);
+            setWidth(width);
+            setHeight(height);
+
+        } catch (Exception e) {
+            System.out.println("โหลดภาพไม่ได้จ้าาาา");
+        }
+    }
+
     @Override
     public void onHover() {
         this.isHovered = true;

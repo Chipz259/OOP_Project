@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class SceneManager {
     private FadeTransition fadeTransition;
@@ -131,7 +132,7 @@ public class SceneManager {
                     break;
                 }
             }
-        currentScene = scenes.get("scene_2");
+            currentScene = scenes.get("scene_2");
     }
 
     public void setupSpecificObjects() {
@@ -174,6 +175,28 @@ public class SceneManager {
             @Override
             public void onInteract(Player p) {
                 ui.DiaryUi.getInstance().openDiary();
+            }
+        };
+
+        //Scene_8
+        Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
+
+            private boolean[] isSolved = {false};
+            private int[] savedAngles = {0, 90};
+
+            @Override
+            public void onInteract(Player p){
+                if (!isSolved[0]) {
+                    ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(getGamePanel());
+                    RotateNariga minigame = new RotateNariga(mainFrame, savedAngles, isSolved, () -> {
+                        this.changeImage(334, 223, 195, 593,"picClockOpen.png", "picClockOpen.png");
+                    });
+                    mainFrame.openMinigame(minigame);
+                }
+                else {
+                    System.out.println("เล่นผ่านแล้ว");
+                }
+
             }
         };
 
@@ -252,6 +275,7 @@ public class SceneManager {
         Scene scene_4 = scenes.get("scene_4");
         Scene scene_5 = scenes.get("scene_5");
         Scene scene_6 = scenes.get("scene_6");
+        Scene scene_8 = scenes.get("scene_8");
         if (scene_1 != null) {
             scene_1.addGameObject(Daddy);
             scene_1.addGameObject(npcGirl);
@@ -275,6 +299,9 @@ public class SceneManager {
         if (scene_6 != null) {
             scene_6.addGameObject(Locker);
             scene_6.addGameObject(Chest);
+        }
+        if (scene_8 != null) {
+            scene_8.addGameObject(miniGameClock);
         }
     }
 
