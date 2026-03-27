@@ -1,8 +1,5 @@
 package system;
-import entities.GameObject;
-import entities.GamePanel;
-import entities.Interactable;
-import entities.Item;
+import entities.*;
 import scenes.Door;
 
 import java.awt.event.*;
@@ -91,12 +88,18 @@ public class MouseHandler extends MouseAdapter {
                         else if (obj instanceof scenes.Door) {
                             ((scenes.Door) obj).setIsHovered(true);
                         }
+                        else if (obj instanceof NPC) {
+                            ((NPC) obj).setHovered(true);
+                        }
                     } else {
                         if (obj instanceof Item) {
                             ((Item) obj).setHovered(false);
                         }
                         else if (obj instanceof scenes.Door) {
                             ((scenes.Door) obj).setIsHovered(false);
+                        }
+                        else if (obj instanceof NPC) {
+                            ((NPC) obj).setHovered(false);
                         }
                     }
                 }
