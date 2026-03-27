@@ -894,8 +894,10 @@ public class SceneManager {
             case "scene_12", "scene_13" -> AudioManager.resumeBGMusic("src/res/sound/BGM2.wav", 0.0f);
             case "scene_3" -> AudioManager.playSFX("src/res/sound/StartCar.wav", 0.0f);
             case "qte_choke" -> AudioManager.stopMusic();
-            case "scene_15" -> AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", -5.0f);
-            case "scene_16" -> AudioManager.playSFX("src/res/sound/ItemDropSound.wav", 0.0f);
+            case "scene_15" -> {
+                // ในห้องก่อนแปะประตู
+            }
+            case "scene_16" -> AudioManager.playSFX("src/res/sound/ItemDropSound.wav", -5.0f);
             default -> System.out.println("ระบบ PhayBGM at SceneManager : ยังไม่ได้ตั้งค่า " + sceneID);
         }
     }

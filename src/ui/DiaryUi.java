@@ -97,7 +97,7 @@ public class DiaryUi extends JPanel {
         int startY = getHeight() - 906;
 
         btnLeft.setBounds(startX, startY + 300, iconLeftNormal.getIconWidth(), iconLeftNormal.getIconHeight());
-        btnRight.setBounds(startX + 1225, startY + 300, iconRightNormal.getIconWidth(), iconRightNormal.getIconHeight());
+        btnRight.setBounds(startX + 1220, startY + 300, iconRightNormal.getIconWidth(), iconRightNormal.getIconHeight());
         btnClose.setBounds(startX + 1080, startY + 28, iconCloseNormal.getIconWidth(), iconCloseNormal.getIconHeight());
 
         // ซ่อน/โชว์ตามจำนวนหน้า
