@@ -1,5 +1,6 @@
 package scenes;
 
+import Minigame.KonKlongPackage.KonKlong;
 import Minigame.RotateNarigaPackage.RotateNariga;
 import Minigame.RotateYanPackage.RotateYan;
 import entities.*;
@@ -470,7 +471,9 @@ public class SceneManager {
         Item Locker = new Item("locker", 1248, 550, 356, 303, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "locker.png") {
             @Override
             public void onInteract(Player p) {
-
+                ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                KonKlong minigame = new KonKlong(mainFrame);
+                mainFrame.openMinigame(minigame);
             }
         };
 
