@@ -27,11 +27,11 @@ public class DiaryUi extends JPanel {
             bookImage[2] = ImageIO.read(getClass().getResource("/res/DiaryBG3.png"));
             bookImage[3] = ImageIO.read(getClass().getResource("/res/DiaryBG.png"));
 
-            iconLeftNormal = new ImageIcon(new ImageIcon("src/res/Left_Default.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
-            iconLeftHover = new ImageIcon(new ImageIcon("src/res/Left_Hover.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
-            iconRightNormal = new ImageIcon(new ImageIcon("src/res/Right_Default.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
-            iconRightHover = new ImageIcon(new ImageIcon("src/res/Right_Hover.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
-            iconCloseNormal = new ImageIcon(new ImageIcon("src/res/DiaryExitBtn.png").getImage().getScaledInstance(25, 26, Image.SCALE_SMOOTH));
+            iconLeftNormal = new ImageIcon(new ImageIcon("src/res/Left_Default.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconLeftHover = new ImageIcon(new ImageIcon("src/res/Left_Hover.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconRightNormal = new ImageIcon(new ImageIcon("src/res/Right_Default.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconRightHover = new ImageIcon(new ImageIcon("src/res/Right_Hover.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconCloseNormal = new ImageIcon(new ImageIcon("src/res/DiaryExitBtn.png").getImage().getScaledInstance(35, 36, Image.SCALE_SMOOTH));
 //            iconCloseHover = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
         } catch (Exception ex) {
             System.out.println("ระบบ Diary : โหลดไม่ขึ้น");
@@ -93,12 +93,12 @@ public class DiaryUi extends JPanel {
 
     private void updateButtonLayout() {
         // คำนวณตำแหน่งปุ่มให้สัมพันธ์กับตัวสมุดกึ่งกลางจอ
-        int startX = getWidth() - 1457;
+        int startX = getWidth() - 1600;
         int startY = getHeight() - 906;
 
-        btnLeft.setBounds(startX + 10, startY + 330, iconLeftNormal.getIconWidth(), iconLeftNormal.getIconHeight());
-        btnRight.setBounds(startX + 950, startY + 330, iconRightNormal.getIconWidth(), iconRightNormal.getIconHeight());
-        btnClose.setBounds(startX + 950, startY + 30, iconCloseNormal.getIconWidth(), iconCloseNormal.getIconHeight());
+        btnLeft.setBounds(startX, startY + 300, iconLeftNormal.getIconWidth(), iconLeftNormal.getIconHeight());
+        btnRight.setBounds(startX + 1220, startY + 300, iconRightNormal.getIconWidth(), iconRightNormal.getIconHeight());
+        btnClose.setBounds(startX + 1080, startY + 28, iconCloseNormal.getIconWidth(), iconCloseNormal.getIconHeight());
 
         // ซ่อน/โชว์ตามจำนวนหน้า
         btnLeft.setVisible(currentPage > 0);
