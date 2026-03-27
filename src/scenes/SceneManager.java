@@ -478,7 +478,7 @@ public class SceneManager {
 
         //scene_8
         Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
-        Knife2.setVisible(true);
+        Knife2.setVisible(false);
 
         Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
             private boolean[] isSolved = {false};
