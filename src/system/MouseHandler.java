@@ -109,5 +109,8 @@ public class MouseHandler extends MouseAdapter {
         } else {
             gamePanel.setCursor(Cursor.getDefaultCursor());
         }
+        if (gamePanel.mainPlayer != null && gamePanel.mainPlayer.getInventory() != null) {
+            gamePanel.mainPlayer.getInventory().handleHover(e.getX(), e.getY(), gamePanel.getWidth(), gamePanel.getHeight());
+        }
     }
 }

@@ -9,10 +9,12 @@ import javax.swing.*;
 public class JigsawFrame extends JPanel {
     private JPanel sup;
     private JigsawParts jigsawPart[];
-    private BufferedImage background;
+    private JButton exitButton;
+    private BufferedImage background, exit;
     public JigsawFrame(){
         try{
             background = ImageIO.read(getClass().getResource("Image/BG pic.png"));
+            exit = ImageIO.read(getClass().getResource("Image/Exit_minigame_btn.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,8 +26,14 @@ public class JigsawFrame extends JPanel {
                 g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
             }
         };
-        sup.setPreferredSize(new Dimension(background.getWidth(), background.getHeight()));
-        this.setLayout(new GridBagLayout());
+        exitButton = new JButton(new ImageIcon(exit));
+        exitButton.setBorderPainted(false);
+        exitButton.setContentAreaFilled(false);
+        exitButton.setFocusPainted(false);
+        exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        sup.setSize(background.getWidth(), background.getHeight());
+        this.setLayout(null);
         this.setBackground(new Color(26,26,26,177));
 
         //JigsawPart create
@@ -46,16 +54,15 @@ public class JigsawFrame extends JPanel {
         for(JigsawParts jigsaw: jigsawPart){
             sup.add(jigsaw);
         }
-        GridBagConstraints c = new GridBagConstraints();
 
-        c.gridx = 0;
-        c.gridy = 0;
-
-        c.weightx = 0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.NONE;
-
-        c.anchor = GridBagConstraints.CENTER;
-        this.add(sup, c);
+        this.add(sup);
+        this.add(exitButton);
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                sup.setLocation(getWidth() / 2 - (sup.getWidth() / 2), getHeight() / 2 - (sup.getHeight() / 2));
+                exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
+            }
+        });
     }
 }

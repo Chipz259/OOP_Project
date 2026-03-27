@@ -2,7 +2,7 @@ package system;
 
 import javax.sound.sampled.*;
 import java.io.File;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AudioManager {
@@ -10,6 +10,7 @@ public class AudioManager {
     public static int sfxVolume = 50;
 
     private static Clip bgMusic;
+    private static Map<String, Clip> preloadedClips = new HashMap<>();
     // ใช้เก็บ Clip SFX ที่กำลังเล่นอยู่ เพื่อให้ปรับเสียงแบบ Real-time ได้ถ้าต้องการ
     private static List<Clip> activeSfx = new CopyOnWriteArrayList<>();
 
@@ -122,6 +123,30 @@ public class AudioManager {
         if (bgMusic != null) {
             bgMusic.stop();
             bgMusic.close(); // ปล่อย Resource ทุกครั้งที่หยุดเพื่อเปลี่ยนเพลง
+        }
+    }
+
+    public static void preloadSFX(String path) {
+        try {
+            File file = new File(path);
+            if (file.exists() && !preloadedClips.containsKey(path)) {
+                AudioInputStream ais = AudioSystem.getAudioInputStream(file);
+                Clip clip = AudioSystem.getClip();
+                clip.open(ais);
+                preloadedClips.put(path, clip); // โหลดใส่ RAM ทิ้งไว้
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public static void playPreloadedSFX(String path, float offsetDB) {
+        Clip clip = preloadedClips.get(path);
+        if (clip != null) {
+            clip.setFramePosition(0); // รีเซ็ตไปจุดเริ่มต้น
+            applyVolume(clip, sfxVolume, offsetDB);
+            clip.start();
+        } else {
+            // ถ้ายังไม่ได้โหลดไว้ ก็ให้เล่นแบบปกติ (แต่จะช้าหน่อย)
+            playSFX(path, offsetDB);
         }
     }
 

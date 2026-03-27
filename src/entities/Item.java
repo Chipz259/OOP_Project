@@ -74,11 +74,20 @@ public class Item extends GameObject implements Interactable {
             if (isHovered) {
                 if (GamePanel.customFont != null) {
                     g2d.setFont(GamePanel.customFont.deriveFont(Font.PLAIN, 25));
-                    g2d.setColor(Color.BLACK);
-                    g2d.drawString(description, getX() + 4, getY() + 12);
-                    // ตัวหนังสือขาว
+                    FontMetrics fm = g2d.getFontMetrics();
+                    int textWidth = fm.stringWidth(itemName);
+
+                    int padding = 10;
+                    int boxW = textWidth + (padding * 2);
+                    int boxH = 35;
+                    int boxX = getX() + (getWidth() / 2) - (boxW / 2);
+                    int boxY = getY() - 45;
+
+                    g2d.setColor(new Color(0, 0, 0, 180));
+                    g2d.fillRoundRect(boxX, boxY, boxW, boxH, 10, 10);
+
                     g2d.setColor(Color.WHITE);
-                    g2d.drawString(description, getX(), getY() + 10);
+                    g2d.drawString(itemName, boxX + padding, boxY + 26);
                 }
             }
         }
