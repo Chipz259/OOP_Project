@@ -4,6 +4,8 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AudioManager {
     public static int bgmVolume = 50;
@@ -14,6 +16,7 @@ public class AudioManager {
     private static float currentBgmOffset = 0.0f;
     private static String currentBgmPath = "";
     private static long lastPosition = 0;
+    private static final ExecutorService audioExecutor = Executors.newCachedThreadPool();
 
     public static void setBgmVolume(int volume) {
         bgmVolume = volume;
@@ -82,53 +85,51 @@ public class AudioManager {
 
         // 2. ถ้ามาถึงตรงนี้ แสดงว่า Path ไม่ตรง หรือ bgMusic ยังไม่เคยถูกสร้าง (null)
         System.out.println("เข้าเงื่อนไข 3: เริ่มเพลงใหม่ -> " + path);
-        try {
-            // [สำคัญ] ห้ามเรียก stopMusic() ที่ไปล้าง currentBgmPath ในนี้
-            if (bgMusic != null) {
-                bgMusic.stop();
-                bgMusic.close();
-            }
+        audioExecutor.submit(() -> {
+            try {
+                if (bgMusic != null) {
+                    bgMusic.stop();
+                    bgMusic.close();
+                }
+                currentBgmPath = path;
+                currentBgmOffset = offsetDB;
+                lastPosition = 0;
 
-            currentBgmPath = path; // อัปเดต Path ทันที
-            currentBgmOffset = offsetDB;
-            lastPosition = 0;
-
-            File musicFile = new File(path);
-            if (musicFile.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
-                bgMusic = AudioSystem.getClip();
-                bgMusic.open(audioInput);
-                bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
-                applyVolume(bgMusic, bgmVolume, currentBgmOffset);
-                bgMusic.start();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                File musicFile = new File(path);
+                if (musicFile.exists()) {
+                    AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
+                    bgMusic = AudioSystem.getClip();
+                    bgMusic.open(audioInput);
+                    bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
+                    applyVolume(bgMusic, bgmVolume, currentBgmOffset);
+                    bgMusic.start();
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+        });
     }
 
     public static void playSFX(String path, float offsetDB) {
-        try {
-            File sfxFile = new File(path);
-            if (sfxFile.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(sfxFile);
-                Clip sfxClip = AudioSystem.getClip();
-                sfxClip.open(audioInput);
-                applyVolume(sfxClip, sfxVolume, offsetDB);
+        audioExecutor.submit(() -> {
+            try {
+                File sfxFile = new File(path);
+                if (sfxFile.exists()) {
+                    AudioInputStream audioInput = AudioSystem.getAudioInputStream(sfxFile);
+                    Clip sfxClip = AudioSystem.getClip();
+                    sfxClip.open(audioInput); // ตัวหน่วงคือบรรทัดนี้
+                    applyVolume(sfxClip, sfxVolume, offsetDB);
 
-                activeSfxMap.put(path, sfxClip);
-                sfxClip.start();
+                    activeSfxMap.put(path, sfxClip);
+                    sfxClip.start();
 
-                sfxClip.addLineListener(event -> {
-                    if (event.getType() == LineEvent.Type.STOP) {
-                        sfxClip.close();
-                        activeSfxMap.remove(path);
-                    }
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    sfxClip.addLineListener(event -> {
+                        if (event.getType() == LineEvent.Type.STOP) {
+                            sfxClip.close();
+                            activeSfxMap.remove(path);
+                        }
+                    });
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+        });
     }
 
     public static void stopMusic() {

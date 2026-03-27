@@ -1,5 +1,6 @@
 package Minigame.RotateYanPackage;
 
+import system.AudioManager;
 import ui.MainGameFrame;
 
 import java.awt.*;
@@ -81,6 +82,8 @@ public class RotateYan extends JPanel{
                 exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
             }
         });
+
+        AudioManager.preloadSFX("src/res/sound/yanFlip.wav");
     }
     @Override
     public void paintComponent(Graphics g){
