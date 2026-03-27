@@ -3,6 +3,7 @@ package scenes;
 import Minigame.KonKlongPackage.KonKlong;
 import Minigame.RotateNarigaPackage.RotateNariga;
 import Minigame.RotateYanPackage.RotateYan;
+import Minigame.UnlockBoxPackage.UnlockBox;
 import entities.*;
 import system.*;
 import ui.*;
@@ -26,7 +27,7 @@ public class SceneManager {
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
     private BufferedImage girlIdle, girlTalk, mainIdle, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
-    private boolean isFirstTimeScene3 = true, isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true;
+    private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true;
     private String[] ritualItems = {"", "", "", ""};
     private final String[] RITUAL_ANSWERS = {"candle", "water", "knife", "rosary"};
     private Item[] ritualSlots = new Item[4];
@@ -77,6 +78,7 @@ public class SceneManager {
                 else if (sceneId.equals("scene_14") && isFirstTimeScene14) {}
                 else if (sceneId.equals("scene_16") && isFirstTimeScene16) {}
                 else if (sceneId.equals("scene_18") && isFirstTimeScene18) {}
+                else if (sceneId.equals("scene_6") && isFirstTimeScene6) {}
                 else {
                     String thName = getSceneDisplayName(sceneId);
                     titleOverlay.showTitle(thName);
@@ -113,6 +115,11 @@ public class SceneManager {
         }
         else if (sceneId.equals("scene_5")) {
 
+        }
+        else if (sceneId.equals("scene_6")) {
+            if (isFirstTimeScene6) {
+                isFirstTimeScene6 = false;
+            }
         }
         else if (sceneId.equals("scene_12")) {
             if (isFirstTimeScene12) {
@@ -461,10 +468,19 @@ public class SceneManager {
 
         Item Chest = new Item("Chest", 1125, 502, 214, 90,"กล่อง", "กล่อง", "Box.png", "Box.png") {
 
-            @Override
-            public void onInteract(Player p) {
-
-            }
+//            private boolean isSolved = false;
+//
+//            @Override
+//            public void onInteract(Player p) {
+//                if (!isSolved) {
+//                    ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+//                    UnlockBox minigame = new UnlockBox(mainFrame, () -> {
+//                       isSolved = true;
+//                        System.out.println("เย้เล่นผ่านแย้วววววว");
+//                    });
+//                    mainFrame.openMinigame(minigame);
+//                }
+//            }
 
         };
 
@@ -554,8 +570,8 @@ public class SceneManager {
             scene_5.addGameObject(Bed);
         }
         if (scene_6 != null) {
-            scene_6.addGameObject(Locker);
-            scene_6.addGameObject(Chest);
+//            scene_6.addGameObject(Locker);
+//            scene_6.addGameObject(Chest);
         }
         if (scene_7 != null) {
         }
