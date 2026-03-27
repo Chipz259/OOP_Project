@@ -301,6 +301,14 @@ public class MainGameFrame extends JFrame {
         });
     }
 
+    public void openCutscene(JPanel cutscenePanel) {
+        openMinigame(cutscenePanel);
+    }
+
+    public void closeCutscene() {
+        closeMinigame();
+    }
+
     public GamePanel getGamePanel() {
         return gamePanel;
     }
