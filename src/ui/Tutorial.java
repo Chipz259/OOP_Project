@@ -18,7 +18,6 @@ public class Tutorial extends JPanel {
 
     public Tutorial(MainGameFrame parent) {
         this.parent = parent;
-
         tutorialStartImage = new BufferedImage[4];
         tutorialCombineImage = new BufferedImage[2];
         try {
