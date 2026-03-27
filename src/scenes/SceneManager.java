@@ -1,5 +1,6 @@
 package scenes;
 
+import Minigame.JigsawPackage.JigsawFrame;
 import Minigame.KonKlongPackage.KonKlong;
 import Minigame.RotateNarigaPackage.RotateNariga;
 import Minigame.RotateYanPackage.RotateYan;
@@ -477,6 +478,27 @@ public class SceneManager {
         };
 
         //scene_8
+        Item EmptyPicture = new Item("minigameJigsaw", 1418, 508, 67, 85, "กรอบรูป", "กรอบรูป", "EmptyPicture.png", "EmptyPicture.png") {
+
+            private boolean isSolved = false;
+
+            @Override
+            public void onInteract(Player p) {
+                if (!isSolved) {
+                    ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                    JigsawFrame minigame = new JigsawFrame(mainFrame, () -> {
+                        isSolved = true;
+                        DialogueLine[] EmptyPictureScript = {
+                                new DialogueLine("พระเอก", "รูปนี้มัน... ครอบครัวของเรานี่นา", null, mainTalk),
+                        };
+                        overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                        overlay.startDialogue(EmptyPictureScript, () -> {});
+                    });
+                    mainFrame.openMinigame(minigame);
+                }
+            }
+        };
+
         Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
         Knife2.setVisible(false);
 
@@ -664,6 +686,8 @@ public class SceneManager {
         Scene scene_18 = scenes.get("scene_18");
 
         if (scene_1 != null) {
+            scene_1.addGameObject(EmptyPicture);
+
             scene_1.addGameObject(Daddy_Pic);
             scene_1.addGameObject(npcGirl);
             scene_1.addGameObject(evil);
@@ -698,6 +722,7 @@ public class SceneManager {
         if (scene_8 != null) {
             scene_8.addGameObject(miniGameClock);
             scene_8.addGameObject(Knife2);
+            scene_8.addGameObject(EmptyPicture);
         }
         if (scene_15 != null) {
             scene_15.addGameObject(Door);
