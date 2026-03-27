@@ -204,7 +204,6 @@ public class MainGameFrame extends JFrame {
     public void returnToMainMenu() {
         if (isStartGame) {
             buttonResume.setEnabled(true);
-            buttonStart.setEnabled(false);
         }
         fadeTransition.executeFade(600, 100, 600, () -> {
             cardLayout.show(mainCardPanel, "MENU");
@@ -234,6 +233,10 @@ public class MainGameFrame extends JFrame {
                 "อึ่งๆๆๆๆๆ",
                 "ไปงานศพด้วยจ้าเพื่อน"
         };
+
+        if (isStartGame) {
+            gamePanel.resetGame();
+        }
 
         fadeTransition.executeFade(350, 0, 350, () -> {
             cardLayout.show(mainCardPanel, "CUTSCENE"); // สลับเป็นหน้าเล่นเกม

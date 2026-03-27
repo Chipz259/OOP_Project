@@ -105,6 +105,32 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = null;
     }
 
+    public void resetGame() {
+        // 1. หยุด Thread ก่อนเพื่อความปลอดภัย
+        stopGameThread();
+
+        // 2. รีเซ็ต Player (ตำแหน่งเริ่มต้นตามที่น้องตั้งใน Constructor)
+        mainPlayer.setX(1650);
+        mainPlayer.setY(530);
+        mainPlayer.setMoving(false);
+        mainPlayer.setFacingLeft(false);
+
+        // 3. รีเซ็ต Inventory
+        mainPlayer.getInventory().resetInventory();
+
+        // 4. รีเซ็ตสถานะเหตุการณ์ใน SceneManager
+        sceneManager.resetManagerStates();
+
+        // 5. รีเซ็ตภารกิจ (Objective)
+        system.ObjectiveManager.getInstance().resetObjective(); // มั่นใจว่าใน ObjectiveManager มีเมธอด reset() นะครับ
+
+        // 6. โหลดฉากเริ่มต้นใหม่ (เช่น scene_2)
+        sceneManager.loadScene("scene_2");
+
+        // 7. เริ่ม Thread ใหม่
+        startGameThread();
+    }
+
     public void run() {
         // 1 วินาที มี 1,000,000,000 นาโนวินาที / FPS
         double drawInterval = 1000000000 / 60;

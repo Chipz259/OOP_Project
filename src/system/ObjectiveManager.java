@@ -79,6 +79,10 @@ public class ObjectiveManager {
         }
     }
 
+    public void resetObjective() {
+        System.out.println(">>> ระบบ Reset : Objective ยังไม่สมบูรณ์");
+    }
+
     public void draw(Graphics2D g2d, Inventory inventory) {
         if (objectives.isEmpty() || currentIndex >= objectives.size()) return;
 
