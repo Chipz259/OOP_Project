@@ -377,12 +377,13 @@ public class SceneManager {
             }
         };
 
-//        Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "chestHover.png") {
-//            @Override
-//            public void onInteract(Player p) {
-//                ui.DiaryUi.getInstance().openDiary();
-//            }
-//        };
+        //scene_6
+        Item ChestOpen = new Item("chestOpen", 1122, 425, 239, 250, "กล่อง", "กล่องพ่อ", "chest.png", "chestHover.png") {
+            @Override
+            public void onInteract(Player p) {
+                ui.DiaryUi.getInstance().openDiary();
+            }
+        };
 
         //scene_8
         Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
@@ -469,19 +470,34 @@ public class SceneManager {
 
         Item Chest = new Item("Chest", 1125, 502, 214, 90,"กล่อง", "กล่อง", "Box.png", "Box.png") {
 
-//            private boolean isSolved = false;
-//
-//            @Override
-//            public void onInteract(Player p) {
-//                if (!isSolved) {
-//                    ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
-//                    UnlockBox minigame = new UnlockBox(mainFrame, () -> {
-//                       isSolved = true;
-//                        System.out.println("เย้เล่นผ่านแย้วววววว");
-//                    });
-//                    mainFrame.openMinigame(minigame);
-//                }
-//            }
+            private boolean isSolved = false;
+
+            @Override
+            public void onInteract(Player p) {
+                if (!isSolved) {
+                    ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                    UnlockBox minigame = new UnlockBox(mainFrame, () -> {
+                        if (fadeTransition != null && !fadeTransition.isFading()) {
+                            fadeTransition.executeFade(700, 0, 500, () -> {
+                                isSolved = true;
+                                System.out.println("เย้เล่นผ่านแย้วววววว");
+
+                                loadScene("scene_6");
+                                DialogueLine[] PlayerScript = {
+                                        new DialogueLine("พระเอก", "นี่มันอะไรเนี่ย", null, mainTalk),
+                                        new DialogueLine("พระเอก", "พ่อเขียนอะไรไว้กัน", null, mainTalk),
+                                        new DialogueLine("พระเอก", "มีเลขในนี้รึป่าวนะ เพื่อะเป็นเศรษฐีพันล้าน", null, mainTalk),
+                                };
+                                overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                                overlay.startDialogue(PlayerScript, () -> {
+                                });
+                            });
+                        };
+
+                    });
+                    mainFrame.openMinigame(minigame);
+                }
+            }
 
         };
 
@@ -493,6 +509,8 @@ public class SceneManager {
                 mainFrame.openMinigame(minigame);
             }
         };
+
+
 
 
 
@@ -572,8 +590,7 @@ public class SceneManager {
             scene_5.addGameObject(Bed);
         }
         if (scene_6 != null) {
-//            scene_6.addGameObject(Locker);
-//            scene_6.addGameObject(Chest);
+            scene_6.addGameObject(ChestOpen);
         }
         if (scene_7 != null) {
         }

@@ -1,4 +1,7 @@
 package Minigame.UnlockBoxPackage;
+
+import ui.MainGameFrame;
+
 import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,8 +17,15 @@ public class UnlockBox extends JPanel implements Runnable {
     private BufferedImage background, slotBackground, exit;
     private JButton exitButton;
     private static boolean finished = false;
+    private MainGameFrame mainGameFrame;
+    private Runnable onWinCallback;
+    private Thread checkThread;
 
-    public  UnlockBox() {
+    public  UnlockBox(MainGameFrame mainGameFrame, Runnable onWinCallback) {
+        this.mainGameFrame = mainGameFrame;
+        this.onWinCallback = onWinCallback;
+        finished = false;
+
         slot = new SlotJPanel[]{new SlotJPanel("Image/Box1.png"),
             new SlotJPanel("Image/Box2.png"),
             new SlotJPanel("Image/Box3.png"),
@@ -41,6 +51,11 @@ public class UnlockBox extends JPanel implements Runnable {
         exitButton.setContentAreaFilled(false);
         exitButton.setFocusPainted(false);
         exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        exitButton.addActionListener(e -> {
+            finished = true;
+            mainGameFrame.closeMinigame();
+        });
+
         slotPanel = new JPanel(){
             @Override
             public void paintComponent(Graphics g) {
@@ -90,11 +105,15 @@ public class UnlockBox extends JPanel implements Runnable {
                 exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
             }
         });
+
+        checkThread = new Thread(this);
+        checkThread.start();
     }
+
     @Override
     public void run() {
         int[] target = new int[]{5, 2, 2, 2};
-        while (true) {
+        while (!finished) {
             int now[] = new int[slot.length];
             for(int i = 0; i < slot.length; i++){
                 now[i] = slot[i].getNowSlot();
@@ -102,6 +121,12 @@ public class UnlockBox extends JPanel implements Runnable {
             if(Arrays.equals(now, target)){
                 finished = !finished;
                 System.out.println("Unlock box finished!!");
+
+                SwingUtilities.invokeLater(() -> {
+                    if (onWinCallback != null) onWinCallback.run();
+                    mainGameFrame.closeMinigame();
+                });
+
                 return;
             }
             try {
