@@ -27,7 +27,7 @@ public class SceneManager {
     private DialogueOverlay overlay;
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
-    private BufferedImage girlIdle, girlTalk, mainIdle, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
+    private BufferedImage girlIdle, girlTalk, mainIdle, mainIdle2, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
     private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true;
     private String[] ritualItems = {"", "", "", ""};
     private Item[] ritualSlots = new Item[4];
@@ -367,6 +367,7 @@ public class SceneManager {
             URL urlGirlTalk = getClass().getResource("/res/NPC/NPC_ girl_talk.png");
 
             URL urlMainIdle = getClass().getResource("/res/NPC/Main_character.png");
+            URL urlMainIdle2 = getClass().getResource("/res/NPC/Main_character2.png");
             URL urlMainTalk = getClass().getResource("/res/NPC/Main_character_talk.png");
 
             URL urlEvilIdle = getClass().getResource("/res/NPC/Evil_charactor.png");
@@ -381,6 +382,7 @@ public class SceneManager {
             if (urlGirlIdle != null) girlIdle = ImageIO.read(urlGirlIdle);
             if (urlGirlTalk != null) girlTalk = ImageIO.read(urlGirlTalk);
             if (urlMainIdle != null) mainIdle = ImageIO.read(urlMainIdle);
+            if (urlMainIdle2 != null) mainIdle2 = ImageIO.read(urlMainIdle2);
             if (urlMainTalk != null) mainTalk = ImageIO.read(urlMainTalk);
             if (urlEvilIdle != null) evilIdle = ImageIO.read(urlEvilIdle);
             if (urlEvilTalk != null) evilTalk = ImageIO.read(urlEvilTalk);
@@ -428,7 +430,7 @@ public class SceneManager {
                         fadeTransition.executeFade(700, 0, 500, () -> {
                             loadScene("scene_12");
                             DialogueLine[] PlayerScript = {
-                                    new DialogueLine("พระเอก", "....", null, mainTalk),
+                                    new DialogueLine("พระเอก", "....", null, mainIdle2),
                                     new DialogueLine("พระเอก", "งานศพจบแล้ว ทุกคนกลับหมดแล้ว", null, mainTalk),
                                     new DialogueLine("พระเอก", "เหนื่อยมากเลย ฉันควรกลับบ้านไปนอน", null, mainTalk),
                             };
@@ -475,6 +477,17 @@ public class SceneManager {
         };
 
         //scene_8
+        Item PictureFrame = new Item("PictureFrame", 1418, 508, 67, 85, "รูปภาพครอบครัว", "รูปภาพครอบครัว", "PictureFrame.png", "PictureFrame.png") {
+
+            @Override
+            public void onInteract(Player p) {
+                ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                ImageViewer viewer = new ImageViewer(mainFrame, "/res/familyPic .PNG");
+                mainFrame.openMinigame(viewer);
+            }
+        };
+        PictureFrame.setVisible(false);
+
         Item EmptyPicture = new Item("minigameJigsaw", 1418, 508, 67, 85, "กรอบรูป", "กรอบรูป", "EmptyPicture.png", "EmptyPicture.png") {
 
             private boolean isSolved = false;
@@ -490,6 +503,8 @@ public class SceneManager {
                         };
                         overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                         overlay.startDialogue(EmptyPictureScript, () -> {});
+                        this.setVisible(false);
+                        PictureFrame.setVisible(true);
                     });
                     mainFrame.openMinigame(minigame);
                 }
@@ -537,7 +552,7 @@ public class SceneManager {
                             loadScene("scene_16");
                             system.ObjectiveManager.getInstance().advanceObjective();
                             DialogueLine[] PlayerScript = {
-                                    new DialogueLine("พระเอก", "!!!!", null, mainIdle),
+                                    new DialogueLine("พระเอก", "!!!!", null, mainIdle2),
                                     new DialogueLine("พระเอก", "เมื่อกี้เสียงอะไรมาจากห้องนอนพ่อกัน", null, mainTalk),
                                     new DialogueLine("พระเอก", "ต้องเดินไปดูหน่อยแล้ว", null, mainTalk),
                             };
@@ -567,7 +582,7 @@ public class SceneManager {
                         loadScene("scene_18");
                         system.ObjectiveManager.getInstance().advanceObjective();
                         DialogueLine[] PlayerScript = {
-                                new DialogueLine("พระเอก", "....ทำไมมันถึงตกละเนี่ย", null, mainIdle),
+                                new DialogueLine("พระเอก", "....ทำไมมันถึงตกละเนี่ย", null, mainTalk),
                                 new DialogueLine("พระเอก", "ของพ่อรึป่าวนะ...", null, mainTalk),
                                 new DialogueLine("พระเอก", "ในนี้มีอะไรกัน", null, mainTalk),
                         };
@@ -613,7 +628,7 @@ public class SceneManager {
 
         };
 
-        Item Locker = new Item("locker", 1248, 550, 356, 303, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "locker.png") {
+        Item Locker = new Item("locker", 1287, 625, 166, 83, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "StorageDrawer.png", "StorageDrawer.png") {
             @Override
             public void onInteract(Player p) {
                 ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
@@ -686,6 +701,7 @@ public class SceneManager {
 
         if (scene_1 != null) {
             scene_1.addGameObject(EmptyPicture);
+            scene_1.addGameObject(PictureFrame);
 
             scene_1.addGameObject(Daddy_Pic);
             scene_1.addGameObject(npcGirl);
@@ -719,6 +735,7 @@ public class SceneManager {
             scene_8.addGameObject(miniGameClock);
             scene_8.addGameObject(Knife2);
             scene_8.addGameObject(EmptyPicture);
+            scene_8.addGameObject(PictureFrame);
         }
         if (scene_15 != null) {
             scene_15.addGameObject(Door);

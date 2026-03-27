@@ -2,6 +2,8 @@ package Minigame.FinalBossFightPackage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,19 +11,15 @@ import java.io.InputStream;
 
 public class YanKeys {
     private int keyButton;
-    private changableImagePanel img;
-
-    public YanKeys(int keyButton, changableImagePanel img) {}
-    private JPanel container, keyPanel;
+    private changableImagePanel alpha, container;
     private JLabel keyLabel;
-    public YanKeys(int keyButton, String path){
+    private Color activeColor, unactiveColor;
+    public YanKeys(int keyButton, String unactive, String active){
         this.keyButton = keyButton;
-        img = new changableImagePanel(path);
-
-        container = new JPanel();
-        keyPanel = new CircleJPanel(55,40);
-        keyPanel.setLayout(new BorderLayout());
-        keyPanel.setBorder(BorderFactory.createEmptyBorder(170,17,0,0));
+        activeColor = new Color(239, 154, 7, 255);
+        unactiveColor = new Color(245, 245, 245, 255);
+        container = new changableImagePanel("Image/Bg_default.png", "Image/Bg_hover.png");
+        alpha = new changableImagePanel(unactive, active);
         keyLabel = new JLabel(KeyEvent.getKeyText(keyButton));
         try{
             InputStream is = getClass().getResourceAsStream("/res/Font/MN Tom Saep.ttf");
@@ -31,34 +29,45 @@ public class YanKeys {
         } catch (IOException | FontFormatException ex){
             ex.printStackTrace();
         }
-        setAsUnactive();
-        keyPanel.add(keyLabel, BorderLayout.CENTER);
-        container.setLayout(new OverlayLayout(container));
+
+        keyLabel.setSize(300,25);
+        keyLabel.setHorizontalAlignment(JLabel.CENTER);
+        alpha.setLocation(0,0);
+        container.setLayout(null);
         container.setOpaque(false);
+        alpha.setOpaque(false);
 
-        img.setAlignmentX(0.5f);
-        img.setAlignmentY(0.5f);
+        container.add(alpha); container.add(keyLabel);
+        container.setComponentZOrder(alpha, 0);
+        container.setComponentZOrder(keyLabel, 1);
+        container.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e){
+                alpha.setSize(container.getWidth(),container.getHeight());
+                keyLabel.setLocation(0,(int) (0.8* container.getHeight()));
+                setUnactive();
+            }
+        });
 
-        keyPanel.setAlignmentX(0.5f);
-        keyPanel.setAlignmentY(0.5f);
-
-        container.add(keyPanel);
-        container.add(img);
     }
-
     public int getKeyButton(){
         return  keyButton;
     }
-    public JPanel getImg(){
+    public JPanel getContainer(){
         return container;
     }
-    public void setAsUnactive(){
-        keyLabel.setForeground(new Color(67, 69, 69,255));
-        img.setUnactive();
+    public changableImagePanel getAlpha(){
+        return alpha;
     }
-    public void setAsActive(){
-        keyLabel.setForeground(new Color(30, 30, 46, 255));
-        img.setActive();
+    public void setActive(){
+        alpha.setActive();
+        container.setActive();
+        keyLabel.setForeground(activeColor);
     }
 
+    public void setUnactive(){
+        alpha.setUnactive();
+        container.setUnactive();
+        keyLabel.setForeground(unactiveColor);
+    }
 }
