@@ -32,7 +32,7 @@ public class RotateHandler extends MouseAdapter {
     }
     public void playYanFlipSound(){
         if (AudioManager.isSfxRunning()){
-            AudioManager.stopMusic();
+            AudioManager.stopSFX("src/res/sound/yanFlip.wav");
         }
 
         AudioManager.playSFX("src/res/sound/yanFlip.wav", 10.0f);

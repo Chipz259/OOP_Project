@@ -19,10 +19,11 @@ public class SceneQTE_Choke extends Scene {
     private boolean isQteActive = false;
     private double fadeWhiteAmount = 0;
     private boolean isWinningFade = false;
-    private int buttonScale = 100;
+    private int buttonScale = 200;
     private int fadeAlpha = 0;
     private BufferedImage bgImage;
     private BufferedImage btnImage;
+    private BufferedImage btnPressImage;
     private boolean hasStarted = false;
     private Player player;
 
@@ -46,6 +47,14 @@ public class SceneQTE_Choke extends Scene {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            URL btnPressImgURL = getClass().getResource("/res/eButtonPress.png");
+            if (btnPressImgURL != null) {
+                this.btnPressImage = ImageIO.read(btnPressImgURL);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         AudioManager.preloadSFX("src/res/sound/DonPLork.wav");
     }
     public void startQTE() {
@@ -54,14 +63,14 @@ public class SceneQTE_Choke extends Scene {
         this.isQteActive = true;
         this.isWinningFade = false;
         this.fadeWhiteAmount = 0;
-        this.buttonScale = 100;
+        this.buttonScale = 200;
         this.fadeAlpha = 0;
         AudioManager.playPreloadedSFX("src/res/sound/DonPLork.wav", 0.0f);
     }
     public void registerClick() {
         if (isQteActive) {
             clickCount++;
-            buttonScale = 140;
+            buttonScale = 240;
         }
     }
     public void update() {
@@ -92,8 +101,11 @@ public class SceneQTE_Choke extends Scene {
                 AudioManager.playSFX("src/res/sound/WinPLork.wav", 10.0f);
             }
         }
-        if (buttonScale > 100) {
+        if (buttonScale > 200) {
             buttonScale -= 5;
+            if (buttonScale <= 200) {
+                buttonScale = 200;
+            }
         }
 
         if(isWinningFade) {
@@ -132,14 +144,23 @@ public class SceneQTE_Choke extends Scene {
         }
         super.render(g2d);
         g2d.translate(-renderOffsetX, -renderOffsetY);
-        if (isQteActive && btnImage != null) {
+        if (isQteActive) {
             int width = buttonScale;
             int height = buttonScale;
             int centerX = 1550;
             int centerY = 350;
             int drawX = centerX - (width / 2);
             int drawY = centerY - (height / 2);
-            g2d.drawImage(btnImage, drawX, drawY, width, height, null);
+            if (buttonScale > 200) {
+                if (btnPressImage != null) {
+                    g2d.drawImage(btnPressImage, drawX, drawY, width, height, null);
+                }
+            }
+            else {
+                if (btnImage != null) {
+                    g2d.drawImage(btnImage, drawX, drawY, width, height, null);
+                }
+            }
         }
         if (isWinningFade) {
             g2d.setColor(new Color(255, 255, 255, (int)fadeAlpha));
