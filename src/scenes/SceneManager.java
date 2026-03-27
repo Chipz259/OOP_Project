@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.Clock;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -553,6 +554,7 @@ public class SceneManager {
             scene_1.addGameObject(evil);
             scene_1.addGameObject(npc3);
             scene_1.addGameObject(npc2);
+            scene_1.addGameObject(miniGameClock);
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);

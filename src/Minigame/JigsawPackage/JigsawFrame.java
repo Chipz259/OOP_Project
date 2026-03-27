@@ -6,9 +6,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class JigsawFrame {
-    private JFrame mainFrame;
-    private JPanel sup, backgroundPanel;
+public class JigsawFrame extends JPanel {
+    private JPanel sup;
     private JigsawParts jigsawPart[];
     private BufferedImage background;
     public JigsawFrame(){
@@ -18,7 +17,6 @@ public class JigsawFrame {
             e.printStackTrace();
         }
         //Container create
-        mainFrame = new JFrame();
         sup = new JPanel(){
             @Override
             public void paintComponent(Graphics g){
@@ -27,9 +25,8 @@ public class JigsawFrame {
             }
         };
         sup.setPreferredSize(new Dimension(background.getWidth(), background.getHeight()));
-        backgroundPanel = new JPanel();
-        backgroundPanel.setLayout(new GridBagLayout());
-        backgroundPanel.setBackground(new Color(26,26,26,177));
+        this.setLayout(new GridBagLayout());
+        this.setBackground(new Color(26,26,26,177));
 
         //JigsawPart create
         jigsawPart = new JigsawParts[]{new JigsawParts("Image/jigsaw1.png", 670, 500, 86,70),
@@ -43,9 +40,6 @@ public class JigsawFrame {
                 new JigsawParts("Image/jigsaw9.png", 670, 500, 363,872),
                 new JigsawParts("Image/jigsaw10.png", 670, 500, 616,569)
         };
-
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        gd.setFullScreenWindow(mainFrame);
 
         sup.setLayout(null);
 
@@ -62,10 +56,6 @@ public class JigsawFrame {
         c.fill = GridBagConstraints.NONE;
 
         c.anchor = GridBagConstraints.CENTER;
-        backgroundPanel.add(sup, c);
-        mainFrame.add(backgroundPanel);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setResizable(false);
-        mainFrame.setVisible(true);
+        this.add(sup, c);
     }
 }

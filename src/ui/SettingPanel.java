@@ -34,8 +34,6 @@ public class SettingPanel extends JPanel {
         backHoverBtnImg = new ImageIcon("src/res/SettingBtnBack02.png").getImage();
         returnNormalBtnImg = new ImageIcon("src/res/SettingBtnReturn01.png").getImage();
         returnHoverBtnImg = new ImageIcon("src/res/SettingBtnReturn02.png").getImage();
-        parent.setIsStartGame(true);
-
 
         setBackground(new Color(232, 94, 94, 200));
         setLayout(new GridBagLayout());
@@ -105,6 +103,7 @@ public class SettingPanel extends JPanel {
         buttonReturn.setText("");
         buttonReturn.addActionListener(e -> {
             parent.toggleSetting(false, false); // ปิดหน้า Setting ก่อน
+            parent.setIsStartGame(true);
             parent.returnToMainMenu();  // เรียกเมธอดกลางเพื่อกลับเมนู
         });
 

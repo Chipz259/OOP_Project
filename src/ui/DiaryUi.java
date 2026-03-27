@@ -1,5 +1,7 @@
 package ui;
 
+import system.FontManager;
+
 import java.awt.*;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
@@ -20,17 +22,11 @@ public class DiaryUi extends JPanel {
     private Image bookImg;
     private ImageIcon iconLeftNormal, iconLeftHover, iconRightNormal, iconRightHover, iconCloseNormal, iconCloseHover;
     private JButton btnLeft, btnRight, btnClose;
-
-    private Font diaryFont;
+    private FontManager diaryFont;
+//    private Font diaryFont;
 
     private DiaryUi() {
         try {
-            InputStream is = getClass().getResourceAsStream("/res/Font/DSNSM__.TTF");
-            if (is != null) {
-                diaryFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN, 28f);
-            } else {
-                diaryFont = new Font("Arial", Font.PLAIN, 28);
-            }
 
             bookImg = ImageIO.read(getClass().getResource("/res/DiaryBG.png"));
 
@@ -42,7 +38,6 @@ public class DiaryUi extends JPanel {
 //            iconCloseHover = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
         } catch (Exception ex) {
             ex.printStackTrace();
-            diaryFont = new Font("Arial", Font.PLAIN, 24);
         }
 
         btnLeft = new JButton(iconLeftNormal);
@@ -156,7 +151,7 @@ public class DiaryUi extends JPanel {
         }
 
         // 3. Draw Text
-        g2d.setFont(diaryFont);
+        g2d.setFont(diaryFont.monkeyRegular.deriveFont(20f));
         g2d.setColor(Color.BLACK); // สีหมึกปากกา
         int textX = startX + 100;
         int textY = startY + 120;

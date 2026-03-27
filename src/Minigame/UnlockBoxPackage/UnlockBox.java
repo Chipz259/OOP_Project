@@ -11,13 +11,11 @@ public class UnlockBox extends JPanel implements Runnable {
 
     private SlotJPanel slot[];
     private JPanel mainPanel, slotPanel, upButtonPanel, downButtonPanel;
-    private BufferedImage background, slotBackground;
+    private BufferedImage background, slotBackground, exit;
+    private JButton exitButton;
     private static boolean finished = false;
 
     public  UnlockBox() {
-        mainPanel = new JPanel();
-
-        mainPanel.setOpaque(false);
         slot = new SlotJPanel[]{new SlotJPanel("Image/Box1.png"),
             new SlotJPanel("Image/Box2.png"),
             new SlotJPanel("Image/Box3.png"),
@@ -26,11 +24,23 @@ public class UnlockBox extends JPanel implements Runnable {
         try{
             background = ImageIO.read(getClass().getResource("Image/BG BOX.png"));
             slotBackground = ImageIO.read(getClass().getResource("Image/BoxBox.png"));
+            exit = ImageIO.read(getClass().getResource("Image/Exit_minigame_btn.png"));
         } catch (IOException e) {
             e.printStackTrace();
+            background = null;
+            slotBackground = null;
+            exit = null;
         }
+
+        mainPanel = new JPanel();
+        mainPanel.setOpaque(false);
         upButtonPanel = new JPanel();
         downButtonPanel = new JPanel();
+        exitButton = new JButton(new ImageIcon(exit));
+        exitButton.setBorderPainted(false);
+        exitButton.setContentAreaFilled(false);
+        exitButton.setFocusPainted(false);
+        exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         slotPanel = new JPanel(){
             @Override
             public void paintComponent(Graphics g) {
@@ -44,11 +54,12 @@ public class UnlockBox extends JPanel implements Runnable {
         downButtonPanel.setLayout(new GridLayout(1, 4));
         slotPanel.setLayout(new GridLayout(1, 4));
         mainPanel.setLayout(new BorderLayout());
-        this.setLayout(new GridBagLayout());
+        this.setLayout(null);
 
-        mainPanel.setSize(1600,587);
+        mainPanel.setSize(1600, 587);
         upButtonPanel.setSize(1600, 84);
         downButtonPanel.setSize(1600, 84);
+        exitButton.setSize(exit.getWidth(), exit.getHeight());
 
         mainPanel.setOpaque(false);
         slotPanel.setOpaque(false);
@@ -70,18 +81,15 @@ public class UnlockBox extends JPanel implements Runnable {
         mainPanel.add(upButtonPanel, BorderLayout.NORTH);
         mainPanel.add(slotPanel, BorderLayout.CENTER);
         mainPanel.add(downButtonPanel,BorderLayout.SOUTH);
-
-        GridBagConstraints c = new GridBagConstraints();
-
-        c.gridx = 0;
-        c.gridy = 0;
-
-        c.weightx = 0.0;
-        c.weighty = 0.0;
-        c.fill = GridBagConstraints.NONE;
-
-        c.anchor = GridBagConstraints.CENTER;
-        this.add(mainPanel, c);
+        this.add(exitButton);
+        this.add(mainPanel);
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                mainPanel.setLocation(getWidth() / 2 - (mainPanel.getWidth() / 2), getHeight() / 2 - (mainPanel.getHeight() / 2));
+                exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
+            }
+        });
     }
     @Override
     public void run() {
