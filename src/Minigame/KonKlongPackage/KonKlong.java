@@ -1,6 +1,5 @@
 package Minigame.KonKlongPackage;
 
-import Minigame.JigsawPackage.Main;
 import ui.MainGameFrame;
 
 import java.awt.*;
