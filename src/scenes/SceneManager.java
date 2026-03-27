@@ -25,7 +25,7 @@ public class SceneManager {
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
     private BufferedImage girlIdle, girlTalk, mainIdle, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
-    private boolean isFirstTimeScene3 = true, isFirstTimeScene14 = true;
+    private boolean isFirstTimeScene3 = true, isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true;
     private String[] ritualItems = {"", "", "", ""};
     private final String[] RITUAL_ANSWERS = {"candle", "water", "knife", "rosary"};
     private Item[] ritualSlots = new Item[4];
@@ -72,8 +72,14 @@ public class SceneManager {
             }
 
             if (titleOverlay != null) {
-                String thName = getSceneDisplayName(sceneId);
-                titleOverlay.showTitle(thName);
+                if (sceneId.equals("scene_12") && isFirstTimeScene12) {}
+                else if (sceneId.equals("scene_14") && isFirstTimeScene14) {}
+                else if (sceneId.equals("scene_16") && isFirstTimeScene16) {}
+                else if (sceneId.equals("scene_18") && isFirstTimeScene18) {}
+                else {
+                    String thName = getSceneDisplayName(sceneId);
+                    titleOverlay.showTitle(thName);
+                }
             }
             checkSceneEnterEvents(sceneId);
         } else {
@@ -107,6 +113,11 @@ public class SceneManager {
         else if (sceneId.equals("scene_5")) {
 
         }
+        else if (sceneId.equals("scene_12")) {
+            if (isFirstTimeScene12) {
+                isFirstTimeScene12 = false;
+            }
+        }
         else if (sceneId.equals("scene_14")) {
             if (isFirstTimeScene14) {
                 DialogueLine[] scene3Intro = {
@@ -117,6 +128,16 @@ public class SceneManager {
                 });
 
                 isFirstTimeScene14 = false;
+            }
+        }
+        else if (sceneId.equals("scene_16")) {
+            if (isFirstTimeScene16) {
+                isFirstTimeScene16 = false;
+            }
+        }
+        else if (sceneId.equals("scene_18")) {
+            if (isFirstTimeScene18) {
+                isFirstTimeScene18 = false;
             }
         }
     }
@@ -145,7 +166,7 @@ public class SceneManager {
         titleOverlay = new SceneTitleOverlay(FontManager.pspimpdeedIIIFont);
 
         // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
-        for (int i = 1; i <= 15; i++) {
+        for (int i = 1; i <= 18; i++) {
             String sceneId = "scene_" + i;
             Scene newScene = new Scene(sceneId);
 
@@ -169,6 +190,9 @@ public class SceneManager {
         setupArrows("scene_5", null, "scene_4", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_14", null, "scene_15", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_15", "scene_14", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_16", "scene_17", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_17", null, "scene_16", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_18", null, null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_6", "scene_7", "scene_8", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_7", null, "scene_6", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_8", "scene_6", "scene_9", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
@@ -362,7 +386,6 @@ public class SceneManager {
         Knife2.setVisible(false);
 
         Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
-
             private boolean[] isSolved = {false};
             private int[] savedAngles = {0, 90};
 
@@ -386,8 +409,8 @@ public class SceneManager {
             }
         };
 
+        //scene_15
         Item Door = new Item("miniGameYan", 1850, 365, 72, 708,"ประตู", "", "DoorPic.png", "DoorPic.png") {
-
             private boolean[] isSolved = {false};
 
             @Override
@@ -395,6 +418,19 @@ public class SceneManager {
                 ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
                 RotateYan minigame = new RotateYan(mainFrame, () -> {
                     isSolved[0] = true;
+                    if (fadeTransition != null && !fadeTransition.isFading()) {
+                        fadeTransition.executeFade(700, 0, 500, () -> {
+                            loadScene("scene_16");
+                            DialogueLine[] PlayerScript = {
+                                    new DialogueLine("พระเอก", "!!!!", null, mainIdle),
+                                    new DialogueLine("พระเอก", "เมื่อกี้เสียงอะไรมาจากห้องนอนพ่อกัน", null, mainTalk),
+                                    new DialogueLine("พระเอก", "ต้องเดินไปดูหน่อยแล้ว", null, mainTalk),
+                            };
+                            overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                            overlay.startDialogue(PlayerScript, () -> {
+                            });
+                        });
+                    };
                 });
                 mainFrame.openMinigame(minigame);
             }
@@ -402,6 +438,28 @@ public class SceneManager {
             @Override
             public boolean isInteractable() {
                 return !isSolved[0];
+            }
+
+        };
+
+        //scene_17
+        Item fallenBox = new Item("fallenBox", 1130, 715, 214, 90,"กล่องที่ตก", "กล่อง", "fallenBox.png", "fallenBox.png") {
+
+            @Override
+            public void onInteract(Player p) {
+                if (fadeTransition != null && !fadeTransition.isFading()) {
+                    fadeTransition.executeFade(700, 0, 500, () -> {
+                        loadScene("scene_18");
+                        DialogueLine[] PlayerScript = {
+                                new DialogueLine("พระเอก", "....ทำไมมันถึงตกละเนี่ย", null, mainIdle),
+                                new DialogueLine("พระเอก", "ของพ่อรึป่าวนะ...", null, mainTalk),
+                                new DialogueLine("พระเอก", "ในนี้มีอะไรกัน", null, mainTalk),
+                        };
+                        overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                        overlay.startDialogue(PlayerScript, () -> {
+                        });
+                    });
+                };
             }
 
         };
@@ -454,6 +512,7 @@ public class SceneManager {
         Scene scene_6 = scenes.get("scene_6");
         Scene scene_8 = scenes.get("scene_8");
         Scene scene_15 = scenes.get("scene_15");
+        Scene scene_17 = scenes.get("scene_17");
 
         if (scene_1 != null) {
             scene_1.addGameObject(Daddy_Pic);
@@ -483,6 +542,9 @@ public class SceneManager {
         }
         if (scene_15 != null) {
             scene_15.addGameObject(Door);
+        }
+        if (scene_17 != null) {
+            scene_17.addGameObject(fallenBox);
         }
     }
     public Item createRitualSlot(int index, int x, int y, String hint) {
@@ -568,6 +630,9 @@ public class SceneManager {
             case "scene_13" : return "ด้านข้างเมรุ";
             case "scene_14" : return "ห้องนอน";
             case "scene_15" : return "ห้องโถง";
+            case "scene_16" : return "ห้องโถง";
+            case "scene_17" : return "ห้องนอน";
+            case "scene_18" : return "ห้องนอน";
             case "qte_choke" : return null;
             default: return  sceneId;
         }
