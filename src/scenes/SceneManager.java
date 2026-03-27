@@ -824,11 +824,11 @@ public class SceneManager {
     }
 
     private void playBGMusic(String sceenId) {
-        if (sceenId.equals("scene_1")) {
+        if (sceenId.equals("scene")) {
             AudioManager.playMusic("src/res/sound/UIABg.wav", 0.0f);
         }
         else {
-            System.out.println("น้องโหลดเพลงไม่ขึ้นจ้าาา");
+            AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", 0.0f);
         }
     }
 

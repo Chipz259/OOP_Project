@@ -38,7 +38,7 @@ public class TextAnimator {
 
         if (charIndex < fullLine.length()) {
             if (charIndex == 0) {
-                AudioManager.playMusic("src/res/sound/SoundEffectCutsceen.wav", 1.0f);
+                AudioManager.playSFX("src/res/sound/SoundEffectCutsceen.wav", 0.0f);
             }
 
             currentDisplay += fullLine.charAt(charIndex);
@@ -47,7 +47,7 @@ public class TextAnimator {
         }
         else {
             isLineFinished = true;
-            AudioManager.stopMusic();
+            AudioManager.stopSFX("src/res/sound/SoundEffectCutsceen.wav");
             if (isAuto) {
                 waitCounter++;
                 if (waitCounter >= 40) {
