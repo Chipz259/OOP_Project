@@ -30,6 +30,7 @@ public class SceneManager {
     private BufferedImage girlIdle, girlTalk, mainIdle, mainIdle2, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
     private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true;
     private String[] ritualItems = {"", "", "", ""};
+    private String[] ritualItemNames = {"", "", "", ""};
     private Item[] ritualSlots = new Item[4];
     private final String[] RITUAL_ANSWERS = {"knife", "holyWater", "kafak", "rosary"};
     private int chestopen = 0;
@@ -225,15 +226,19 @@ public class SceneManager {
         currentScene = scenes.get("scene_2");
     }
 
-    public Item createRitualSlot(int index, int x, int y, String hint) {
-        ritualSlots[index] = new Item("slot_" + index, x, y, 100, 100, "แท่นที่ " + (index + 1), hint, "slot_empty.png", "slot_hover.png") {
+    public Item createRitualSlot(int index, int intendedCenterX, int intendedBottomY, String hint) {
+        int objW = 100;
+        int objH = 100;
+        int actualDrawX = intendedCenterX - (objW / 2);
+        int actualDrawY = intendedBottomY - objH + 40;
+        ritualSlots[index] = new Item("slot_" + index, actualDrawX, actualDrawY, 100, 100, "แท่นที่ " + (index + 1), hint, "slot_empty.png", "slot_hover.png") {
             @Override
             public void onInteract(Player p) {
-
                 // ถ้าช่องนี้ไม่ว่าง
                 if (ritualItems[index].equals("") == false) {
+                    String thaiName = ritualItemNames[index];
                     overlay.startDialogue(new DialogueLine[]{
-                            new DialogueLine("พระเอก", "ฉันวางไปแล้ว เปลี่ยนใจไม่ได้แล้วล่ะ...", null, mainTalk)
+                            new DialogueLine("พระเอก", "ฉันวาง["+ thaiName +"]ไว้ตรงนี้แล้ว", null, mainTalk)
                     }, null);
                     return;
                 }
@@ -243,11 +248,9 @@ public class SceneManager {
                 if (selIdx != -1) {
                     if (p.getInventory().getSlots()[selIdx] != null) {
                         Item inHand = p.getInventory().getSlots()[selIdx];
-                        String itemID = inHand.getObjectId();
 
-                        ritualItems[index] = itemID;
-
-                        this.changeImage(x, y, 100, 100, itemID + ".png", itemID + ".png");
+                        ritualItems[index] = inHand.getObjectId();
+                        ritualItemNames[index] = inHand.getItemName();
 
                         p.getInventory().removeSelectedItem();
 
@@ -285,10 +288,11 @@ public class SceneManager {
                 for (int i = 0; i < ritualItems.length; i = i + 1) {
                     String id = ritualItems[i];
                     if (id.equals("") == false) {
-                        Item itemBack = new Item(id, 0, 0, 100, 100, "", "", id + ".png", "");
+                        Item itemBack = new Item(id, 0, 0, 100, 100, ritualItemNames[i], "", id + ".png", "");
                         p.getInventory().addItem(itemBack);
 
                         ritualItems[i] = "";
+                        ritualItemNames[i] = "";
                     }
                 }
 
@@ -512,7 +516,7 @@ public class SceneManager {
         };
 
         Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
-        Knife2.setVisible(false);
+        Knife2.setVisible(true);
 
         Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
             private boolean[] isSolved = {false};
@@ -682,10 +686,10 @@ public class SceneManager {
         npc2.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
 
         //พิธีกรรม
-        Item slot0 = createRitualSlot(0, 500, 600, "วางของชิ้นที่หนึ่ง");
-        Item slot1 = createRitualSlot(1, 800, 600, "วางของชิ้นที่สอง");
-        Item slot2 = createRitualSlot(2, 1100, 600, "วางของชิ้นที่สาม");
-        Item slot3 = createRitualSlot(3, 1400, 600, "วางของชิ้นสุดท้าย");
+        Item slot0 = createRitualSlot(0, 959, 466, "วางของชิ้นที่หนึ่ง");
+        Item slot1 = createRitualSlot(1, 959, 653, "วางของชิ้นที่สอง");
+        Item slot2 = createRitualSlot(2, 776, 545, "วางของชิ้นที่สาม");
+        Item slot3 = createRitualSlot(3, 1143, 545, "วางของชิ้นสุดท้าย");
 
         //เพิ่มของเข้า Scenes
         Scene scene_1 = scenes.get("scene_1");
