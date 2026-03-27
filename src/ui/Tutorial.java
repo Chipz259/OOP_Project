@@ -1,9 +1,6 @@
 package ui;
 
-import entities.GamePanel;
-import entities.Interactable;
 import system.TutorialHandler;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

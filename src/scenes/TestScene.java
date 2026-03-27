@@ -38,9 +38,22 @@ public class TestScene {
         window.setContentPane(layeredPane);
         // ==========================================
 
+
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+
+        //เอาไว้ทดสอบฉากที่กำหนด
+        if (gamePanel.sceneManager != null) {
+
+            // สั่งโหลดฉาก 15 ทันที
+            gamePanel.sceneManager.loadScene("scene_18");
+
+            // 💡 (แถม) ถ้าอยากให้พระเอกไปยืนตรงจุดใดจุดหนึ่งของจอเพื่อเทสต์ไอเทมใกล้ๆ
+            // เอาคอมเมนต์ออกแล้วแก้เลขพิกัดได้เลยครับ
+            // gamePanel.mainPlayer.setX(960); // ยืนกลางจอ (แกน X)
+            // gamePanel.mainPlayer.setY(550); // ยืนกลางจอ (แกน Y)
+        }
 
         // บังคับให้หน้าต่างรับค่าคีย์บอร์ด (ไม่งั้นตัวละครจะเดินไม่ได้เวลาเทสต์)
         gamePanel.requestFocusInWindow();

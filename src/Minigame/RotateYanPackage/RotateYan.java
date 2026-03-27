@@ -1,75 +1,93 @@
 package Minigame.RotateYanPackage;
 
+import ui.MainGameFrame;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 
-public class RotateYan {
-    private JFrame mainFrame;
-    private JPanel sup;
-    private JPanel panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8, panel9, panel10, panel11, panel12;
+public class RotateYan extends JPanel{
+    private MainGameFrame mainGameFrame;
+    private Runnable onWinCallBack;
+    private JPanel mainPanel;
+    private  YanJPanel[] yanArray;
     private boolean success = false;
-    int gap = 15;
-    int borderV = 104;
-    int borderH = 83;
+    int gap = 12;
+    private BufferedImage background;
 
-    public RotateYan(){
-//        this.loadFlipSound();
-        mainFrame = new JFrame();
-        sup = new JPanel();
+    public RotateYan(MainGameFrame mainGameFrame, Runnable onWinCallBack){
+        this.mainGameFrame = mainGameFrame;
+        this.onWinCallBack = onWinCallBack;
 
-        panel1 = new ImagePanel("YanImage/yan1.png", this, null);
-        panel2 = new ImagePanel("YanImage/yan2.png", this, null);
-        panel3 = new ImagePanel("YanImage/yan3.png", this, null);
-        panel4 = new ImagePanel("YanImage/yan4.png", this, null);
-        panel5 = new ImagePanel("YanImage/yan5.png", this, null);
-        panel6 = new ImagePanel("YanImage/yan6.png", this, null);
-        panel7 = new ImagePanel("YanImage/yan7.png", this, null);
-        panel8 = new ImagePanel("YanImage/yan8.png", this, null);
-        panel9 = new ImagePanel("YanImage/yan9.png", this, null);
-        panel10 = new ImagePanel("YanImage/yan10.png", this, null);
-        panel11 = new ImagePanel("YanImage/yan11.png", this, null);
-        panel12 = new ImagePanel("YanImage/yan12.png", this, null);
+        mainPanel = new JPanel();
+        mainPanel.setPreferredSize(new Dimension(1204, 901));
+        mainPanel.setLayout(new GridLayout(3,4));
 
+        yanArray = new YanJPanel[]{
+                new YanJPanel("Image/yan1.png", this),
+                new YanJPanel("Image/yan2.png", this),
+                new YanJPanel("Image/yan3.png", this),
+                new YanJPanel("Image/yan4.png", this),
+                new YanJPanel("Image/yan5.png", this),
+                new YanJPanel("Image/yan6.png", this),
+                new YanJPanel("Image/yan7.png", this),
+                new YanJPanel("Image/yan8.png", this),
+                new YanJPanel("Image/yan9.png", this),
+                new YanJPanel("Image/yan10.png", this),
+                new YanJPanel("Image/yan11.png", this),
+                new YanJPanel("Image/yan12.png", this),
+        };
 
-        sup.setBackground(new Color(214,84,84,255));
-        mainFrame.getContentPane().setBackground(new Color(255, 255, 255, 100));
+        mainPanel.setLayout(new GridLayout(3,4,gap,gap));
+        mainPanel.setOpaque(false);
 
-        sup.setBorder(BorderFactory.createEmptyBorder(borderH, borderV, borderH + 1, borderV + 1));
-        sup.setLayout(new GridLayout(3,4,gap,gap));
+        for(YanJPanel yan : yanArray){
+            mainPanel.add(yan);
+        }
 
-        mainFrame.setLayout(new BorderLayout());
-        ((JComponent) mainFrame.getContentPane()).setBorder(BorderFactory.createEmptyBorder(40,240,40,240));
-//        mainFrame.setUndecorated(true);
-        mainFrame.setResizable(false);
+        this.setLayout(new GridBagLayout());
+        this.setOpaque(false);
 
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        gd.setFullScreenWindow(mainFrame);
+        GridBagConstraints c = new GridBagConstraints();
 
+        c.gridx = 0;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.weighty = 0;
+        c.anchor = GridBagConstraints.CENTER;
+        this.add(mainPanel,c);
+        try{
+            background = ImageIO.read(getClass().getResource("Image/BG Door.PNG"));
+        }catch(IOException e){
+            e.printStackTrace();
+            background = null;
+        }
+    }
+    @Override
+    public void paintComponent(Graphics g){
+        Graphics2D g2 = (Graphics2D) g.create();
+        if(background != null){
+            g2.drawImage(background, 0, 0, this);
+        } else{
+            g2.setColor(new Color(26,26,26,100));
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
+        g2.dispose();
+        super.paintComponent(g);
 
-        sup.add(panel1); sup.add(panel2);
-        sup.add(panel3); sup.add(panel4);
-        sup.add(panel5); sup.add(panel6);
-        sup.add(panel7); sup.add(panel8);
-        sup.add(panel9); sup.add(panel10);
-        sup.add(panel11); sup.add(panel12);
-        mainFrame.add(sup, BorderLayout.CENTER);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setVisible(true);
     }
 
     public int[] getPanelAngle(){
-        int panelAngle[] = {((ImagePanel) panel1).getAngle(),((ImagePanel) panel3).getAngle(),
-                ((ImagePanel) panel2).getAngle(),((ImagePanel) panel4).getAngle(),
-                ((ImagePanel) panel5).getAngle(),((ImagePanel) panel6).getAngle(),
-                ((ImagePanel) panel7).getAngle(),((ImagePanel) panel8).getAngle(),
-                ((ImagePanel) panel9).getAngle(),((ImagePanel) panel10).getAngle(),
-                ((ImagePanel) panel11).getAngle(),((ImagePanel) panel12).getAngle()};
+        int panelAngle[] = new int[yanArray.length];
+        for(int i = 0; i < yanArray.length; i++){
+            panelAngle[i] = yanArray[i].getAngle();
+        }
         return panelAngle;
     }
     public boolean getSuccess(){
@@ -80,15 +98,13 @@ public class RotateYan {
     }
     public void winAnimated(){
         int start = gap;
-        int startVborder = borderV;
-        int startHborder = borderH;
-        int endVborder = 127;
-        int endHborder = 98;
+        int endVborder = 18;
+        int endHborder = 12;
         int end = 0;
         int duration = 1000;
         int fps = 60;
         int delay = 1000 / fps;
-        int steps = (int) (duration / delay);
+        int steps = duration / delay;
 
         Timer timer = new Timer(delay, null);
 
@@ -100,32 +116,38 @@ public class RotateYan {
                 double t = (double) step /steps;
 
                 gap = (int) (start + (end - start) * t);
-                borderV = (int) (startVborder + (endVborder - startVborder) * t);
-                borderH = (int) (startHborder + (endHborder - startHborder) * t);
-                LayoutManager supLayout = sup.getLayout();
-                GridLayout supGrid = (GridLayout) supLayout;
-                supGrid.setHgap(gap);
-                supGrid.setVgap(gap);
-                sup.setBorder(BorderFactory.createEmptyBorder(borderH, borderV, borderH + 1, borderV));
+                int borderV = (int) (endVborder * t);
+                int borderH = (int) (endHborder * t);
+                LayoutManager mainPanelLayout = mainPanel.getLayout();
+                GridLayout mainPanelGrid = (GridLayout) mainPanelLayout;
+                mainPanelGrid.setHgap(gap);
+                mainPanelGrid.setVgap(gap);
+                mainPanel.setBorder(BorderFactory.createEmptyBorder(borderH, borderV, borderH, borderV));
 
-                sup.revalidate();
-                sup.repaint();
+                mainPanel.revalidate();
+                mainPanel.repaint();
 
                 if (step >= steps) {
                     gap = end;
                     borderV = endVborder;
                     borderH = endHborder;
-                    sup.setBorder(BorderFactory.createEmptyBorder(borderH, borderV, borderH + 1, borderV));
-                    sup.revalidate();
-                    sup.repaint();
+                    mainPanel.setBorder(BorderFactory.createEmptyBorder(borderH, borderV, borderH, borderV));
+                    mainPanel.repaint();
                     timer.stop();
+
+                    //พอแอนิเมชันชนะเล่นจบ รอ 1 วิ แล้วปิดหน้าต่างมินิเกมอัตโนมัติ
+                    Timer closeTime = new Timer(1000, evt -> {
+                        if (onWinCallBack != null) onWinCallBack.run();
+                        mainGameFrame.closeMinigame();
+                    });
+                    closeTime.setRepeats(false);
+                    closeTime.start();
                 }
 
             }
         });
         timer.start();
-        mainFrame.repaint();
+        this.repaint();
     }
 
-    public JFrame getMainFrame(){return mainFrame;}
 }

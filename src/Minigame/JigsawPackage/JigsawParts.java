@@ -24,13 +24,14 @@ public class JigsawParts extends JPanel{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        size = this.getPreferredSize();
-        this.targetX = targetX;
-        this.targetY = targetY;
         this.setOpaque(false);
         this.addMouseListener(jsHandler);
         this.addMouseMotionListener(jsHandler);
-        this.setBounds(x, y, size.width, size.height);
+
+        this.targetX = targetX;
+        this.targetY = targetY;
+
+        this.setBounds(x, y, img.getWidth(), img.getHeight());
     }
     public BufferedImage getImg(){
         return  img;
@@ -44,19 +45,15 @@ public class JigsawParts extends JPanel{
     public int getTargetY(){
         return targetY;
     }
-    int x = this.getX();
-    int y = this.getY();
-    int h = this.getHeight();
-    int w = this.getHeight();
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(img, x + w/2, y + h/2, this);
+        g.drawImage(img, 0, 0, this);
     }
     @Override
     public Dimension getPreferredSize() {
         if (img != null) {
-            return new Dimension(img.getWidth(this), img.getHeight(this));
+            return new Dimension(img.getWidth(), img.getHeight());
         }
         return super.getPreferredSize();
     }

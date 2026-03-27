@@ -2,11 +2,8 @@ package Minigame.RotateYanPackage;
 
 import system.AudioManager;
 
-import javax.sound.sampled.*;
-import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Arrays;
 
 public class RotateHandler extends MouseAdapter {
@@ -20,15 +17,16 @@ public class RotateHandler extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         if (!(rotateYan.getSuccess())){
             this.playYanFlipSound();
-            ImagePanel p = (ImagePanel) e.getSource();
+            YanJPanel p = (YanJPanel) e.getSource();
             p.rotateImage();
-            rotateYan.getMainFrame().repaint();
-            int targetAngle[] = {180, 180, 270, 0, 0, 180, 180, 270, 180, 180, 90, 180};
+            rotateYan.repaint();
+            int targetAngle[] = {180, 270, 180, 0, 0, 180, 180, 270, 180, 180, 90, 180};
 
             int nowAngle[] = rotateYan.getPanelAngle();
             if (Arrays.equals(targetAngle, nowAngle)) {
                 rotateYan.winAnimated();
                 rotateYan.setSuccess(true);
+                System.out.println("เย้ๆ ฉลาดจังเลย");
             }
         }
     }

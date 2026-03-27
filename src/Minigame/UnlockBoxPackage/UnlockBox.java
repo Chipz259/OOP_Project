@@ -7,16 +7,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class UnlockBox implements Runnable {
+public class UnlockBox extends JPanel implements Runnable {
 
-    private JFrame mainFrame;
     private SlotJPanel slot[];
-    private JPanel mainPanel, slotPanel, upButtonPanel, downButtonPanel, backgroundPanel;
+    private JPanel mainPanel, slotPanel, upButtonPanel, downButtonPanel;
     private BufferedImage background, slotBackground;
     private static boolean finished = false;
 
     public  UnlockBox() {
-        mainFrame = new JFrame();
         mainPanel = new JPanel();
 
         mainPanel.setOpaque(false);
@@ -26,18 +24,11 @@ public class UnlockBox implements Runnable {
             new SlotJPanel("Image/Box4.png"),
         };
         try{
-            background = ImageIO.read(getClass().getResource("Image/BG.png"));
+            background = ImageIO.read(getClass().getResource("Image/BG BOX.png"));
             slotBackground = ImageIO.read(getClass().getResource("Image/BoxBox.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        backgroundPanel = new JPanel(){
-            @Override
-            public void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
         upButtonPanel = new JPanel();
         downButtonPanel = new JPanel();
         slotPanel = new JPanel(){
@@ -53,7 +44,7 @@ public class UnlockBox implements Runnable {
         downButtonPanel.setLayout(new GridLayout(1, 4));
         slotPanel.setLayout(new GridLayout(1, 4));
         mainPanel.setLayout(new BorderLayout());
-        backgroundPanel.setLayout(null);
+        this.setLayout(new GridBagLayout());
 
         mainPanel.setSize(1600,587);
         upButtonPanel.setSize(1600, 84);
@@ -67,7 +58,6 @@ public class UnlockBox implements Runnable {
         slotPanel.setBorder(BorderFactory.createEmptyBorder(60,80,60,80));
         upButtonPanel.setBorder(BorderFactory.createEmptyBorder(0,80,0,80));
         downButtonPanel.setBorder(BorderFactory.createEmptyBorder(0,80,0,80));
-        backgroundPanel.setBorder(BorderFactory.createEmptyBorder(40,240,40,240));
         ((GridLayout)upButtonPanel.getLayout()).setHgap(80);
         ((GridLayout)downButtonPanel.getLayout()).setHgap(80);
         ((GridLayout)slotPanel.getLayout()).setHgap(80);
@@ -80,21 +70,18 @@ public class UnlockBox implements Runnable {
         mainPanel.add(upButtonPanel, BorderLayout.NORTH);
         mainPanel.add(slotPanel, BorderLayout.CENTER);
         mainPanel.add(downButtonPanel,BorderLayout.SOUTH);
-//        mainFrame.setUndecorated(true);
-        mainFrame.setResizable(false);
 
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        gd.setFullScreenWindow(mainFrame);
+        GridBagConstraints c = new GridBagConstraints();
 
-        backgroundPanel.add(mainPanel);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.add(backgroundPanel,  BorderLayout.CENTER);
-        mainFrame.setVisible(true);
-        SwingUtilities.invokeLater(() ->{
-            mainPanel.setLocation(mainPanel.getParent().getWidth()/2 - mainPanel.getWidth()/2, mainPanel.getParent().getHeight()/2 -  mainPanel.getHeight()/2);
-            mainPanel.getParent().repaint();
-            mainPanel.getParent().revalidate();
-        });
+        c.gridx = 0;
+        c.gridy = 0;
+
+        c.weightx = 0.0;
+        c.weighty = 0.0;
+        c.fill = GridBagConstraints.NONE;
+
+        c.anchor = GridBagConstraints.CENTER;
+        this.add(mainPanel, c);
     }
     @Override
     public void run() {
@@ -117,4 +104,9 @@ public class UnlockBox implements Runnable {
         }
     }
     public static boolean isFinished() {return finished;}
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+    }
 }

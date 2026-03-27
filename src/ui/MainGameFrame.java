@@ -10,23 +10,23 @@ public class MainGameFrame extends JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger
             .getLogger(MainGameFrame.class.getName());
     private ImageBackground imageBg;
-    private JButton buttonStart, buttonSetting, buttonExit;
+    private JButton buttonStart, buttonResume,buttonSetting, buttonExit;
     private JLabel titleGame, picture;
-    private JPanel leftPanel, groupButtonPanel;
-    private ImageIcon logoIcon, startNormalIcon, settingNormalIcon, exitNormalIcon, startHoverIcon, settingHoverIcon, exitHoverIcon;
+    private JPanel leftPanel, groupButtonPanel, mainCardPanel, currentMinigamePanel = null;
+    private ImageIcon logoIcon, startNormalIcon, resumeNormalIcon,settingNormalIcon, exitNormalIcon, startHoverIcon, resumeHoverIcon,settingHoverIcon, exitHoverIcon;
     private MenuActionHandler action;
     private SettingPanel settingPanel;
     private JLayeredPane layeredPane;
     private Dimension screenSize;
     private int widthSystem, heightSystem, settingW, settingH;
     private CardLayout cardLayout;
-    private JPanel mainCardPanel, currentMinigamePanel = null;
     private CutscenePanel cutscenePanel;
     private GamePanel gamePanel;
     private FadeTransition fadeTransition;
     private GameOverPanel gameOverPanel;
     private Tutorial tutorial;
     private static MainGameFrame instance;
+    private Boolean isStartGame = false;
 
     public MainGameFrame() {
         instance = this;
@@ -97,15 +97,19 @@ public class MainGameFrame extends JFrame {
         leftPanel = new JPanel();
         groupButtonPanel = new JPanel();
         startNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuStartNormalBtn.png").getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
+        resumeNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuResumeNormalBtn.png").getImage().getScaledInstance(354, 59, Image.SCALE_SMOOTH));
         settingNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuSettingNormalBtn.png").getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
         exitNormalIcon = new ImageIcon(new ImageIcon("src/res/MenuExitNormalBtn.png").getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
         startHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuStartHoverBtn.png").getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
+        resumeHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuResumeHoverBtn.png").getImage().getScaledInstance(354,59, Image.SCALE_SMOOTH));
         settingHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuSettingHoverBtn.png").getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
         exitHoverIcon = new ImageIcon(new ImageIcon("src/res/MenuExitHoverBtn.png").getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
         buttonStart = new JButton(startNormalIcon);
+        buttonResume = new JButton(resumeNormalIcon);
         buttonSetting = new JButton(settingNormalIcon);
         buttonExit = new JButton(exitNormalIcon);
         buttonStart.setRolloverIcon(startHoverIcon);
+        buttonResume.setRolloverIcon(resumeHoverIcon);
         buttonSetting.setRolloverIcon(settingHoverIcon);
         buttonExit.setRolloverIcon(exitHoverIcon);
 
@@ -125,21 +129,26 @@ public class MainGameFrame extends JFrame {
         // Content button
         groupButtonPanel.setLayout(new BoxLayout(groupButtonPanel, BoxLayout.Y_AXIS));
         groupButtonPanel.setOpaque(false);
-        groupButtonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         groupButtonPanel.setAlignmentX(0.5f);
 
         setupButtonCenter(buttonStart);
+        setupButtonCenter(buttonResume);
         setupButtonCenter(buttonSetting);
         setupButtonCenter(buttonExit);
 
+        Component a = Box.createRigidArea(new Dimension(0, 40));
+        a.setVisible(false);
+
         groupButtonPanel.add(buttonStart);
         groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 40)));
+        groupButtonPanel.add(buttonResume);
+        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 40)));
         groupButtonPanel.add(buttonSetting);
-        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 70)));
+        groupButtonPanel.add(Box.createRigidArea(new Dimension(0, 65)));
         groupButtonPanel.add(buttonExit);
 
         leftPanel.add(titleGame);
-        leftPanel.add(Box.createRigidArea(new Dimension(0, 110)));
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 80)));
         leftPanel.add(groupButtonPanel);
 
         imageBg.setLayout(new BorderLayout());
@@ -147,12 +156,16 @@ public class MainGameFrame extends JFrame {
 
         action = new MenuActionHandler(this);
         buttonStart.setActionCommand("Start");
+        buttonResume.setActionCommand("Resume");
         buttonSetting.setActionCommand("Setting");
         buttonExit.setActionCommand("Exit");
+        buttonResume.setEnabled(false);
         buttonStart.addActionListener(action);
+        buttonResume.addActionListener(action);
         buttonSetting.addActionListener(action);
         buttonExit.addActionListener(action);
         buttonStart.addMouseListener(action);
+        buttonResume.addMouseListener(action);
         buttonSetting.addMouseListener(action);
         buttonExit.addMouseListener(action);
 
@@ -188,17 +201,16 @@ public class MainGameFrame extends JFrame {
     }
 
     public void returnToMainMenu() {
-        // 1. หยุดการทำงานของ GamePanel
-        gamePanel.stopGameThread();
-
-        // 2. สลับ CardLayout กลับไปที่หน้า MENU
-        cardLayout.show(mainCardPanel, "MENU");
-
-        // 3. เปลี่ยนเพลงประกอบกลับเป็นเพลงหน้าเมนู
-        AudioManager.playMusic("src/res/sound/BackgroundMusic.wav", 0.0f);
-
-        // 4. บังคับให้หน้าเมนูรับโฟกัส (เพื่อให้กดปุ่มเริ่มเกมใหม่ได้)
-        imageBg.requestFocusInWindow();
+        if (isStartGame) {
+            buttonResume.setEnabled(true);
+            buttonStart.setEnabled(false);
+        }
+        fadeTransition.executeFade(600, 100, 600, () -> {
+            cardLayout.show(mainCardPanel, "MENU");
+            gamePanel.stopGameThread();
+            imageBg.requestFocusInWindow();
+        });
+        AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", -16.0f);
     }
 
     public void showGameOver(boolean show) {
@@ -239,7 +251,9 @@ public class MainGameFrame extends JFrame {
             gamePanel.startGameThread();
             gamePanel.requestFocusInWindow();
 
-            tutorial.showTutorial("StartGame");
+            if (!isStartGame) {
+                tutorial.showTutorial("StartGame");
+            }
         });
     }
 
@@ -292,6 +306,10 @@ public class MainGameFrame extends JFrame {
 
     public Tutorial getTutorial() {
         return tutorial;
+    }
+
+    public void setIsStartGame(Boolean bool) {
+        isStartGame = bool;
     }
 
     public static void main (String args[]){
