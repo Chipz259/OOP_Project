@@ -19,10 +19,9 @@ public class RotateNarigaHandler extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e){
         int targetAngle[] = {270, 108};
-        if (!(rn.getFinishRotateNariga())){
+        if (!(rn.isFinished())){
             ((KemImagePanel) panel).rotate(deg);
             int nowAngle [] = (rn.getKemAngle());
-            System.out.println(((KemImagePanel) panel).getAngle());
             if (Arrays.equals(targetAngle, nowAngle)) {
                 rn.winClose();
                 System.out.println("You win");
