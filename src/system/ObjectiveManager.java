@@ -68,7 +68,7 @@ public class ObjectiveManager {
                 {"knife", "มีดอาคม"},
                 {"holyWater", "น้ำมนต์"},
                 {"rosary", "ลูกประคำ"},
-                {"parasite", "กาฝากไม้คูณตายพราย"}
+                {"kafak", "กาฝากไม้คูณตายพราย"}
         };
 
         objectives.add(new Objective("obj6", "หาของมาทำพิธี", ritualItems));
