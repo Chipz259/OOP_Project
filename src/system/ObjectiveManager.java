@@ -79,6 +79,10 @@ public class ObjectiveManager {
         }
     }
 
+    public void resetObjective() {
+        currentIndex = 0;
+    }
+
     public void draw(Graphics2D g2d, Inventory inventory) {
         if (objectives.isEmpty() || currentIndex >= objectives.size()) return;
 
