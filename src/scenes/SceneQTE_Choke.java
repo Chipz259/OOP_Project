@@ -46,6 +46,7 @@ public class SceneQTE_Choke extends Scene {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        AudioManager.preloadSFX("src/res/sound/DonPLork.wav");
     }
     public void startQTE() {
         this.clickCount = 0;
@@ -55,7 +56,7 @@ public class SceneQTE_Choke extends Scene {
         this.fadeWhiteAmount = 0;
         this.buttonScale = 100;
         this.fadeAlpha = 0;
-        AudioManager.playMusic("src/res/sound/DonPLork.wav", 0.0f);
+        AudioManager.playPreloadedSFX("src/res/sound/DonPLork.wav", 0.0f);
     }
     public void registerClick() {
         if (isQteActive) {
