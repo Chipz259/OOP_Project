@@ -6,6 +6,8 @@ import ui.MainGameFrame;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -75,9 +77,10 @@ public class RotateYan extends JPanel{
 
         this.add(mainPanel);
         this.add(exitButton);
-        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+        this.addComponentListener(new ComponentAdapter()
+        {
             @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
+            public void componentResized(ComponentEvent e) {
                 mainPanel.setLocation(getWidth() / 2 - (mainPanel.getWidth() / 2), getHeight() / 2 - (mainPanel.getHeight() / 2));
                 exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
             }
