@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 public class Inventory {
     private int selectedSlot = -1;
+    private int hoveredSlot = -1;
     private BufferedImage slotSprite;
     private BufferedImage slotHoverSprite;
     private Item[] slots;
@@ -100,7 +101,7 @@ public class Inventory {
         String id2 = item2.getObjectId();
         if ((id1.equals("candle") && id2.equals("water")) || (id1.equals("water") && id2.equals("candle"))) {
             System.out.println("ระบบ : ทำน้ำมนต์สำมะเร็จเสร็จสิ้น");
-            return new Item("holyWater", 0, 0, 100, 100, "น้ำมนต์", "น้ำมนต์กินแล้วตาย", "holyWater.png", "holyWater.png");
+            return new Item("holyWater", 0, 0, 100, 100, "น้ำมนต์", "น้ำมนต์กินแล้วตาย", "holyWater.png", "holyWaterHover.png");
         }
         return null;
     }
@@ -110,6 +111,7 @@ public class Inventory {
         int totalWidth = (slotSize * slots.length) + (spaces * (slots.length - 1));
         int startX = (screenWidth - totalWidth) / 2;
         int y = screenHeight - 150;
+
         for (int i = 0; i < slots.length; i++) {
             int x = startX + (i * (slotSize + spaces));
             Rectangle slotHitbox = new Rectangle(x, y, slotSize, slotSize);
@@ -119,6 +121,25 @@ public class Inventory {
             }
         }
         return false;
+    }
+    public void handleHover(int mouseX, int mouseY, int screenWidth, int screenHeight) {
+        int slotSize = 100;
+        int spaces = 20;
+        int totalWidth = (slotSize * slots.length) + (spaces * (slots.length - 1));
+        int startX = (screenWidth - totalWidth) / 2;
+        int y = screenHeight - 150;
+
+        hoveredSlot = -1;
+
+        for (int i = 0; i < slots.length; i++) {
+            int x = startX + (i * (slotSize + spaces));
+            Rectangle slotHitbox = new Rectangle(x, y, slotSize, slotSize);
+
+            if (slotHitbox.contains(mouseX, mouseY)) {
+                hoveredSlot = i;
+                break;
+            }
+        }
     }
     public void processSlotClick(int clickedIndex) {
         if (selectedSlot == -1) {
@@ -172,6 +193,21 @@ public class Inventory {
                 int padding = 15;
                 g2d.drawImage(slots[i].getSprite(), x + padding, y + padding, slotSize - (padding * 2), slotSize - (padding * 2), null);
             }
+        }
+        if (hoveredSlot != -1 && slots[hoveredSlot] != null) {
+            String name = slots[hoveredSlot].getItemName();
+
+            g2d.setFont(GamePanel.customFont.deriveFont(Font.BOLD, 20f));
+            int textWidth = g2d.getFontMetrics().stringWidth(name);
+
+            int hoverX = startX + (hoveredSlot * (slotSize + spaces));
+            int hoverY = screenHeight - 160;
+
+            g2d.setColor(new Color(0, 0, 0, 180));
+            g2d.fillRoundRect(hoverX + (slotSize / 2) - (textWidth / 2) - 10, hoverY - 25, textWidth + 20, 30, 10, 10);
+
+            g2d.setColor(Color.WHITE);
+            g2d.drawString(name, hoverX + (slotSize / 2) - (textWidth / 2), hoverY - 5);
         }
     }
 }

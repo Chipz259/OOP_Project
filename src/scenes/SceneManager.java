@@ -226,7 +226,7 @@ public class SceneManager {
                 this.setVisible(false);
 
                 DialogueLine[] script = {
-                        new DialogueLine("ระบบ", "คุณได้รับ [" + name + "]", null, null)
+                        new DialogueLine("ระบบ", "คุณได้รับ [" + desc + "]", null, null)
                 };
 
                 overlay.setCharacterTransform(0, 0, 0, 0, 0, 0, 0, 0);
@@ -301,14 +301,14 @@ public class SceneManager {
 
         //scene_1
         Item Candle = createPickUpItem("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleHover.png");
-        Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "water.png", "candleStroke.png");
-        Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "rosary.png", "rosary.png");
-        Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.png", "kafak.png");
+        Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "water.png", "waterHover.png");
+        Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "rosary.png", "rosaryHover.png");
+        Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.png", "kafakHover.png");
         DialogueLine[] flowerScript = {
                 new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
                 new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
         };
-        Item Flower = createStoryItem("flower", 665, 620, 110, 110, "ดอกไม้จันทน์", "ดอกไม้จันทน์", "flowerJun.png", "flowerJun.png", flowerScript);
+        Item Flower = createStoryItem("flower", 665, 620, 110, 110, "ดอกไม้จันทน์", "ดอกไม้จันทน์", "flowerJun.png", "flowerJunHover.png", flowerScript);
         //scene_2
         Item Daddy_Pic = new Item("daddyPic", 842, 520, 230, 350, "รูปภาพพ่อ", "             รูปภาพพ่อ", "fatherPicture.PNG", "fatherPicture.PNG") {
 
