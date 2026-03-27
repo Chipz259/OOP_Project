@@ -27,8 +27,8 @@ public class Tutorial extends JPanel {
             tutorialStartImage[2] = ImageIO.read(getClass().getResource("/res/Tutorial3.png"));
             tutorialStartImage[3] = ImageIO.read(getClass().getResource("/res/Tutorial4.png"));
 
-            tutorialCombineImage[0] = ImageIO.read(getClass().getResource("/res/Tutorial4.png"));
-            tutorialCombineImage[1] = ImageIO.read(getClass().getResource("/res/Tutorial5.png"));
+            tutorialCombineImage[0] = ImageIO.read(getClass().getResource("/res/Tutorial5.png"));
+            tutorialCombineImage[1] = ImageIO.read(getClass().getResource("/res/Tutorial6.png"));
 
             iconLeft = new ImageIcon(new ImageIcon("src/res/TutorialBtnLeft.png").getImage().getScaledInstance(110, 74, Image.SCALE_SMOOTH));
             iconRight = new ImageIcon(new ImageIcon("src/res/TutorialBtnRight.png").getImage().getScaledInstance(110, 74, Image.SCALE_SMOOTH));
