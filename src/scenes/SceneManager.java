@@ -178,7 +178,7 @@ public class SceneManager {
         titleOverlay = new SceneTitleOverlay(FontManager.pspimpdeedIIIFont);
 
         // สร้างฉากเปล่าๆ ทั้ง 8 ฉาก
-        for (int i = 1; i <= 18; i++) {
+        for (int i = 1; i <= 22; i++) {
             String sceneId = "scene_" + i;
             Scene newScene = new Scene(sceneId);
 
@@ -211,6 +211,10 @@ public class SceneManager {
         setupArrows("scene_9", "scene_8", "scene_10", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_10", "scene_9", "scene_11", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_11", "scene_10", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_19", null, "scene_20", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_20", "scene_19", "scene_21", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_21", "scene_20", "scene_22", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_22", "scene_21", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
 
         scenes.put("qte_choke", new SceneQTE_Choke("qte_choke", this, this.pendingPlayer));
 
@@ -274,7 +278,15 @@ public class SceneManager {
                     new DialogueLine("พระเอก", "พิธีกรรมสมบูรณ์แบบ... แสงสว่างจ้าออกมาจากแท่น!", null, mainTalk)
             }, () -> {
                 system.ObjectiveManager.getInstance().advanceObjective();
-                startTransition("scene_final", p, 960, 540);
+                if (fadeTransition != null && !fadeTransition.isFading()) {
+                    fadeTransition.executeFade(700, 0, 500, () -> {
+                        ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                        CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
+                        });
+                        mainFrame.openCutscene(cutsceneGhost);
+                    });
+                }
+//                startTransition("scene_final", p, 960, 540);
             });
         } else {
             // ผิด
@@ -415,6 +427,10 @@ public class SceneManager {
                 if (isFlower) return;
 
                 if (p.getInventory().isItemSelected("flower")) {
+                    ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                    CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
+                    });
+                    mainFrame.openCutscene(cutsceneGhost);
                     DialogueLine[] flowerScript = {
                             new DialogueLine("พระเอก", "ขอให้ไปสู่สุคตินะครับคุณพ่อ", null, mainTalk),
                             new DialogueLine("พระเอก", "วันนี้เหนื่อยจังเลยนะ...", null, mainTalk),
@@ -773,6 +789,10 @@ public class SceneManager {
             case "scene_16" : return "ห้องโถง16";
             case "scene_17" : return "ห้องนอน17";
             case "scene_18" : return "ห้องนอน18";
+            case "scene_19" : return "ห้องทำพิธี";
+            case "scene_20" : return "ห้องนอน";
+            case "scene_21" : return "ห้องโถง";
+            case "scene_22" : return "หน้าบ้าน";
             case "qte_choke" : return null;
             default: return  sceneId;
         }
