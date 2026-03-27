@@ -16,17 +16,33 @@ public class RotateYan extends JPanel{
     private Runnable onWinCallBack;
     private JPanel mainPanel;
     private  YanJPanel[] yanArray;
+    private JButton exitButton;
+    private JButton backButton;
     private boolean success = false;
     int gap = 12;
-    private BufferedImage background;
+    private BufferedImage background, exit;
 
     public RotateYan(MainGameFrame mainGameFrame, Runnable onWinCallBack){
+        try{
+            background = ImageIO.read(getClass().getResource("Image/BG Door.PNG"));
+            exit = ImageIO.read(getClass().getResource("Image/Exit_minigame_btn.png"));
+        }catch(IOException e){
+            e.printStackTrace();
+            background = null;
+        }
         this.mainGameFrame = mainGameFrame;
         this.onWinCallBack = onWinCallBack;
 
         mainPanel = new JPanel();
-        mainPanel.setPreferredSize(new Dimension(1204, 901));
+        mainPanel.setSize(1204, 901);
         mainPanel.setLayout(new GridLayout(3,4));
+
+        exitButton = new JButton(new ImageIcon(exit));
+        exitButton.setSize(exit.getWidth(), exit.getHeight());
+        exitButton.setBorderPainted(false);
+        exitButton.setContentAreaFilled(false);
+        exitButton.setFocusPainted(false);
+        exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         yanArray = new YanJPanel[]{
                 new YanJPanel("Image/yan1.png", this),
@@ -50,27 +66,22 @@ public class RotateYan extends JPanel{
             mainPanel.add(yan);
         }
 
-        this.setLayout(new GridBagLayout());
+        this.setLayout(null);
         this.setOpaque(false);
 
-        GridBagConstraints c = new GridBagConstraints();
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.anchor = GridBagConstraints.CENTER;
-        this.add(mainPanel,c);
-        try{
-            background = ImageIO.read(getClass().getResource("Image/BG Door.PNG"));
-        }catch(IOException e){
-            e.printStackTrace();
-            background = null;
-        }
+        this.add(mainPanel);
+        this.add(exitButton);
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                mainPanel.setLocation(getWidth() / 2 - (mainPanel.getWidth() / 2), getHeight() / 2 - (mainPanel.getHeight() / 2));
+                exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
+            }
+        });
     }
     @Override
     public void paintComponent(Graphics g){
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         if(background != null){
             g2.drawImage(background, 0, 0, this);
@@ -79,7 +90,6 @@ public class RotateYan extends JPanel{
             g2.fillRect(0, 0, getWidth(), getHeight());
         }
         g2.dispose();
-        super.paintComponent(g);
 
     }
 
