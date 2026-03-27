@@ -1,5 +1,6 @@
 package scenes;
 
+import Minigame.KonKlongPackage.KonKlong;
 import Minigame.RotateNarigaPackage.RotateNariga;
 import Minigame.RotateYanPackage.RotateYan;
 import entities.*;
@@ -368,19 +369,13 @@ public class SceneManager {
                 startQTETransition("qte_choke");
             }
         };
-        //scene_6
-        Item Locker = new Item("locker", 1248, 550, 356, 303, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "candleStroke.png") {
-            @Override
-            public void onInteract(Player p) {
-                //this.setVisible(false);
-            }
-        };
-        Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "chestHover.png") {
-            @Override
-            public void onInteract(Player p) {
-                ui.DiaryUi.getInstance().openDiary();
-            }
-        };
+
+//        Item Chest = new Item("chest", 1330, 476, 198, 73, "กล่อง", "กล่องพ่อ", "chest.png", "chestHover.png") {
+//            @Override
+//            public void onInteract(Player p) {
+//                ui.DiaryUi.getInstance().openDiary();
+//            }
+//        };
 
         //scene_8
         Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
@@ -412,13 +407,13 @@ public class SceneManager {
 
         //scene_15
         Item Door = new Item("miniGameYan", 1850, 365, 72, 708,"ประตู", "", "DoorPic.png", "DoorPic.png") {
-            private boolean[] isSolved = {false};
+            private boolean isSolved = false;
 
             @Override
             public void onInteract(Player p) {
                 ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
                 RotateYan minigame = new RotateYan(mainFrame, () -> {
-                    isSolved[0] = true;
+                    isSolved = true;
                     if (fadeTransition != null && !fadeTransition.isFading()) {
                         fadeTransition.executeFade(700, 0, 500, () -> {
                             loadScene("scene_16");
@@ -438,13 +433,13 @@ public class SceneManager {
 
             @Override
             public boolean isInteractable() {
-                return !isSolved[0];
+                return !isSolved;
             }
 
         };
 
         //scene_17
-        Item fallenBox = new Item("fallenBox", 1130, 715, 214, 90,"กล่องที่ตก", "กล่อง", "fallenBox.png", "fallenBox.png") {
+        Item fallenChest = new Item("fallenChest", 900, 715, 214, 90,"กล่องที่ตก", "กล่อง", "fallenBox.png", "fallenBox.png") {
 
             @Override
             public void onInteract(Player p) {
@@ -464,6 +459,26 @@ public class SceneManager {
             }
 
         };
+
+        Item Chest = new Item("Chest", 1125, 502, 214, 90,"กล่อง", "กล่อง", "Box.png", "Box.png") {
+
+            @Override
+            public void onInteract(Player p) {
+
+            }
+
+        };
+
+        Item Locker = new Item("locker", 1248, 550, 356, 303, "ลิ้นชัก", "ลิ้นชักว่าวพ่อ", "locker.png", "locker.png") {
+            @Override
+            public void onInteract(Player p) {
+                ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                KonKlong minigame = new KonKlong(mainFrame);
+                mainFrame.openMinigame(minigame);
+            }
+        };
+
+
 
 
         NPC npcGirl = new NPC("Girl", 580, 530, 170, 333, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
@@ -515,6 +530,7 @@ public class SceneManager {
         Scene scene_8 = scenes.get("scene_8");
         Scene scene_15 = scenes.get("scene_15");
         Scene scene_17 = scenes.get("scene_17");
+        Scene scene_18 = scenes.get("scene_18");
 
         if (scene_1 != null) {
             scene_1.addGameObject(Daddy_Pic);
@@ -553,7 +569,11 @@ public class SceneManager {
             scene_15.addGameObject(Door);
         }
         if (scene_17 != null) {
-            scene_17.addGameObject(fallenBox);
+            scene_17.addGameObject(fallenChest);
+        }
+        if (scene_18 != null) {
+            scene_18.addGameObject(Chest);
+            scene_18.addGameObject(Locker);
         }
     }
 
