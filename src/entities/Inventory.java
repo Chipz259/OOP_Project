@@ -65,6 +65,14 @@ public class Inventory {
             isShowCombine = true;
         }
     }
+    public void resetInventory() {
+        for (int i = 0; i < slots.length; i++) {
+            slots[i] = null;
+        }
+        selectedSlot = -1;
+        hoveredSlot = -1;
+        isShowCombine = false;
+    }
     public boolean removeItemId(String itemName) {
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] != null) {
@@ -174,9 +182,6 @@ public class Inventory {
         }
     }
 
-    public void resetInventory() {
-        System.out.println(">>> ระบบ Reset : Inventory ยังไม่สมบูรณ์");
-    }
 
     public void render(Graphics2D g2d, int screenWidth, int screenHeight) {
         int slotSize = 100;
