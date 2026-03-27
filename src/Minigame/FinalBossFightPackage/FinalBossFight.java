@@ -1,5 +1,7 @@
 package Minigame.FinalBossFightPackage;
 
+import ui.MainGameFrame;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +20,15 @@ public class FinalBossFight extends JPanel implements Runnable {
     private BufferedImage timerImage, background;
     private changableImagePanel phase1, phase2, phase3, phase4;
 
+    private MainGameFrame mainGameFrame;
+    private Runnable onWinCallback, onLoseCallback;
 
-    public FinalBossFight(){
+
+    public FinalBossFight(MainGameFrame mainGameFrame, Runnable onWinCallback, Runnable onLoseCallback){
+        this.mainGameFrame = mainGameFrame;
+        this.onWinCallback = onWinCallback;
+        this.onLoseCallback = onLoseCallback;
+
         //Set Key For Each Stage
         allStage = new Stage[]{
                 new Stage(false),
@@ -81,7 +90,11 @@ public class FinalBossFight extends JPanel implements Runnable {
         comboBox.setBackground(new Color(217, 217, 217, 255));
         comboBox.setOpaque(false);
 
-        timer.setSize(1260, timerImage.getHeight());
+        if (timerImage != null) {
+            timer.setSize(1260, timerImage.getHeight());
+        } else {
+            timer.setSize(1260, 50);
+        }
         timer.setOpaque(false);
 
         firseGroupPhase.setSize(1580, 250);
@@ -115,15 +128,21 @@ public class FinalBossFight extends JPanel implements Runnable {
                 secondGroupPhase.setLocation(getWidth() / 2 - (secondGroupPhase.getWidth() / 2), (int)(0.8 * getHeight()));
             }
         });
+
         SwingUtilities.invokeLater(() ->{
             kh = new KeyHandler(nowStage, this);
             this.addKeyListener(kh);
+            this.requestFocusInWindow();
             startTimer();
+            new Thread(this).start();
         });
     }
-    public boolean isFinished() {
-        return finished;
-    }
+
+
+//    public boolean isFinished() {
+//        return finished;
+//    }
+
     public void startTimer(){
         int start = timer.getWidth();
         int timerH = timer.getHeight();
@@ -216,11 +235,28 @@ public class FinalBossFight extends JPanel implements Runnable {
 
             System.out.println("You Losed!!");
         }
+
+        SwingUtilities.invokeLater(() -> {
+            if(finished){
+                System.out.println("ระบบ: ชนะบอสแล้ว!");
+                mainGameFrame.closeMinigame();
+                if(onWinCallback != null) onWinCallback.run();
+            } else {
+                System.out.println("ระบบ: แพ้บอส! ");
+                //ถ้าแพ้เด้งออกไปเฉยๆ
+                mainGameFrame.closeMinigame();
+                if (onLoseCallback != null) onLoseCallback.run();
+                // หากต้องการให้ตัวละครตาย หรือให้เล่นซ้ำ สามารถเขียนเพิ่มตรงนี้ได้เลยครับ
+            }
+        });
+
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        if (background != null) {
+            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        }
     }
 }
