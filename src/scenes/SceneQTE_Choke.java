@@ -89,7 +89,7 @@ public class SceneQTE_Choke extends Scene {
                 isWinningFade = true;
                 System.out.println("สวดเก่งนี่ รอด");
                 AudioManager.stopMusic();
-                AudioManager.playSFX("src/res/sound/WinPLork.wav", 0.0f);
+                AudioManager.playSFX("src/res/sound/WinPLork.wav", 10.0f);
             }
         }
         if (buttonScale > 100) {
