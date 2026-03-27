@@ -33,6 +33,7 @@ public class SceneManager {
     private String[] ritualItems = {"", "", "", ""};
     private Item[] ritualSlots = new Item[4];
     private final String[] RITUAL_ANSWERS = {"knife", "holyWater", "kafak", "rosary"};
+    private int chestopen = 0;
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -72,6 +73,8 @@ public class SceneManager {
                     ((Item) obj).setHovered(false);
                 } else if (obj instanceof Door) {
                     ((Door) obj).setIsHovered(false);
+                } else if (obj instanceof NPC) { //
+                    ((NPC) obj).setHovered(false);
                 }
             }
 
@@ -192,7 +195,7 @@ public class SceneManager {
 
         // กำหนดลูกศรซ้าย-ขวา
         setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_2", "scene_1", "scene_7", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_2", "scene_1", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_12", null, "scene_13", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_13", "scene_12", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
@@ -271,6 +274,7 @@ public class SceneManager {
             overlay.startDialogue(new DialogueLine[]{
                     new DialogueLine("พระเอก", "พิธีกรรมสมบูรณ์แบบ... แสงสว่างจ้าออกมาจากแท่น!", null, mainTalk)
             }, () -> {
+                system.ObjectiveManager.getInstance().advanceObjective();
                 startTransition("scene_final", p, 960, 540);
             });
         } else {
@@ -291,14 +295,14 @@ public class SceneManager {
 
                 for (int j = 0; j < ritualSlots.length; j = j + 1) {
                     if (ritualSlots[j] != null) {
-                        ritualSlots[j].changeImage(ritualSlots[j].getX(), ritualSlots[j].getY(), 150, 150, "slot_empty.png", "slot_empty.png");
+                        ritualSlots[j].changeImage(ritualSlots[j].getX(), ritualSlots[j].getY(), 100, 100, "slot_empty.png", "slot_empty.png");
                     }
                 }
             });
         }
     }
 
-    // เช็คจำนวนของที่วาง (ถ้าครบ 4 คืน true)
+    // เช็คจำนวนของที่วาง
     private boolean isAllSlotsFilled() {
         int count = 0;
         for (int i = 0; i < ritualItems.length; i = i + 1) {
@@ -331,16 +335,6 @@ public class SceneManager {
 
                 overlay.setCharacterTransform(0, 0, 0, 0, 0, 0, 0, 0);
                 overlay.startDialogue(script, null);
-//                Lambda Expression
-//                overlay.startDialogue(script, () -> {
-//                    if (p.getInventory().addItem(this)) {
-//                        System.out.println("ระบบ: เก็บ " + name + " เข้ากระเป๋าแล้ว");
-//                        this.setCollected(true);
-//                        this.setVisible(false);
-//                    } else {
-//                        System.out.println("ระบบ: กระเป๋าเต็ม!");
-//                    }
-//                });
             }
         };
     }
@@ -474,6 +468,10 @@ public class SceneManager {
             @Override
             public void onInteract(Player p) {
                 ui.DiaryUi.getInstance().openDiary();
+                if (chestopen == 0) {
+                    system.ObjectiveManager.getInstance().advanceObjective();
+                    chestopen++;
+                }
             }
         };
 
@@ -538,6 +536,7 @@ public class SceneManager {
                     if (fadeTransition != null && !fadeTransition.isFading()) {
                         fadeTransition.executeFade(700, 0, 500, () -> {
                             loadScene("scene_16");
+                            system.ObjectiveManager.getInstance().advanceObjective();
                             DialogueLine[] PlayerScript = {
                                     new DialogueLine("พระเอก", "!!!!", null, mainIdle),
                                     new DialogueLine("พระเอก", "เมื่อกี้เสียงอะไรมาจากห้องนอนพ่อกัน", null, mainTalk),
@@ -567,6 +566,7 @@ public class SceneManager {
                 if (fadeTransition != null && !fadeTransition.isFading()) {
                     fadeTransition.executeFade(700, 0, 500, () -> {
                         loadScene("scene_18");
+                        system.ObjectiveManager.getInstance().advanceObjective();
                         DialogueLine[] PlayerScript = {
                                 new DialogueLine("พระเอก", "....ทำไมมันถึงตกละเนี่ย", null, mainIdle),
                                 new DialogueLine("พระเอก", "ของพ่อรึป่าวนะ...", null, mainTalk),
@@ -628,10 +628,10 @@ public class SceneManager {
 
 
 
-        NPC npcGirl = new NPC("Girl", 580, 530, 170, 333, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
-        NPC evil = new NPC("Evil", 150, 525, 190, 368, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
-        NPC npc3 = new NPC("Npc3", 1350, 530, 170, 333, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
-        NPC npc2 = new NPC("Npc2", 1500, 535, 170, 333, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
+        NPC npcGirl = new NPC("Girl", "เด็กสาวปริศนา", 580, 530, 170, 333, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
+        NPC evil = new NPC("Evil", "ผู้ใหญ่บ้าน",  150, 525, 190, 368, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
+        NPC npc3 = new NPC("Npc3", "คุณตา", 1350, 530, 170, 333, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
+        NPC npc2 = new NPC("Npc2", "คุณยาย", 1500, 535, 170, 333, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
 
         DialogueLine[] npcGirlScript = {
                 new DialogueLine("เด็กสาวปริศนา", "พ่อตายแล้วน้าฮือๆๆๆ", girlTalk, mainIdle),
@@ -693,19 +693,11 @@ public class SceneManager {
             scene_1.addGameObject(evil);
             scene_1.addGameObject(npc3);
             scene_1.addGameObject(npc2);
-            scene_1.addGameObject(miniGameClock);
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
-            scene_2.addGameObject(Candle);
-            scene_2.addGameObject(Water);
-            scene_2.addGameObject(Rosary);
-            scene_2.addGameObject(Parasite);
-            scene_2.addGameObject(Knife2);
         }
         if (scene_4 != null) {
-            scene_4.addGameObject(miniGameClock);
-            scene_4.addGameObject(Knife2);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
@@ -718,6 +710,11 @@ public class SceneManager {
             scene_7.addGameObject(slot1);
             scene_7.addGameObject(slot2);
             scene_7.addGameObject(slot3);
+            scene_7.addGameObject(Candle);
+            scene_7.addGameObject(Water);
+            scene_7.addGameObject(Knife2);
+            scene_7.addGameObject(Rosary);
+            scene_7.addGameObject(Parasite);
         }
         if (scene_8 != null) {
             scene_8.addGameObject(miniGameClock);
@@ -752,11 +749,11 @@ public class SceneManager {
             case "scene_11" : return "ป่า";
             case "scene_12" : return "หน้าเมรุ";
             case "scene_13" : return "ด้านข้างเมรุ";
-            case "scene_14" : return "ห้องนอน";
-            case "scene_15" : return "ห้องโถง";
-            case "scene_16" : return "ห้องโถง";
-            case "scene_17" : return "ห้องนอน";
-            case "scene_18" : return "ห้องนอน";
+            case "scene_14" : return "ห้องนอน14";
+            case "scene_15" : return "ห้องโถง15";
+            case "scene_16" : return "ห้องโถง16";
+            case "scene_17" : return "ห้องนอน17";
+            case "scene_18" : return "ห้องนอน18";
             case "qte_choke" : return null;
             default: return  sceneId;
         }
@@ -869,6 +866,25 @@ public class SceneManager {
 
     public GamePanel getGamePanel() {
         return this.gamePanel;
+    }
+
+    public void resetManagerStates() {
+        System.out.println(">>> ระบบ Reset : SceneManager ยังไม่สมบูรณ์");
+        isFirstTimeScene3 = true;
+        isFirstTimeScene6 = true;
+        isFirstTimeScene12 = true;
+        isFirstTimeScene14 = true;
+        isFirstTimeScene16 = true;
+        isFirstTimeScene18 = true;
+
+        // รีเซ็ตไอเทมในพิธีกรรม (ถ้ามี)
+        for (int i = 0; i < ritualItems.length; i++) {
+            ritualItems[i] = "";
+            if (ritualSlots[i] != null) {
+                // คืนค่ารูปแท่นวางให้ว่างเปล่า
+                ritualSlots[i].changeImage(ritualSlots[i].getX(), ritualSlots[i].getY(), 100, 100, "slot_empty.png", "slot_hover.png");
+            }
+        }
     }
 }
 

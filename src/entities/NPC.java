@@ -13,9 +13,12 @@ public class NPC extends GameObject implements Interactable{
     private final int ANIMATION_SPEED = 5;
     private int dLeftX = 50, dLeftY = 0, dLeftW = 700, dLeftH = 950;
     private int dRightX = 1200, dRightY = 0, dRightW = 700, dRightH = 950;
+    private boolean isHovered = false;
+    private String npcName;
 
-    public NPC(String id, int x, int y, int with, int height, String idleSpritePath, int frameCount, int frameWidth, int frameHeight) {
+    public NPC(String id,String npcName, int x, int y, int with, int height, String idleSpritePath, int frameCount, int frameWidth, int frameHeight) {
         super(id, x, y, with, height);
+        this.npcName = npcName;
         loadAnimation(idleSpritePath, frameCount, frameWidth, frameHeight);
     }
 
@@ -79,6 +82,27 @@ public class NPC extends GameObject implements Interactable{
                 g2d.drawImage(idleFrames[spriteNum], getX(), getY(), getWidth(), getHeight(), null);
             }
         }
+        if (isHovered == true) {
+            if (entities.GamePanel.customFont != null) {
+                g2d.setFont(entities.GamePanel.customFont.deriveFont(Font.PLAIN, 25f));
+
+                FontMetrics fm = g2d.getFontMetrics();
+                String displayName = npcName;
+                int textWidth = fm.stringWidth(displayName);
+
+                int padding = 10;
+                int boxW = textWidth + (padding * 2);
+                int boxH = 35;
+                int boxX = getX() + (getWidth() / 2) - (boxW / 2);
+                int boxY = getY() - 45;
+
+                g2d.setColor(new Color(0, 0, 0, 180));
+                g2d.fillRoundRect(boxX, boxY, boxW, boxH, 10, 10);
+
+                g2d.setColor(Color.WHITE);
+                g2d.drawString(displayName, boxX + padding, boxY + 26);
+            }
+        }
     }
 
     @Override
@@ -103,5 +127,9 @@ public class NPC extends GameObject implements Interactable{
 
     @Override
     public void onHover(){
+        this.isHovered = true;
+    }
+    public void setHovered(boolean hovered) {
+        this.isHovered = hovered;
     }
 }
