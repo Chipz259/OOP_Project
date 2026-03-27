@@ -43,7 +43,7 @@ public class KemImagePanel extends JPanel {
 
         g2.rotate(Math.toRadians(angle));
 
-        g2.drawImage(img, -imgW / 2, 0, this);
+        g2.drawImage(img, -imgW / 2, 0,img.getWidth(), img.getHeight(), this);
 
         g2.dispose();
     }
