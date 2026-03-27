@@ -62,34 +62,43 @@ public class AudioManager {
     }
 
     public static void resumeBGMusic(String path, float offsetDB) {
-        // 1. ถ้าเป็นเพลงเดิมและกำลังเล่นอยู่ -> ไม่ต้องทำอะไรเลย (เล่นต่อเนื่องไป)
-        if (path.equals(currentBgmPath) && bgMusic != null && bgMusic.isRunning()) {
-            return;
+        // 1. ถ้า Path ตรงกันเด๊ะๆ
+        if (path.equals(currentBgmPath)) {
+            if (bgMusic != null) {
+                if (bgMusic.isRunning()) {
+                    // เคส 1: เพลงเดิมเล่นอยู่แล้ว -> ปล่อยไหล
+                    System.out.println("เข้าเงื่อนไข 1: เพลงเดิมเล่นอยู่");
+                    return;
+                } else {
+                    // เคส 2: เพลงเดิมแต่หยุดอยู่ (เช่น กลับจาก Setting) -> Resume
+                    System.out.println("เข้าเงื่อนไข 2: Resume เพลงเดิม");
+                    bgMusic.setMicrosecondPosition(lastPosition);
+                    applyVolume(bgMusic, bgmVolume, currentBgmOffset);
+                    bgMusic.start();
+                    return;
+                }
+            }
         }
 
-        // 2. ถ้าเป็นเพลงเดิมแต่ถูกหยุดไว้ (เช่น กลับมาจากหน้า Setting) -> Resume ต่อจากที่ค้างไว้
-        if (path.equals(currentBgmPath) && bgMusic != null && !bgMusic.isRunning()) {
-            bgMusic.setMicrosecondPosition(lastPosition);
-            applyVolume(bgMusic, bgmVolume, currentBgmOffset);
-            bgMusic.start();
-            return;
-        }
-
-        // 3. ถ้าเป็นเพลงใหม่ (Path ไม่ตรงกับของเดิม) -> เริ่มเล่นเพลงใหม่ทันที
+        // 2. ถ้ามาถึงตรงนี้ แสดงว่า Path ไม่ตรง หรือ bgMusic ยังไม่เคยถูกสร้าง (null)
+        System.out.println("เข้าเงื่อนไข 3: เริ่มเพลงใหม่ -> " + path);
         try {
+            // [สำคัญ] ห้ามเรียก stopMusic() ที่ไปล้าง currentBgmPath ในนี้
+            if (bgMusic != null) {
+                bgMusic.stop();
+                bgMusic.close();
+            }
+
+            currentBgmPath = path; // อัปเดต Path ทันที
+            currentBgmOffset = offsetDB;
+            lastPosition = 0;
+
             File musicFile = new File(path);
             if (musicFile.exists()) {
-                stopMusic(); // เคลียร์ตัวเก่าทิ้ง
-
-                currentBgmPath = path;
-                currentBgmOffset = offsetDB;
-                lastPosition = 0;
-
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
                 bgMusic = AudioSystem.getClip();
                 bgMusic.open(audioInput);
                 bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
-
                 applyVolume(bgMusic, bgmVolume, currentBgmOffset);
                 bgMusic.start();
             }

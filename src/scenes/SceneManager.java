@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.time.Clock;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -65,7 +64,7 @@ public class SceneManager {
     public void loadScene(String sceneId) {
         if (scenes.containsKey(sceneId)) {
             currentScene = scenes.get(sceneId);
-            playBGMusic(sceneId);
+            managePlayBGM(sceneId);
             System.out.println("ระบบ: เปลี่ยนเป็นฉาก -> " + sceneId);
 
             for (entities.GameObject obj : currentScene.getObjectsInScene()) {
@@ -851,9 +850,12 @@ public class SceneManager {
         }
     }
 
-    private void playBGMusic(String sceenId) {
-        if (sceenId.equals("scene")) {
-            AudioManager.playMusic("src/res/sound/UIABg.wav", 0.0f);
+    private void managePlayBGM(String sceneID) {
+        if (sceneID.equals("qte_choke")) {
+            AudioManager.stopMusic();
+        }
+        else if (sceneID.equals("scene_16")) {
+            AudioManager.playSFX("src/res/sound/ItemDropSound.wav", 0.0f);
         }
         else {
             AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", 0.0f);

@@ -227,6 +227,7 @@ public class MainGameFrame extends JFrame {
     }
 
     public void startCutscene() {
+        AudioManager.stopMusic();
         String[] introStory = {
                 "กริ๊งๆๆๆ น้ำตาลโทรมา",
                 "รับสายโทรศัพท์น้ำตาล",

@@ -90,7 +90,6 @@ public class FadeTransition extends JPanel {
             }
         });
         fadeTimer.start();
-        AudioManager.stopMusic();
     }
 
     //ถ้าไม่กรอกค่าอะไร เรียกเปล่าๆ
