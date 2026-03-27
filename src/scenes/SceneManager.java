@@ -1,5 +1,6 @@
 package scenes;
 
+import Minigame.JigsawPackage.JigsawFrame;
 import Minigame.KonKlongPackage.KonKlong;
 import Minigame.RotateNarigaPackage.RotateNariga;
 import Minigame.RotateYanPackage.RotateYan;
@@ -32,6 +33,7 @@ public class SceneManager {
     private String[] ritualItems = {"", "", "", ""};
     private Item[] ritualSlots = new Item[4];
     private final String[] RITUAL_ANSWERS = {"knife", "holyWater", "kafak", "rosary"};
+    private int chestopen = 0;
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -193,7 +195,7 @@ public class SceneManager {
 
         // กำหนดลูกศรซ้าย-ขวา
         setupArrows("scene_1", null, "scene_2", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
-        setupArrows("scene_2", "scene_1", "scene_7", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
+        setupArrows("scene_2", "scene_1", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_12", null, "scene_13", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_13", "scene_12", "scene_3", imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
         setupArrows("scene_3", "scene_4", null, imgLeftArrow, imgRightArrow, imgLeftHover, imgRightHover);
@@ -272,6 +274,7 @@ public class SceneManager {
             overlay.startDialogue(new DialogueLine[]{
                     new DialogueLine("พระเอก", "พิธีกรรมสมบูรณ์แบบ... แสงสว่างจ้าออกมาจากแท่น!", null, mainTalk)
             }, () -> {
+                system.ObjectiveManager.getInstance().advanceObjective();
                 startTransition("scene_final", p, 960, 540);
             });
         } else {
@@ -299,7 +302,7 @@ public class SceneManager {
         }
     }
 
-    // เช็คจำนวนของที่วาง (ถ้าครบ 4 คืน true)
+    // เช็คจำนวนของที่วาง
     private boolean isAllSlotsFilled() {
         int count = 0;
         for (int i = 0; i < ritualItems.length; i = i + 1) {
@@ -332,16 +335,6 @@ public class SceneManager {
 
                 overlay.setCharacterTransform(0, 0, 0, 0, 0, 0, 0, 0);
                 overlay.startDialogue(script, null);
-//                Lambda Expression
-//                overlay.startDialogue(script, () -> {
-//                    if (p.getInventory().addItem(this)) {
-//                        System.out.println("ระบบ: เก็บ " + name + " เข้ากระเป๋าแล้ว");
-//                        this.setCollected(true);
-//                        this.setVisible(false);
-//                    } else {
-//                        System.out.println("ระบบ: กระเป๋าเต็ม!");
-//                    }
-//                });
             }
         };
     }
@@ -475,10 +468,35 @@ public class SceneManager {
             @Override
             public void onInteract(Player p) {
                 ui.DiaryUi.getInstance().openDiary();
+                if (chestopen == 0) {
+                    system.ObjectiveManager.getInstance().advanceObjective();
+                    chestopen++;
+                }
             }
         };
 
         //scene_8
+        Item EmptyPicture = new Item("minigameJigsaw", 1418, 508, 67, 85, "กรอบรูป", "กรอบรูป", "EmptyPicture.png", "EmptyPicture.png") {
+
+            private boolean isSolved = false;
+
+            @Override
+            public void onInteract(Player p) {
+                if (!isSolved) {
+                    ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+                    JigsawFrame minigame = new JigsawFrame(mainFrame, () -> {
+                        isSolved = true;
+                        DialogueLine[] EmptyPictureScript = {
+                                new DialogueLine("พระเอก", "รูปนี้มัน... ครอบครัวของเรานี่นา", null, mainTalk),
+                        };
+                        overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                        overlay.startDialogue(EmptyPictureScript, () -> {});
+                    });
+                    mainFrame.openMinigame(minigame);
+                }
+            }
+        };
+
         Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
         Knife2.setVisible(false);
 
@@ -518,6 +536,7 @@ public class SceneManager {
                     if (fadeTransition != null && !fadeTransition.isFading()) {
                         fadeTransition.executeFade(700, 0, 500, () -> {
                             loadScene("scene_16");
+                            system.ObjectiveManager.getInstance().advanceObjective();
                             DialogueLine[] PlayerScript = {
                                     new DialogueLine("พระเอก", "!!!!", null, mainIdle),
                                     new DialogueLine("พระเอก", "เมื่อกี้เสียงอะไรมาจากห้องนอนพ่อกัน", null, mainTalk),
@@ -547,6 +566,7 @@ public class SceneManager {
                 if (fadeTransition != null && !fadeTransition.isFading()) {
                     fadeTransition.executeFade(700, 0, 500, () -> {
                         loadScene("scene_18");
+                        system.ObjectiveManager.getInstance().advanceObjective();
                         DialogueLine[] PlayerScript = {
                                 new DialogueLine("พระเอก", "....ทำไมมันถึงตกละเนี่ย", null, mainIdle),
                                 new DialogueLine("พระเอก", "ของพ่อรึป่าวนะ...", null, mainTalk),
@@ -666,6 +686,8 @@ public class SceneManager {
         Scene scene_18 = scenes.get("scene_18");
 
         if (scene_1 != null) {
+            scene_1.addGameObject(EmptyPicture);
+
             scene_1.addGameObject(Daddy_Pic);
             scene_1.addGameObject(npcGirl);
             scene_1.addGameObject(evil);
@@ -688,10 +710,16 @@ public class SceneManager {
             scene_7.addGameObject(slot1);
             scene_7.addGameObject(slot2);
             scene_7.addGameObject(slot3);
+            scene_7.addGameObject(Candle);
+            scene_7.addGameObject(Water);
+            scene_7.addGameObject(Knife2);
+            scene_7.addGameObject(Rosary);
+            scene_7.addGameObject(Parasite);
         }
         if (scene_8 != null) {
             scene_8.addGameObject(miniGameClock);
             scene_8.addGameObject(Knife2);
+            scene_8.addGameObject(EmptyPicture);
         }
         if (scene_15 != null) {
             scene_15.addGameObject(Door);
@@ -721,11 +749,11 @@ public class SceneManager {
             case "scene_11" : return "ป่า";
             case "scene_12" : return "หน้าเมรุ";
             case "scene_13" : return "ด้านข้างเมรุ";
-            case "scene_14" : return "ห้องนอน";
-            case "scene_15" : return "ห้องโถง";
-            case "scene_16" : return "ห้องโถง";
-            case "scene_17" : return "ห้องนอน";
-            case "scene_18" : return "ห้องนอน";
+            case "scene_14" : return "ห้องนอน14";
+            case "scene_15" : return "ห้องโถง15";
+            case "scene_16" : return "ห้องโถง16";
+            case "scene_17" : return "ห้องนอน17";
+            case "scene_18" : return "ห้องนอน18";
             case "qte_choke" : return null;
             default: return  sceneId;
         }

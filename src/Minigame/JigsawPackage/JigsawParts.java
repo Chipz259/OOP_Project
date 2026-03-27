@@ -12,12 +12,15 @@ public class JigsawParts extends JPanel{
     private BufferedImage img;
     private Dimension size;
     private Boolean reachTartget = false;
+    private JigsawFrame jigsawFrame;
 
-    public JigsawParts(String path){
-        this(path, 0, 0, 0, 0);
-    }
+//    public JigsawParts(String path){
+//        this(path, 0, 0, 0, 0);
+//    }
 
-    public JigsawParts(String path, int x, int y, int targetX, int targetY){
+    public JigsawParts(String path, JigsawFrame jigsawFrame, int x, int y, int targetX, int targetY){
+        this.jigsawFrame = jigsawFrame;
+
         JigsawPartHandler jsHandler = new JigsawPartHandler();
         try {
             img = ImageIO.read(getClass().getResource(path));
@@ -36,8 +39,12 @@ public class JigsawParts extends JPanel{
     public BufferedImage getImg(){
         return  img;
     }
+    public boolean isReachTarget() {return reachTartget;}
     public void setReachTartget(Boolean b){
         reachTartget = b;
+        if (b && jigsawFrame != null) {
+            jigsawFrame.checkWinCondition();
+        }
     }
     public int getTargetX(){
         return targetX;

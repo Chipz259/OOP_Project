@@ -43,6 +43,9 @@ public class RotateYan extends JPanel{
         exitButton.setContentAreaFilled(false);
         exitButton.setFocusPainted(false);
         exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        exitButton.addActionListener(e -> {
+            mainGameFrame.closeMinigame();
+        });
 
         yanArray = new YanJPanel[]{
                 new YanJPanel("Image/yan1.png", this),

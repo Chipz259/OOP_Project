@@ -61,16 +61,19 @@ public class ObjectiveManager {
         objectives.add(new Objective("obj1", "วางดอกไม้จันทน์ที่โลงศพพ่อ"));
         objectives.add(new Objective("obj2", "เข้านอน"));
         objectives.add(new Objective("obj3", "แปะยันต์ที่ประตู"));
-        objectives.add(new Objective("obj4", "หาสมุดบันทึกพ่อ"));
+        objectives.add(new Objective("obj4", "ไปเช็คที่มาของเสียง"));
+        objectives.add(new Objective("obj5", "เปิดสมุดบันทึกพ่อ"));
 
         String[][] ritualItems = {
                 {"knife", "มีดอาคม"},
                 {"holyWater", "น้ำมนต์"},
                 {"rosary", "ลูกประคำ"},
-                {"parasite", "กาฝากไม้คูณตายพราย"}
+                {"kafak", "กาฝากไม้คูณตายพราย"}
         };
 
-        objectives.add(new Objective("obj5", "หาของมาทำพิธี", ritualItems));
+        objectives.add(new Objective("obj6", "หาของมาทำพิธี", ritualItems));
+        objectives.add(new Objective("obj7", "เอาชนะสิ่งชั่วร้าย"));
+        objectives.add(new Objective("obj8", "ไปหน้าบ้าน"));
     }
 
     public void advanceObjective() {
