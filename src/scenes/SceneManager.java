@@ -71,6 +71,8 @@ public class SceneManager {
                     ((Item) obj).setHovered(false);
                 } else if (obj instanceof Door) {
                     ((Door) obj).setIsHovered(false);
+                } else if (obj instanceof NPC) { //
+                    ((NPC) obj).setHovered(false);
                 }
             }
 
@@ -290,7 +292,7 @@ public class SceneManager {
 
                 for (int j = 0; j < ritualSlots.length; j = j + 1) {
                     if (ritualSlots[j] != null) {
-                        ritualSlots[j].changeImage(ritualSlots[j].getX(), ritualSlots[j].getY(), 150, 150, "slot_empty.png", "slot_empty.png");
+                        ritualSlots[j].changeImage(ritualSlots[j].getX(), ritualSlots[j].getY(), 100, 100, "slot_empty.png", "slot_empty.png");
                     }
                 }
             });
@@ -606,10 +608,10 @@ public class SceneManager {
 
 
 
-        NPC npcGirl = new NPC("Girl", 580, 530, 170, 333, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
-        NPC evil = new NPC("Evil", 150, 525, 190, 368, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
-        NPC npc3 = new NPC("Npc3", 1350, 530, 170, 333, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
-        NPC npc2 = new NPC("Npc2", 1500, 535, 170, 333, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
+        NPC npcGirl = new NPC("Girl", "เด็กสาวปริศนา", 580, 530, 170, 333, "/res/NPC/NPC1_a.PNG", 12, 622, 1299);
+        NPC evil = new NPC("Evil", "ผู้ใหญ่บ้าน",  150, 525, 190, 368, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
+        NPC npc3 = new NPC("Npc3", "คุณตา", 1350, 530, 170, 333, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
+        NPC npc2 = new NPC("Npc2", "คุณยาย", 1500, 535, 170, 333, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
 
         DialogueLine[] npcGirlScript = {
                 new DialogueLine("เด็กสาวปริศนา", "พ่อตายแล้วน้าฮือๆๆๆ", girlTalk, mainIdle),
@@ -669,19 +671,11 @@ public class SceneManager {
             scene_1.addGameObject(evil);
             scene_1.addGameObject(npc3);
             scene_1.addGameObject(npc2);
-            scene_1.addGameObject(miniGameClock);
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
-            scene_2.addGameObject(Candle);
-            scene_2.addGameObject(Water);
-            scene_2.addGameObject(Rosary);
-            scene_2.addGameObject(Parasite);
-            scene_2.addGameObject(Knife2);
         }
         if (scene_4 != null) {
-            scene_4.addGameObject(miniGameClock);
-            scene_4.addGameObject(Knife2);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
