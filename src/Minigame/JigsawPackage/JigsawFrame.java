@@ -73,23 +73,12 @@ public class JigsawFrame extends JPanel {
 
         this.add(sup);
         this.add(exitButton);
-<<<<<<< Updated upstream
 
-        this.addComponentListener(new java.awt.event.ComponentAdapter() {
-
-            @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
-                if (getWidth() > 0 && getHeight() > 0) {
-                    sup.setLocation(getWidth() / 2 - (sup.getWidth() / 2), getHeight() / 2 - (sup.getHeight() / 2));
-                    exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
-                }
-=======
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 sup.setLocation(getWidth() / 2 - (sup.getWidth() / 2), getHeight() / 2 - (sup.getHeight() / 2));
                 exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
->>>>>>> Stashed changes
             }
         });
     }
