@@ -839,5 +839,24 @@ public class SceneManager {
     public GamePanel getGamePanel() {
         return this.gamePanel;
     }
+
+    public void resetManagerStates() {
+        System.out.println(">>> ระบบ Reset : SceneManager ยังไม่สมบูรณ์");
+        isFirstTimeScene3 = true;
+        isFirstTimeScene6 = true;
+        isFirstTimeScene12 = true;
+        isFirstTimeScene14 = true;
+        isFirstTimeScene16 = true;
+        isFirstTimeScene18 = true;
+
+        // รีเซ็ตไอเทมในพิธีกรรม (ถ้ามี)
+        for (int i = 0; i < ritualItems.length; i++) {
+            ritualItems[i] = "";
+            if (ritualSlots[i] != null) {
+                // คืนค่ารูปแท่นวางให้ว่างเปล่า
+                ritualSlots[i].changeImage(ritualSlots[i].getX(), ritualSlots[i].getY(), 100, 100, "slot_empty.png", "slot_hover.png");
+            }
+        }
+    }
 }
 
