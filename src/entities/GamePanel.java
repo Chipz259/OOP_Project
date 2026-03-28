@@ -7,7 +7,6 @@ import system.FadeTransition;
 import system.KeyHandler;
 import system.MouseHandler;
 import ui.MainGameFrame;
-import ui.SettingPanel;
 import ui.DiaryUi;
 import ui.Tutorial;
 
@@ -15,20 +14,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.InputStream;
-// import java.awt.event.KeyAdapter;
 
 public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
     private boolean isRunning;
-    // private int fps;
     public Player mainPlayer;
     public SceneManager sceneManager;
     private Inventory inventory;
     public static Font customFont;
-    // private MouseAdapter mouseHandler;
     private KeyHandler keyH;
-    private SettingPanel settingPanel;
-    private JLayeredPane layeredPane;
     private MainGameFrame parentFrame;
     private JButton btnSetting;
     private ImageIcon settingIcon, settingHoverIcon;
@@ -191,7 +185,6 @@ public class GamePanel extends JPanel implements Runnable {
 
             int speed = 100;
             boolean isWalking = false;
-            boolean isFacingLeft = false;
 
             if (keyH.left || keyH.right) {
                 targetItem = null;

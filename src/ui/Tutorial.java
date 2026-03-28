@@ -142,10 +142,6 @@ public class Tutorial extends JPanel {
         parent.getGamePanel().requestFocusInWindow();
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

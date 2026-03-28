@@ -58,14 +58,6 @@ public class NPC extends GameObject implements Interactable{
         }
     }
 
-    public boolean isFacingLeft() {
-        return this.isFacingLeft;
-    }
-
-    public void setFacingLeft(boolean isFacingLeft) {
-        this.isFacingLeft = isFacingLeft;
-    }
-
     @Override
     public void update() {
         spriteCounter++;

@@ -15,7 +15,6 @@ public class Door extends GameObject implements Interactable {
     private SceneManager sceneM;
     private BufferedImage hoverSpite;
     private boolean isHovered = false;
-    private boolean isLocked = false;
 
     public Door(String id, int x, int y, int width, int height, String destName , String nextSceneId, SceneManager sceneM, BufferedImage arrowImage, int spawnX, int spawnY) {
         super(id, x, y, width, height);
@@ -35,9 +34,6 @@ public class Door extends GameObject implements Interactable {
     public String getNextSceneId() {
         return nextSceneId;
     }
-    public void setNextSceneId(String nextSceneId) {
-        this.nextSceneId = nextSceneId;
-    }
     public int getSpawnX() {
         return spawnX;
     }
@@ -46,9 +42,6 @@ public class Door extends GameObject implements Interactable {
     }
     public int getSpawnY() {
         return spawnY;
-    }
-    public void setSpawnY(int spawnY) {
-        this.spawnY = spawnY;
     }
     public void setHoverSpite(BufferedImage hoverSpite) {
         this.hoverSpite = hoverSpite;
@@ -81,12 +74,6 @@ public class Door extends GameObject implements Interactable {
                 else {
                     textX = getX() + getWidth() + 20;
                 }
-
-//                g2d.setColor(Color.BLACK);
-//                g2d.drawString(destName, textX - 2, textY - 2);
-//                g2d.drawString(destName, textX + 2, textY - 2);
-//                g2d.drawString(destName, textX - 2, textY + 2);
-//                g2d.drawString(destName, textX + 2, textY + 2);
 
                 g2d.setColor(Color.WHITE);
                 g2d.drawString(destName, textX, textY);

@@ -93,9 +93,6 @@ public abstract class GameObject {
     public String getObjectId() {
         return this.objectId;
     }
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
-    }
 
     public abstract void update();
     public abstract void render(Graphics2D g2d);
