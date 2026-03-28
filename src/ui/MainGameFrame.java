@@ -250,10 +250,11 @@ public class MainGameFrame extends JFrame {
     public void startCutscene() {
         AudioManager.stopMusic();
         String[] introStory = {
-                "กริ๊งๆๆๆ น้ำตาลโทรมา",
-                "รับสายโทรศัพท์น้ำตาล",
-                "อึ่งๆๆๆๆๆ",
-                "ไปงานศพด้วยจ้าเพื่อน"
+                "“ฮัลโหล ใครครับ”",
+                "“เอ็งใช่ลูกตาทิตย์ไหม”",
+                "“ใช่ครับ… มีอะไรหรือเปล่า”",
+                "“พ่อเอ็ง… เสียแล้ว มางานศพด้วยนะคืนนี้”",
+                "“…รีบมาเถอะ ทุกคนรอเอ็งอยู่”"
         };
 
         fadeTransition.executeFade(350, 0, 350, () -> {

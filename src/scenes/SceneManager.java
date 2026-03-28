@@ -31,7 +31,7 @@ public class SceneManager {
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
     private BufferedImage girlIdle, girlTalk, mainIdle, mainIdle2, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk, dadIdle, dadTalk;
-    private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true, isFirstTimeScene19;
+    private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true, isFirstTimeScene17 = true, isFirstTimeScene19;
     private String[] ritualItems = {"", "", "", ""};
     private String[] ritualItemNames = {"", "", "", ""};
     private Item[] ritualSlots = new Item[4];
@@ -109,7 +109,9 @@ public class SceneManager {
 
             if (isFirstTimeScene3) {
                 DialogueLine[] scene3Intro = {
-                        new DialogueLine("พระเอก", "ถึงบ้านซะที... บรรยากาศดูแปลกๆ ไปนะ", null, mainTalk)
+                        new DialogueLine("ตุลย์", "เห้อ… เหนื่อยจัง แถมยังรู้สึกแปลก ๆ", null, mainIdle2),
+                        new DialogueLine("ตุลย์", "แต่คงไม่มีอะไรหรอกมั้ง… อาจจะแค่คิดมากไป", null, mainIdle2),
+                        new DialogueLine("ตุลย์", "นอนสักตื่น เดี๋ยวก็คงดีขึ้น", null, mainIdle2)
                 };
                 overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                 overlay.startDialogue(scene3Intro, () -> {
@@ -127,6 +129,13 @@ public class SceneManager {
         }
         else if (sceneId.equals("scene_6")) {
             if (isFirstTimeScene6) {
+                DialogueLine[] scene3Intro = {
+                        new DialogueLine("ตุลย์", "สมุดบันทึกของพ่อหรอ…", null, mainIdle2)
+                };
+                overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                overlay.startDialogue(scene3Intro, () -> {
+                });
+
                 isFirstTimeScene6 = false;
             }
         }
@@ -138,7 +147,8 @@ public class SceneManager {
         else if (sceneId.equals("scene_14")) {
             if (isFirstTimeScene14) {
                 DialogueLine[] scene3Intro = {
-                        new DialogueLine("พระเอก", "อะเจ้ยยย ผีหลอกกกก", null, mainTalk)
+                        new DialogueLine("ตุลย์", "เกือบไปแล้ว… นี่มันเกิดอะไรขึ้น ! !", null, mainIdle2),
+                        new DialogueLine("ตุลย์", "ตอนนี้คงต้องทำยันต์ป้องกันไว้ที่ประตูก่อน", null, mainIdle2)
                 };
                 overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                 overlay.startDialogue(scene3Intro, () -> {
@@ -152,8 +162,29 @@ public class SceneManager {
                 isFirstTimeScene16 = false;
             }
         }
+        else if (sceneId.equals("scene_17")) {
+            if (isFirstTimeScene17) {
+                DialogueLine[] scene17Intro = {
+                        new DialogueLine("ตุลย์", "กล่องหล่นลงลงมาได้ยังไงกันนะ", null, mainIdle2),
+                        new DialogueLine("ตุลย์", "เก็บขึ้นมาดีกว่า...", null, mainIdle2)
+                };
+                overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                overlay.startDialogue(scene17Intro, () -> {
+                });
+
+                isFirstTimeScene17 = false;
+            }
+        }
         else if (sceneId.equals("scene_18")) {
             if (isFirstTimeScene18) {
+                DialogueLine[] scene18Intro = {
+                        new DialogueLine("ตุลย์", "นี่มัน… กล่องอะไรน่ะ", null, mainIdle2),
+                        new DialogueLine("ตุลย์", "มีอะไรอยู่ในกล่องด้วย ลองหารหัสมาเปิดดีกว่า", null, mainIdle2)
+                };
+                overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                overlay.startDialogue(scene18Intro, () -> {
+                });
+
                 isFirstTimeScene18 = false;
             }
         }
@@ -517,7 +548,7 @@ public class SceneManager {
         Item Rosary = createStoryItem("rosary", 425, 550, 100, 100, "ลูกประคำ", "ลูกประคำ", "rosary.png", "rosaryHover.png", rosaryScript);
         DialogueLine[] flowerScript = {
                 new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
-                new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
+                new DialogueLine("ตุลย์", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
         };
         Item Flower = createStoryItem("flower", 665, 620, 110, 110, "ดอกไม้จันทน์", "ดอกไม้จันทน์", "flower.png", "flowerHover.png", flowerScript);
         //scene_2
@@ -533,9 +564,7 @@ public class SceneManager {
                 if (p.getInventory().isItemSelected("flower")) {
                     
                     DialogueLine[] flowerScript = {
-                            new DialogueLine("พระเอก", "ขอให้ไปสู่สุคตินะครับคุณพ่อ", null, mainTalk),
-                            new DialogueLine("พระเอก", "วันนี้เหนื่อยจังเลยนะ...", null, mainTalk),
-                            new DialogueLine("พระเอก", "กลับบ้านไปนอนดีกว่า", null, mainTalk)
+                            new DialogueLine("ตุลย์", "ขอให้ไปสู่สุคตินะครับคุณพ่อ", null, mainTalk),
                     };
                     overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                     overlay.startDialogue(flowerScript, () -> {
@@ -547,9 +576,9 @@ public class SceneManager {
                         fadeTransition.executeFade(700, 0, 500, () -> {
                             loadScene("scene_12");
                             DialogueLine[] PlayerScript = {
-                                    new DialogueLine("พระเอก", "....", null, mainIdle2),
-                                    new DialogueLine("พระเอก", "งานศพจบแล้ว ทุกคนกลับหมดแล้ว", null, mainTalk),
-                                    new DialogueLine("พระเอก", "เหนื่อยมากเลย ฉันควรกลับบ้านไปนอน", null, mainTalk),
+                                    new DialogueLine("ตุลย์", "บรรยากาศมันแปลกๆ… เหมือนทุกคนกำลังปิดบังอะไร", null, mainIdle2),
+                                    new DialogueLine("ตุลย์", "ช่างมันก่อน… ฉันอาจจะแค่เหนื่อยจากการเดินทาง", null, mainIdle2),
+                                    new DialogueLine("ตุลย์", "กลับไปนอนก่อนเถอะ… พรุ่งนี้ค่อยคิด", null, mainIdle2)
                             };
                             overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                             overlay.startDialogue(PlayerScript, () -> {
@@ -559,7 +588,7 @@ public class SceneManager {
 
                 } else {
                     DialogueLine[] flowerScript = {
-                            new DialogueLine("พระเอก", "ฉันน่าจะต้องไปเอาดอกไม้จันทน์มาวางตรงนี้นะ", null, mainTalk),
+                            new DialogueLine("ตุลย์", "ฉันน่าจะต้องไปเอาดอกไม้จันทน์มาวางตรงนี้นะ", null, mainTalk),
                     };
                     overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                     overlay.startDialogue(flowerScript, () -> {
@@ -616,7 +645,7 @@ public class SceneManager {
                     JigsawFrame minigame = new JigsawFrame(mainFrame, () -> {
                         isSolved = true;
                         DialogueLine[] EmptyPictureScript = {
-                                new DialogueLine("พระเอก", "รูปนี้มัน... ครอบครัวของเรานี่นา", null, mainTalk),
+                                new DialogueLine("ตุลย์", "รูปนี้มัน... ครอบครัวของเรานี่นา", null, mainTalk),
                         };
                         overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                         overlay.startDialogue(EmptyPictureScript, () -> {});
@@ -727,9 +756,8 @@ public class SceneManager {
                             loadScene("scene_16");
                             system.ObjectiveManager.getInstance().advanceObjective();
                             DialogueLine[] PlayerScript = {
-                                    new DialogueLine("พระเอก", "!!!!", null, mainIdle2),
-                                    new DialogueLine("พระเอก", "เมื่อกี้เสียงอะไรมาจากห้องนอนพ่อกัน", null, mainTalk),
-                                    new DialogueLine("พระเอก", "ต้องเดินไปดูหน่อยแล้ว", null, mainTalk),
+                                    new DialogueLine("ตุลย์", "!!!!", null, mainIdle2),
+                                    new DialogueLine("ตุลย์", "นั่นเสียงอะไรดังมาจากห้องนอนน่ะ", null, mainIdle2)
                             };
                             overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                             overlay.startDialogue(PlayerScript, () -> {
@@ -758,9 +786,9 @@ public class SceneManager {
                         loadScene("scene_18");
                         system.ObjectiveManager.getInstance().advanceObjective();
                         DialogueLine[] PlayerScript = {
-                                new DialogueLine("พระเอก", "....ทำไมมันถึงตกละเนี่ย", null, mainTalk),
-                                new DialogueLine("พระเอก", "ของพ่อรึป่าวนะ...", null, mainTalk),
-                                new DialogueLine("พระเอก", "ในนี้มีอะไรกัน", null, mainTalk),
+                                new DialogueLine("ตุลย์", "....ทำไมมันถึงตกละเนี่ย", null, mainTalk),
+                                new DialogueLine("ตุลย์", "ของพ่อรึป่าวนะ...", null, mainTalk),
+                                new DialogueLine("ตุลย์", "ในนี้มีอะไรกัน", null, mainTalk),
                         };
                         overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                         overlay.startDialogue(PlayerScript, () -> {
@@ -787,9 +815,9 @@ public class SceneManager {
 
                                 loadScene("scene_6");
                                 DialogueLine[] PlayerScript = {
-                                        new DialogueLine("พระเอก", "นี่มันอะไรเนี่ย", null, mainTalk),
-                                        new DialogueLine("พระเอก", "พ่อเขียนอะไรไว้กัน", null, mainTalk),
-                                        new DialogueLine("พระเอก", "มีเลขในนี้รึป่าวนะ เพื่อะเป็นเศรษฐีพันล้าน", null, mainTalk),
+                                        new DialogueLine("ตุลย์", "นี่มันอะไรเนี่ย", null, mainTalk),
+                                        new DialogueLine("ตุลย์", "พ่อเขียนอะไรไว้กัน", null, mainTalk),
+                                        new DialogueLine("ตุลย์", "มีเลขในนี้รึป่าวนะ เพื่อะเป็นเศรษฐีพันล้าน", null, mainTalk),
                                 };
                                 overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                                 overlay.startDialogue(PlayerScript, () -> {
@@ -826,43 +854,50 @@ public class SceneManager {
         NPC playerSit = new NPC("PlayerSit", "ตุลย์", 842, 535, 170, 333, "/res/NPC/Sit_sheet.PNG", 12, 622, 1299);
 
         DialogueLine[] npcGirlScript = {
-                new DialogueLine("เด็กสาวปริศนา", "พ่อตายแล้วน้าฮือๆๆๆ", girlTalk, mainIdle),
-                new DialogueLine("พระเอก", "อุก้ะๆๆๆๆๆๆ", girlIdle, mainTalk),
-                new DialogueLine("เด็กสาวปริศนา", "ไปงานศพด้วยจ้าเพื่อน", girlTalk, mainIdle)
+                new DialogueLine("เด็กสาวในหมู่บ้าน", "เดินทางมาเหนื่อยไหม", girlTalk, mainIdle),
+                new DialogueLine("ตุลย์", "ก็นิดหน่อยครับ", girlIdle, mainTalk),
+                new DialogueLine("เด็กสาวในหมู่บ้าน", "อืม… พักผ่อนให้สบายแล้วกันนะคืนนี้", girlTalk, mainIdle)
         };
         npcGirl.setVNDialogue(npcGirlScript, overlay);
         npcGirl.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
 
         DialogueLine[] evilScript = {
-                new DialogueLine("พระเอก", "สวัสดีฮ้าฟฟู่วววว", evilIdle, mainTalk),
-                new DialogueLine("ผู้ใหญ่บ้าน", "ฮ่าๆๆๆๆๆๆๆ", evilTalk, mainIdle),
-                new DialogueLine("พระเอก", "เป็นอะไร๊", evilIdle, mainTalk),
-                new DialogueLine("ผู้ใหญ่บ้าน", "555555555", evilTalk, mainIdle),
-                new DialogueLine("พระเอก", "เป็นบ้าอะไร งง", evilIdle, mainIdle)
+                new DialogueLine("ผู้ใหญ่บ้าน", "กลับมาแล้วเหรอ… ไม่เห็นหน้านานเลยนะ", evilTalk, mainIdle),
+                new DialogueLine("ตุลย์", "ครับ… ที่นี่มันดูเปลี่ยนไปนะ", evilIdle, mainTalk),
+                new DialogueLine("ผู้ใหญ่บ้าน", "ก็แค่… ทุกอย่างกำลังจะเข้าที่เข้าทางของมันแล้ว", evilTalk, mainIdle),
+                new DialogueLine("ผู้ใหญ่บ้าน", "เดี๋ยวเอ็งก็เข้าใจ… เหมือนกับคนอื่นๆ ที่นี่", evilTalk, mainIdle)
         };
         evil.setVNDialogue(evilScript, overlay);
         evil.setDialogTransform(50, 0, 900, 941, 1200, 0, 706, 941);
 
         DialogueLine[] npc3Script = {
-                new DialogueLine("คุณตา", "เห้ออออออ", npc3Talk, npc2Idle),
-                new DialogueLine("คุณยาย", "ห๊าาาาาา", npc3Idle, npc2Talk),
-                new DialogueLine("คุณตา", "อุอิอุอิอิ๊", npc3Talk, npc2Idle)
+                new DialogueLine("คุณตา", "ตฤนนี่… ไปเร็วผิดปกติไปหน่อยนะ", npc3Talk, npc2Idle),
+                new DialogueLine("คุณยาย", "อืม… บางอย่างมันก็มาถึงเวลาแล้ว", npc3Idle, npc2Talk),
+                new DialogueLine("คุณตา", "แต่เขาก็ฝืนมานานแล้วนี่", npc3Talk, npc2Idle),
+                new DialogueLine("คุณยาย", "ก็เลยเหนื่อยไง… คนเราถ้าฝืนมากไป มันก็ต้องพัก", npc3Idle, npc2Talk)
         };
         npc3.setVNDialogue(npc3Script, overlay);
         npc3.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
 
         DialogueLine[] npc2Script = {
-                new DialogueLine("คุณตา", "เห้ออออออ", npc3Talk, npc2Idle),
-                new DialogueLine("คุณยาย", "ห๊าาาาาา", npc3Idle, npc2Talk),
-                new DialogueLine("คุณตา", "อุอิอุอิอิ๊", npc3Talk, npc2Idle)
+                new DialogueLine("คุณตา", "ตฤนนี่… ไปเร็วผิดปกติไปหน่อยนะ", npc3Talk, npc2Idle),
+                new DialogueLine("คุณยาย", "อืม… บางอย่างมันก็มาถึงเวลาแล้ว", npc3Idle, npc2Talk),
+                new DialogueLine("คุณตา", "แต่เขาก็ฝืนมานานแล้วนี่", npc3Talk, npc2Idle),
+                new DialogueLine("คุณยาย", "ก็เลยเหนื่อยไง… คนเราถ้าฝืนมากไป มันก็ต้องพัก", npc3Idle, npc2Talk)
         };
         npc2.setVNDialogue(npc2Script, overlay);
         npc2.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
 
         DialogueLine[] dadScript = {
-                new DialogueLine("พระเอก", "พ่อหรอ....", dadIdle, mainTalk),
-                new DialogueLine("พ่อ", "ใช่แล้วละ... อยากจะได้เลขรึป่าวละลูกเอ๊ย", dadTalk, mainIdle),
-                new DialogueLine("พระเอก", "เอาาาาาาาาา", dadIdle, mainTalk)
+                new DialogueLine("ตุลย์", "พ่อ… นั่นพ่อหรอ", dadIdle, mainTalk),
+                new DialogueLine("ตุลย์", "ผมทำสำเร็จแล้ว ทุกอย่างมันจบแล้วนะ", dadIdle, mainTalk),
+                new DialogueLine("พ่อ", "พ่อรู้… พ่อเชื่ออยู่แล้ว ว่าเอ็งจะทำมันได้สำเร็จ", dadTalk, mainIdle),
+                new DialogueLine("ตุลย์", "ผมน่าจะกลับมาให้ไวกว่านี้… ไม่งั้นพ่อคง…", dadIdle, mainTalk),
+                new DialogueLine("พ่อ", "ไม่เป็นไร… แค่นี้ก็พอแล้ว", dadTalk, mainIdle),
+                new DialogueLine("พ่อ", "พ่อภูมิใจในตัวเอ็งมากเลยนะ คงหมดห่วงแล้วล่ะ", dadTalk, mainIdle),
+                new DialogueLine("ตุลย์", "…ขอบคุณนะพ่อ สำหรับทุกอย่าง", dadIdle, mainTalk),
+                new DialogueLine("ตุลย์", "ถึงเวลาที่พ่อต้องไปแล้วหรอ…", dadIdle, mainTalk),
+                new DialogueLine("พ่อ", "อืม… จากนี้ไปก็ใช้ชีวิตของเอ็งให้ดีนะลูก", dadTalk, mainIdle)
         };
         dadGhost.setVNDialogue(dadScript, overlay, () -> {
             startEndingSequence();
