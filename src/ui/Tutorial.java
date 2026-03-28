@@ -154,7 +154,6 @@ public class Tutorial extends JPanel {
             if (tutorialStartImage != null && tutorialStartImage[currentImage] != null) {
                 BufferedImage img = tutorialStartImage[currentImage];
 
-                // ขนาด 80%
                 int newW = (int) (getWidth() * 0.8);
                 int newH = (int) (newW * ((double) img.getHeight() / img.getWidth()));
 
@@ -173,7 +172,6 @@ public class Tutorial extends JPanel {
             if (tutorialCombineImage != null && tutorialCombineImage[currentImage] != null) {
                 BufferedImage img = tutorialCombineImage[currentImage];
 
-                // ขนาด 80%
                 int newW = (int) (getWidth() * 0.8);
                 int newH = (int) (newW * ((double) img.getHeight() / img.getWidth()));
 

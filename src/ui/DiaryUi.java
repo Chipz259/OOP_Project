@@ -14,10 +14,8 @@ public class DiaryUi extends JPanel {
     private boolean isVisible = false;
     private int currentPage = 0;
     private BufferedImage[] bookImage;
-    private Image bookImg;
     private ImageIcon iconLeftNormal, iconLeftHover, iconRightNormal, iconRightHover, iconCloseNormal, iconCloseHover;
     private JButton btnLeft, btnRight, btnClose;
-    private FontManager diaryFont;
     private boolean isFirstTime;
 
     private DiaryUi() {
@@ -33,7 +31,6 @@ public class DiaryUi extends JPanel {
             iconRightNormal = new ImageIcon(new ImageIcon("src/res/Right_Default.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
             iconRightHover = new ImageIcon(new ImageIcon("src/res/Right_Hover.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
             iconCloseNormal = new ImageIcon(new ImageIcon("src/res/DiaryExitBtn.png").getImage().getScaledInstance(35, 36, Image.SCALE_SMOOTH));
-//            iconCloseHover = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
         } catch (Exception ex) {
             System.out.println("ระบบ Diary : โหลดไม่ขึ้น");
             ex.printStackTrace();
@@ -59,9 +56,7 @@ public class DiaryUi extends JPanel {
 
         this.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
-                // ไม่ต้องเขียนอะไร แค่มีไว้เพื่อดัก Event
-            }
+            public void mousePressed(java.awt.event.MouseEvent e) {}
         });
 
         this.setLayout(null);
@@ -79,8 +74,8 @@ public class DiaryUi extends JPanel {
     private void nextPage() {
         if (currentPage < bookImage.length - 1) {
             currentPage++;
-            updateButtonLayout(); // อัปเดตการแสดงผลปุ่ม
-            repaint(); // สั่งให้วาดข้อความใหม่ของหน้าที่เลือก
+            updateButtonLayout();
+            repaint();
         }
     }
 
@@ -93,7 +88,6 @@ public class DiaryUi extends JPanel {
     }
 
     private void updateButtonLayout() {
-        // คำนวณตำแหน่งปุ่มให้สัมพันธ์กับตัวสมุดกึ่งกลางจอ
         int startX = getWidth() - 1600;
         int startY = getHeight() - 906;
 
@@ -101,7 +95,6 @@ public class DiaryUi extends JPanel {
         btnRight.setBounds(startX + 1220, startY + 300, iconRightNormal.getIconWidth(), iconRightNormal.getIconHeight());
         btnClose.setBounds(startX + 1080, startY + 28, iconCloseNormal.getIconWidth(), iconCloseNormal.getIconHeight());
 
-        // ซ่อน/โชว์ตามจำนวนหน้า
         btnLeft.setVisible(currentPage > 0);
         btnRight.setVisible(currentPage < bookImage.length - 1);
     }
@@ -149,15 +142,12 @@ public class DiaryUi extends JPanel {
 
         if (!isVisible()) return;
 
-        // 1. Draw Background Dim
         g2d.setColor(new Color(30, 30, 30, 200));
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        // 2. Draw Book
         if (bookImage != null && bookImage[currentPage] != null) {
             BufferedImage img = bookImage[currentPage];
 
-            // ขนาด 80%
             int newW = (int) (getWidth() * 0.75);
             int newH = (int) (newW * ((double) img.getHeight() / img.getWidth()));
 
