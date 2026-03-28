@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class changableImagePanel extends JPanel {
     private BufferedImage active, unactive, img;
-    private BufferedImage tintedImg;
+    private boolean isTarget = false;
 
     public changableImagePanel(String unactivePath, String activePath){
         try {
@@ -19,9 +19,6 @@ public class changableImagePanel extends JPanel {
         }
         setOpaque(false);
         setUnactive();
-        this.setPreferredSize(new Dimension(170, 170));
-        this.setMaximumSize(new Dimension(170, 170));
-        this.setMinimumSize(new Dimension(170, 170));
     }
 
     @Override
@@ -29,7 +26,12 @@ public class changableImagePanel extends JPanel {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.drawImage(img, 0, 0, getWidth(),getHeight(),this);
+        if(!isTarget){
+            int offset = 20;
+            g2.drawImage(img,offset, offset, getWidth() - (offset*2), getHeight() - (offset*2), this);
+        } else {
+            g2.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+        }
         g2.dispose();
     }
 
@@ -43,5 +45,9 @@ public class changableImagePanel extends JPanel {
     }
     public BufferedImage getImage(){
         return img;
+    }
+    public void setTarget(boolean b){
+        isTarget = b;
+        repaint();
     }
 }

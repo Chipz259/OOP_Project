@@ -25,7 +25,7 @@ public class Stage{
 
         // 4. ดึงค่าจาก List ที่สลับแล้วมาใส่ Array ผลลัพธ์
         YanKeysArray = list.toArray(new YanKeys[0]);
-
+        setDefault();
     }
 
     public YanKeys[] getYanKeysArray() {
@@ -34,11 +34,10 @@ public class Stage{
     public void updateCNT(){
         cnt++;
         if(cnt == YanKeysArray.length){
-            finished = !finished;
+            finished = true;
+        } else{
+            YanKeysArray[cnt].setAsTarget();
         }
-    }
-    public void resetCNT(){
-        cnt = 0;
     }
     public boolean isFinished(){
         return finished;
@@ -47,5 +46,12 @@ public class Stage{
         return cnt;
     }
     public boolean isSwitch(){return isSwitch;}
+    public void setDefault(){
+        for(int i = 0; i < defaultArray.length; i++){
+            YanKeysArray[i].setUnactive();
+        }
+        YanKeysArray[0].setAsTarget();
+        cnt = 0;
+    }
 
 }
