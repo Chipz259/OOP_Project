@@ -2,6 +2,7 @@ package Minigame.FinalBossFightPackage;
 
 import system.AudioManager;
 import ui.MainGameFrame;
+import entities.NPC;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,12 +25,13 @@ public class FinalBossFight extends JPanel implements Runnable {
 
     private MainGameFrame mainGameFrame;
     private Runnable onWinCallback, onLoseCallback;
-
+    private NPC playerSit;
 
     public FinalBossFight(MainGameFrame mainGameFrame, Runnable onWinCallback, Runnable onLoseCallback){
         this.mainGameFrame = mainGameFrame;
         this.onWinCallback = onWinCallback;
         this.onLoseCallback = onLoseCallback;
+        playerSit = new NPC("PlayerSit", "", 875, 550, 170, 333, "/res/NPC/Sit_sheet.PNG", 12, 622, 1299);
 
         //Set Key For Each Stage
         allStage = new Stage[12];
@@ -187,6 +189,9 @@ public class FinalBossFight extends JPanel implements Runnable {
         AudioManager.playMusic("src/res/sound/MinigameBossBGM.wav", 0.0f);
         Stage previousStage = allStage[0];
         while(!finished && !timeout){
+            if (playerSit != null) {
+                playerSit.update();
+            }
             if(nowStage.isFinished()){
                 increaseTimer();
                 stageCnt++;
@@ -262,6 +267,10 @@ public class FinalBossFight extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g.create();
         if (background != null) {
             g2d.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        }
+
+        if (playerSit != null) {
+            playerSit.render(g2d);
         }
 
         double timePercent = (double) timer.getWidth() / 1260;
