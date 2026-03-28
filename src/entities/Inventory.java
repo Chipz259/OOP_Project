@@ -1,6 +1,7 @@
 package entities;
 
 import system.DialogueLine;
+import system.FontManager;
 import ui.MainGameFrame;
 import ui.Tutorial;
 import javax.imageio.ImageIO;
@@ -196,7 +197,7 @@ public class Inventory {
         if (hoveredSlot != -1 && slots[hoveredSlot] != null) {
             String name = slots[hoveredSlot].getItemName();
 
-            g2d.setFont(GamePanel.customFont.deriveFont(Font.BOLD, 20f));
+            g2d.setFont(system.FontManager.customFont.deriveFont(Font.BOLD, 20f));
             int textWidth = g2d.getFontMetrics().stringWidth(name);
 
             int hoverX = startX + (hoveredSlot * (slotSize + spaces));
