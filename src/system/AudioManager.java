@@ -27,7 +27,6 @@ public class AudioManager {
 
     public static void setSfxVolume(int volume) {
         sfxVolume = volume;
-        // ปรับเสียง SFX ทุกตัวที่กำลังเล่นอยู่ตาม Slider ทันที
         for (Clip clip : activeSfxMap.values()) {
             if (clip.isOpen()) {
                 applyVolume(clip, sfxVolume, 0.0f);
@@ -58,15 +57,12 @@ public class AudioManager {
     }
 
     public static void resumeBGMusic(String path, float offsetDB) {
-        // 1. ถ้า Path ตรงกันเด๊ะๆ
         if (path.equals(currentBgmPath)) {
             if (bgMusic != null) {
                 if (bgMusic.isRunning()) {
-                    // เคส 1: เพลงเดิมเล่นอยู่แล้ว -> ปล่อยไหล
                     System.out.println("เข้าเงื่อนไข 1: เพลงเดิมเล่นอยู่");
                     return;
                 } else {
-                    // เคส 2: เพลงเดิมแต่หยุดอยู่ (เช่น กลับจาก Setting) -> Resume
                     System.out.println("เข้าเงื่อนไข 2: Resume เพลงเดิม");
                     bgMusic.setMicrosecondPosition(lastPosition);
                     applyVolume(bgMusic, bgmVolume, currentBgmOffset);
@@ -76,8 +72,7 @@ public class AudioManager {
             }
         }
 
-        // 2. ถ้ามาถึงตรงนี้ แสดงว่า Path ไม่ตรง หรือ bgMusic ยังไม่เคยถูกสร้าง (null)
-        System.out.println("เข้าเงื่อนไข 3: เริ่มเพลงใหม่ -> " + path);
+        System.out.println("เข้าเงื่อนไข 3: เริ่มเพลงใหม่ " + path);
         audioExecutor.submit(() -> {
             try {
                 if (bgMusic != null) {
@@ -108,7 +103,7 @@ public class AudioManager {
                 if (sfxFile.exists()) {
                     AudioInputStream audioInput = AudioSystem.getAudioInputStream(sfxFile);
                     Clip sfxClip = AudioSystem.getClip();
-                    sfxClip.open(audioInput); // ตัวหน่วงคือบรรทัดนี้
+                    sfxClip.open(audioInput);
                     applyVolume(sfxClip, sfxVolume, offsetDB);
 
                     activeSfxMap.put(path, sfxClip);
@@ -135,9 +130,6 @@ public class AudioManager {
         }
     }
 
-    /**
-     * หยุด SFX เฉพาะไฟล์ที่ระบุ
-     */
     public static void stopSFX(String path) {
         Clip clip = activeSfxMap.get(path);
         if (clip != null) {
@@ -172,8 +164,7 @@ public class AudioManager {
             clip.setFramePosition(0);
             applyVolume(clip, sfxVolume, offsetDB);
             clip.start();
-
-            // เพิ่มลงใน activeSfxMap เพื่อให้ปรับ Volume ตาม Slider ได้
+            
             activeSfxMap.put(path, clip);
         } else {
             playSFX(path, offsetDB);

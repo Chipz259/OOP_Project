@@ -22,7 +22,7 @@ public class SettingPanel extends JPanel {
         bgmLabel = new JLabel();
         sfxLabel = new JLabel();
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(20, 20, 20, 20); // ระยะห่างแต่ละช่อง
+        gbc.insets = new Insets(20, 20, 20, 20);
         trackRed = new ImageIcon("src/res/SettingTrackRed.png").getImage();
         trackGray = new ImageIcon("src/res/SettingTrackGrey.png").getImage();
         scorllingImage = new ImageIcon("src/res/SettingScrolling.png").getImage();
@@ -41,14 +41,14 @@ public class SettingPanel extends JPanel {
 
         // Title: Settings
         settingTitle.setIcon(new ImageIcon(titleImg.getScaledInstance(400, 100, Image.SCALE_SMOOTH)));
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2; // อยู่แถวแรก ยึด 2 คอลัมน์
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         add(settingTitle, gbc);
 
         // Adjust BGM
         bgmLabel.setIcon(new ImageIcon(bgmTextImg.getScaledInstance(303, 62, Image.SCALE_SMOOTH)));
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1; // คอลัมน์ซ้าย แถวที่ 2
-        gbc.anchor = GridBagConstraints.EAST; // ชิดขวามาหาหลอด
+        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST;
         add(bgmLabel, gbc);
 
         bgmSlider = createCustomSlider(0, 100, AudioManager.bgmVolume);
@@ -56,13 +56,13 @@ public class SettingPanel extends JPanel {
         bgmSlider.addChangeListener(e -> {
             AudioManager.setBgmVolume(bgmSlider.getValue());
         });
-        gbc.gridx = 1; gbc.gridy = 1; // คอลัมน์ขวา แถวที่ 2
-        gbc.anchor = GridBagConstraints.WEST; // ชิดซ้ายมาหาข้อความ
+        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.WEST;
         add(bgmSlider, gbc);
 
         // Adjust SFX
         sfxLabel.setIcon(new ImageIcon(sfxTextImg.getScaledInstance(295, 62, Image.SCALE_SMOOTH)));
-        gbc.gridx = 0; gbc.gridy = 2; // คอลัมน์ซ้าย แถวที่ 3
+        gbc.gridx = 0; gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.EAST;
         add(sfxLabel, gbc);
 
@@ -70,7 +70,7 @@ public class SettingPanel extends JPanel {
         sfxSlider.addChangeListener(e -> {
             AudioManager.setSfxVolume(sfxSlider.getValue());
         });
-        gbc.gridx = 1; gbc.gridy = 2; // คอลัมน์ขวา แถวที่ 3
+        gbc.gridx = 1; gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         add(sfxSlider, gbc);
 
@@ -79,14 +79,14 @@ public class SettingPanel extends JPanel {
         hoverIconBack = new ImageIcon(backHoverBtnImg.getScaledInstance(135, 61, Image.SCALE_SMOOTH));
         buttonBack = new JButton(normalIconBack);
         buttonBack.setRolloverIcon(hoverIconBack);
-        buttonBack.setBorderPainted(false); // ไม่วาดขอบปุ่ม
-        buttonBack.setContentAreaFilled(false); // ไม่วาดสีพื้นหลังปุ่ม
-        buttonBack.setFocusable(false); // เอาเส้นประตอนเลือกออก
-        buttonBack.setOpaque(false); // ตั้งค่าความโปร่งใส
+        buttonBack.setBorderPainted(false);
+        buttonBack.setContentAreaFilled(false);
+        buttonBack.setFocusable(false);
+        buttonBack.setOpaque(false);
 
         buttonBack.setText("");
         buttonBack.addActionListener(e -> parent.toggleSetting(false, false));
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; // อยู่แถวล่างสุด ยึด 2 คอลัมน์
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
         gbc.insets = new Insets(80, 20, 0, 20);
         gbc.anchor = GridBagConstraints.SOUTH;
 
@@ -102,9 +102,9 @@ public class SettingPanel extends JPanel {
 
         buttonReturn.setText("");
         buttonReturn.addActionListener(e -> {
-            parent.toggleSetting(false, false); // ปิดหน้า Setting ก่อน
+            parent.toggleSetting(false, false);
             parent.setIsStartGame(true);
-            parent.returnToMainMenu();  // เรียกเมธอดกลางเพื่อกลับเมนู
+            parent.returnToMainMenu();
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0)); // เว้นระยะห่าง 30
@@ -133,18 +133,14 @@ public class SettingPanel extends JPanel {
                 g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                // วาดรูปหลอดสีเทา (พื้นหลัง)
                 if (trackGray != null) {
                     g2d.drawImage(trackGray, trackRect.x-15, trackRect.y, trackRect.width+20, trackRect.height, null);
                 }
 
-                // คำนวณตำแหน่ง Thumb เพื่อทำ Clip วาดสีแดง
                 int thumbPos = thumbRect.x + (thumbRect.width / 2);
 
-                // วาดรูปหลอดสีแดง (เฉพาะส่วนที่ลากถึง)
                 if (trackRed != null) {
                     Shape oldClip = g2d.getClip();
-                    // Clip พื้นที่ตั้งแต่จุดเริ่มหลอด จนถึงตัวเลื่อน
                     g2d.setClip(trackRect.x, 0, thumbPos - trackRect.x, slider.getHeight());
                     g2d.drawImage(trackRed, trackRect.x-15, trackRect.y, trackRect.width+20, trackRect.height, null);
                     g2d.setClip(oldClip);
@@ -156,12 +152,10 @@ public class SettingPanel extends JPanel {
             @Override
             public void paintThumb(Graphics g) {
                 g2d = (Graphics2D) g.create();
-                // ตั้งค่าระนาบการหมุน (Rotate) รอบจุดกึ่งกลาง Thumb
                 int centerX = thumbRect.x + thumbRect.width / 2;
                 int centerY = thumbRect.y + thumbRect.height / 2;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                // วาดรูป Scrollingลงไปแทนปุ่มเลื่อน
                 if (scorllingImage != null) {
                     int imgW = thumbRect.width;
                     int imgH = thumbRect.height;
@@ -173,12 +167,10 @@ public class SettingPanel extends JPanel {
 
             @Override
             protected Dimension getThumbSize() {
-                // ปรับขนาดพื้นที่ปุ่มเลื่อนให้พอดีกับรูปภาพของคุณ (ลองปรับ 20, 45 ดูนะจ๊ะ)
                 return new Dimension(20, 45);
             }
         };
 
-        // 3. ตั้งค่าพื้นฐานและใส่ UI
         slider.setPreferredSize(new Dimension(500, 80));
         slider.setOpaque(false);
         slider.setFocusable(false);
@@ -196,7 +188,6 @@ public class SettingPanel extends JPanel {
         g2.fillRect(0, 0, getWidth(), getHeight());
 
         if (bgImage != null) {
-            // วาดรูปพื้นหลังให้อยู่กึ่งกลางเสมอโดยไม่ยืดภาพจนสัดส่วนเพี้ยน
             int x = (getWidth() - bgImage.getWidth(null)) / 2;
             int y = (getHeight() - bgImage.getHeight(null)) / 2;
             g2.drawImage(bgImage, x, y, this);
@@ -207,13 +198,12 @@ public class SettingPanel extends JPanel {
     public void setInGameMode(boolean isInGame) {
         if (isInGame) {
             buttonBack.setVisible(true);
-            buttonReturn.setVisible(true); // แสดงทั้งคู่
+            buttonReturn.setVisible(true);
         } else {
-            buttonBack.setVisible(true);   // แสดงแค่ Back
-            buttonReturn.setVisible(false); // ซ่อน Return
+            buttonBack.setVisible(true);
+            buttonReturn.setVisible(false);
         }
 
-        // สั่งให้ Panel วาดใหม่เพื่อให้ Layout จัดตำแหน่งตรงกลางให้ถูกต้อง
         this.revalidate();
         this.repaint();
     }

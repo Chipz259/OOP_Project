@@ -53,7 +53,6 @@ public class GameOverPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (currentBG != null) {
-            // วาดพื้นหลังปัจจุบันให้เต็มจอ (1920x1080)
             g.drawImage(currentBG, 0, 0, getWidth(), getHeight(), null);
         }
     }

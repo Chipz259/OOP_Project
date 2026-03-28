@@ -8,10 +8,6 @@ public class GameOverHandler implements ActionListener, MouseListener {
 
     public GameOverHandler(GameOverPanel gui) {
         this.gui = gui;
-        if (gui.getParentFrame() != null) {
-            // ใช้เมธอดเดิมที่น้องมีใน MainGameFrame เพื่อ Reset เกม
-//            gui.getParentFrame().transitionToGame();
-        }
     }
 
     @Override
