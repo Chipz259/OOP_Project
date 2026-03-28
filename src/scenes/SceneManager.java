@@ -955,7 +955,7 @@ public class SceneManager {
 
     private void managePlayBGM(String sceneID) {
         switch (sceneID) {
-            case "scene_1", "scene_2" -> AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", -10.0f);
+            case "scene_1", "scene_2" -> AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
             case "scene_12", "scene_13" -> AudioManager.resumeBGMusic("src/res/sound/BGM2.wav", 0.0f);
             case "scene_3" -> AudioManager.playSFX("src/res/sound/StartCar.wav", 0.0f);
             case "qte_choke" -> AudioManager.stopMusic();
