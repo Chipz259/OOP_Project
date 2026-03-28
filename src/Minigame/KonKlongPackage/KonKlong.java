@@ -45,12 +45,19 @@ public class KonKlong extends JPanel {
         closeBtn.addActionListener(e -> {
             mainGameFrame.closeMinigame();
         });
+        this.add(konKlongPanel); this.add(DangPanel); this.add(closeBtn);
+        this.setComponentZOrder(konKlongPanel,0);
+        this.setComponentZOrder(DangPanel,1);
+        this.setComponentZOrder(closeBtn,1);
 
         this.addComponentListener(new ComponentAdapter() {
             private boolean isCenter = false;
 
             @Override
             public void componentResized(ComponentEvent e) {
+                konKlongPanel.setLocation((getWidth() - konKlongPanel.getWidth()) / 2, (getHeight() - konKlongPanel.getHeight()) / 2);
+                DangPanel.setLocation((getWidth() - DangPanel.getWidth()) / 2, (getHeight() - DangPanel.getHeight()) / 2);
+                closeBtn.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
             }
         });
     }

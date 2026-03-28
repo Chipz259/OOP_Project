@@ -40,7 +40,7 @@ public class ImagePanel extends JPanel {
         g2.rotate(Math.toRadians(angle), cx, cy);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-        g2.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        g2.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
 
         g2.dispose();
     }
