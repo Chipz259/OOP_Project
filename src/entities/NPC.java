@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
+import system.FontManager;
+
 public class NPC extends GameObject implements Interactable{
     private ui.DialogueOverlay overlay;
     private system.DialogueLine[] dialogueScript;
@@ -82,8 +84,8 @@ public class NPC extends GameObject implements Interactable{
             }
         }
         if (isHovered == true) {
-            if (entities.GamePanel.customFont != null) {
-                g2d.setFont(entities.GamePanel.customFont.deriveFont(Font.PLAIN, 25f));
+            if (FontManager.customFont != null) {
+                g2d.setFont(FontManager.customFont.deriveFont(Font.PLAIN, 25f));
 
                 FontMetrics fm = g2d.getFontMetrics();
                 String displayName = npcName;
