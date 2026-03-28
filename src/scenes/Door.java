@@ -2,10 +2,8 @@ package scenes;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
 import entities.*;
-import system.DialogueLine;
-import system.FadeTransition;
+import system.FontManager;
 
 public class Door extends GameObject implements Interactable {
 
@@ -51,9 +49,7 @@ public class Door extends GameObject implements Interactable {
     }
 
     @Override
-    public void update() {
-
-    }
+    public void update() {}
 
     @Override
     public void render(Graphics2D g2d) {
@@ -62,7 +58,7 @@ public class Door extends GameObject implements Interactable {
         if (isHovered && hoverSpite != null) {
             g2d.drawImage(hoverSpite, getX(), getY(), getWidth(), getHeight(), null);
             if (destName != null && !destName.isEmpty()) {
-                g2d.setFont(GamePanel.customFont.deriveFont(Font.PLAIN, 45f));
+                g2d.setFont(FontManager.customFont.deriveFont(Font.PLAIN, 45f));
                 FontMetrics fm = g2d.getFontMetrics();
 
                 int textY = getY() + (getHeight() / 2) + (fm.getAscent() / 3);

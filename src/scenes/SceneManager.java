@@ -15,7 +15,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Timer;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -551,7 +550,7 @@ public class SceneManager {
         }
 
         //scene_1
-        Item Candle = createPickUpItem("candle", 625, 567, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleHover.png");
+        Item Candle = createPickUpItem("candle", 625, 567, 100, 100, "เทียนไข", "เทียนไข", "candle.png", "candleHover.png");
         Item Water = createPickUpItem("water", 1165, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "water.png", "waterHover.png");
         DialogueLine[] rosaryScript = {
                 new DialogueLine("ระบบ", "คุณได้รับ [ลูกประคำ]", null, null),

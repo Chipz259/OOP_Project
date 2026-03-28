@@ -3,7 +3,6 @@ package scenes;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
 import entities.*;
 
 public class Scene {
