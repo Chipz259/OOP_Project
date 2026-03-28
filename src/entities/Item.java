@@ -13,8 +13,7 @@ public class Item extends GameObject implements Interactable {
     private boolean isHovered;
     private BufferedImage hoverSprite;
 
-    public Item(String id, int x, int y, int width, int height, String name, String desc, String normalSprite,
-            String hoverSpritePath) {
+    public Item(String id, int x, int y, int width, int height, String name, String desc, String normalSprite, String hoverSpritePath) {
         super(id, x, y, width, height, normalSprite);
         this.itemName = name;
         this.description = desc;
@@ -33,18 +32,6 @@ public class Item extends GameObject implements Interactable {
 
     public String getItemName() {
         return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public boolean isCollected() {

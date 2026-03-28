@@ -19,13 +19,12 @@ public class DiaryUi extends JPanel {
     private FontManager diaryFont;
 
     private DiaryUi() {
-        bookImage = new BufferedImage[4];
+        bookImage = new BufferedImage[3];
 
         try {
             bookImage[0] = ImageIO.read(getClass().getResource("/res/DiaryBG1.png"));
             bookImage[1] = ImageIO.read(getClass().getResource("/res/DiaryBG2.png"));
             bookImage[2] = ImageIO.read(getClass().getResource("/res/DiaryBG3.png"));
-            bookImage[3] = ImageIO.read(getClass().getResource("/res/DiaryBG.png"));
 
             iconLeftNormal = new ImageIcon(new ImageIcon("src/res/Left_Default.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
             iconLeftHover = new ImageIcon(new ImageIcon("src/res/Left_Hover.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));

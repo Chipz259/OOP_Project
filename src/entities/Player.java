@@ -9,11 +9,7 @@ import java.net.URL;
 
 public class Player extends GameObject {
     private Inventory inventory;
-    private int targetX;
-    private  int targetY;
-    private  float speed;
     private  boolean isMoving;
-    private  boolean isAlive;
     private BufferedImage[] walkFrames;
     private BufferedImage[] idleFrames;
 
@@ -47,44 +43,14 @@ public class Player extends GameObject {
     public Inventory getInventory() {
         return this.inventory;
     }
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-    public int getTargetX() {
-        return targetX;
-    }
-    public void setTargetX(int targetX) {
-        this.targetX = targetX;
-    }
-    public int getTargetY() {
-        return targetY;
-    }
-    public void setTargetY(int targetY) {
-        this.targetY = targetY;
-    }
-    public float getSpeed() {
-        return speed;
-    }
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
     public boolean isMoving() {
         return this.isMoving;
     }
     public void setMoving(boolean isMoving) {
         this.isMoving = isMoving;
     }
-    public boolean isFacingLeft() {
-        return this.isFacingLeft;
-    }
     public void setFacingLeft(boolean isFacingLeft) {
         this.isFacingLeft = isFacingLeft;
-    }
-    public boolean isAlive() {
-        return true; //ใส่ไว้ก่อน กัน error
-    }
-    public void setAlive(boolean isAlive) {
-
     }
     @Override
     public void update() {
@@ -127,14 +93,5 @@ public class Player extends GameObject {
                 g2d.drawImage(walkFrames[spriteNum], getX(), getY(), getWidth(), getHeight(), null);
             }
         }
-    }
-    public void moveTo(int x, int y) {
-
-    }
-    public void moveTo(GameObject target) {
-
-    }
-    public void interactWith(Interactable target) {
-
     }
 }

@@ -21,11 +21,11 @@ public class KeyHandler extends KeyAdapter {
                 if (key == YanKeysArray[nowStage.getCnt()].getKeyButton()) {
                     YanKeysArray[nowStage.getCnt()].setActive();
                     nowStage.updateCNT();
-                    AudioManager.playSFX("src/res/sound/MinigameBossCorrect.wav", 0.0f);
+                    AudioManager.playSFX("src/res/sound/MinigameBossCorrect.wav", -15.0f);
                 } else {
                     nowStage.setDefault();
                     fbf.decreaseTimer();
-                    AudioManager.playSFX("src/res/sound/MinigameBossMiss.wav", 0.0f);
+                    AudioManager.playSFX("src/res/sound/MinigameBossMiss.wav", -5.0f);
                 }
 
             }

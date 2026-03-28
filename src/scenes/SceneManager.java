@@ -60,10 +60,6 @@ public class SceneManager {
         return currentScene;
     }
 
-    public SceneTitleOverlay getTitleOverlay() {
-        return this.titleOverlay;
-    }
-
     // ระบบสลับฉาก
     public void loadScene(String sceneId) {
         if (scenes.containsKey(sceneId)) {
@@ -393,6 +389,7 @@ public class SceneManager {
     public void startGhostAndBossSequence() {
         this.retryMode = 2;
 
+        AudioManager.playSFX("src/res/sound/MinigameBossBefore.wav", -5.0f);
         ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
         CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
             if (fadeTransition != null && !fadeTransition.isFading()) {
@@ -417,6 +414,7 @@ public class SceneManager {
                             },
                             () -> {}
                     );
+                    AudioManager.stopAllSFX();
                     mainFrame.openMinigame(bossFight);
 
                 });
@@ -851,7 +849,7 @@ public class SceneManager {
         NPC npc3 = new NPC("Npc3", "คุณตา", 1350, 530, 170, 333, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
         NPC npc2 = new NPC("Npc2", "คุณยาย", 1500, 535, 170, 333, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
         NPC dadGhost = new NPC("dadGhost", "พ่อ", 1350, 528, 175, 365, "/res/NPC/Dad_sheet.PNG", 12, 622, 1299);
-        NPC playerSit = new NPC("PlayerSit", "ตุลย์", 842, 535, 170, 333, "/res/NPC/Sit_sheet.PNG", 12, 622, 1299);
+        NPC playerSit = new NPC("PlayerSit", "", 842, 535, 170, 333, "/res/NPC/Sit_sheet.PNG", 12, 622, 1299);
 
         DialogueLine[] npcGirlScript = {
                 new DialogueLine("เด็กสาวในหมู่บ้าน", "เดินทางมาเหนื่อยไหม", girlTalk, mainIdle),
@@ -933,7 +931,6 @@ public class SceneManager {
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
-            scene_2.addGameObject(playerSit);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
@@ -1115,7 +1112,7 @@ public class SceneManager {
             case "scene_15" -> {
                 // ในห้องก่อนแปะประตู
             }
-            case "scene_16" -> AudioManager.playSFX("src/res/sound/ItemDropSound.wav", -5.0f);
+            case "scene_16" -> AudioManager.playSFX("src/res/sound/ItemDropSound.wav", 5.0f);
             default -> System.out.println("ระบบ PhayBGM at SceneManager : ยังไม่ได้ตั้งค่า " + sceneID);
         }
     }
