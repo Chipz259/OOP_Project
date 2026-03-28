@@ -180,7 +180,7 @@ public class GamePanel extends JPanel implements Runnable {
                 int distance = Math.abs(playerCenter - targetCenter);
                 if (distance < 150) {
                     if (targetItem instanceof Interactable) {
-                        ((Interactable) targetItem).onInteract(mainPlayer);
+                        mainPlayer.interactWith((Interactable) targetItem);
                     }
                     targetItem = null;
                 } else {

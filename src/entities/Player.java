@@ -40,6 +40,11 @@ public class Player extends GameObject {
             e.printStackTrace();
         }
     }
+    public void interactWith(Interactable target) {
+        if (target != null && target.isInteractable()) {
+            target.onInteract(this);
+        }
+    }
     public Inventory getInventory() {
         return this.inventory;
     }

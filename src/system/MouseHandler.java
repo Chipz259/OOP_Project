@@ -49,7 +49,7 @@ public class MouseHandler extends MouseAdapter {
                     int distance = Math.abs(playerCenter - objCenter);
 
                     if (distance < 250) {
-                        ((Interactable) obj).onInteract(gamePanel.mainPlayer);
+                        gamePanel.mainPlayer.interactWith((Interactable) obj);
                         gamePanel.targetItem = null;
                         break;
                     } else {
