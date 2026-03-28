@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Timer;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -29,7 +30,7 @@ public class SceneManager {
     private DialogueOverlay overlay;
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
-    private BufferedImage girlIdle, girlTalk, mainIdle, mainIdle2, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
+    private BufferedImage girlIdle, girlTalk, mainIdle, mainIdle2, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk, dadIdle, dadTalk;
     private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true, isFirstTimeScene19;
     private String[] ritualItems = {"", "", "", ""};
     private String[] ritualItemNames = {"", "", "", ""};
@@ -408,6 +409,42 @@ public class SceneManager {
         mainFrame.openCutscene(cutsceneGhost);
     }
 
+    public void startEndingSequence() {
+        ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+        if (fadeTransition != null && !fadeTransition.isFading()) {
+            fadeTransition.executeFade(700, 0, 700, () -> {
+
+                String[] endCutScene = {
+                        "/res/bg/End1.png",
+                        "/res/bg/End2.png",
+                        "/res/bg/End3.png",
+                        "/res/bg/End4.png"
+                };
+
+                CutsceneEnd cutsceneEnd = new CutsceneEnd(endCutScene, () -> {
+                    fadeTransition.executeFade(700, 0, 700, () -> {
+                        mainFrame.closeCutscene();
+
+                        CutsceneEndCredit cutsceneEndCredit = new CutsceneEndCredit("/res/bg/EndCredit.jpg");
+                        mainFrame.openCutscene(cutsceneEndCredit);
+                        javax.swing.Timer creditTime = new javax.swing.Timer(5000, e ->{
+                            fadeTransition.executeFade(700, 0, 700, () ->{
+                                mainFrame.closeCutscene();
+                                mainFrame.setIsStartGame(false); // จะได้กด Resume ไม่ได้
+                                resetManagerStates();
+                                //ส่งกลับหน้าเมนู
+                                mainFrame.returnToMainMenu(false);
+                            });
+                        });
+                        creditTime.setRepeats(false);
+                        creditTime.start();
+                    });
+                });
+                mainFrame.openCutscene(cutsceneEnd);
+            });
+        }
+    }
+
     private Item createStoryItem(String id, int x, int y, int w, int h, String name, String desc, String img, String hoverImg, DialogueLine[] customScript) {
 
         return new Item(id, x, y, w, h, name, desc, img, hoverImg) {
@@ -449,6 +486,9 @@ public class SceneManager {
             URL urlNpc2Idle = getClass().getResource("/res/NPC/NPC2_character.png");
             URL urlNpc2Talk = getClass().getResource("/res/NPC/NPC2_talk.png");
 
+            URL urlDadIdle = getClass().getResource("/res/NPC/Dad.png");
+            URL urlDadTalk = getClass().getResource("/res/NPC/Dad_talk.png");
+
             if (urlGirlIdle != null) girlIdle = ImageIO.read(urlGirlIdle);
             if (urlGirlTalk != null) girlTalk = ImageIO.read(urlGirlTalk);
             if (urlMainIdle != null) mainIdle = ImageIO.read(urlMainIdle);
@@ -460,6 +500,8 @@ public class SceneManager {
             if (urlNpc3Talk != null) npc3Talk = ImageIO.read(urlNpc3Talk);
             if (urlNpc2Idle != null) npc2Idle = ImageIO.read(urlNpc2Idle);
             if (urlNpc2Talk != null) npc2Talk = ImageIO.read(urlNpc2Talk);
+            if (urlDadIdle != null) dadIdle = ImageIO.read(urlDadIdle);
+            if (urlDadTalk != null) dadTalk = ImageIO.read(urlDadTalk);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -485,14 +527,7 @@ public class SceneManager {
                 if (isFlower) return;
 
                 if (p.getInventory().isItemSelected("flower")) {
-
-                    if (fadeTransition != null && !fadeTransition.isFading()) {
-                        fadeTransition.executeFade(500, 0, 500, () -> {
-                            startGhostAndBossSequence();
-                        });
-                    }
-
-
+                    
                     DialogueLine[] flowerScript = {
                             new DialogueLine("พระเอก", "ขอให้ไปสู่สุคตินะครับคุณพ่อ", null, mainTalk),
                             new DialogueLine("พระเอก", "วันนี้เหนื่อยจังเลยนะ...", null, mainTalk),
@@ -617,6 +652,63 @@ public class SceneManager {
             }
         };
 
+        //scene_11
+        Item kaFak1 = new Item("kaFak1", 10, 200, 424, 600,"ต้นกาฝาก", "", "kaFak1.png", "kaFak1.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak2 = new Item("kaFak2", 925, 245, 382, 548,"ต้นกาฝาก", "", "kaFak2.png", "kaFak2.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak3 = new Item("kaFak4", 1200, 290, 358, 508,"ต้นกาฝาก", "", "kaFak4.png", "kaFak4.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak4 = new Item("kaFak3", 625, 315, 323, 462,"ต้นกาฝาก", "", "kaFak3.png", "kaFak3.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak5 = new Item("kaFak5", 1500, 200, 421, 598,"ต้นกาฝาก", "", "kaFak5.png", "kaFak5.png") {
+            private boolean isPlucked = false;
+
+            @Override
+            public void onInteract(Player p) {
+                if (isPlucked) {
+                    overlay.startDialogue(new DialogueLine[] {
+                            new DialogueLine("ตุลย์", "ฉันเด็ดกาฝากมาแล้ว ไม่ต้องเอาไปเยอะหรอก", null, mainTalk)
+                    }, null);
+                    return;
+                }
+
+                Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.png", "kafakHover.png");
+                boolean success = p.getInventory().addItem(Parasite);
+
+                if (success) {
+                    isPlucked = true;
+                    DialogueLine[] script = {
+                            new DialogueLine("ระบบ", "คุณได้รับ [กาฝากไม้คูณตายพราย]", null, null)
+                    };
+                    overlay.setCharacterTransform(0, 0, 0, 0, 0, 0, 0, 0);
+                    overlay.startDialogue(script, null);
+                } else {
+                    System.out.println("กระเป๋าเต็ม");
+                }
+            }
+            @Override
+            public boolean isInteractable() {
+                return !isPlucked;
+            }
+        };
+
         //scene_15
         Item Door = new Item("miniGameYan", 1850, 365, 72, 708,"ประตู", "", "DoorPic.png", "DoorPic.png") {
             private boolean isSolved = false;
@@ -726,6 +818,7 @@ public class SceneManager {
         NPC evil = new NPC("Evil", "ผู้ใหญ่บ้าน",  150, 525, 190, 368, "/res/NPC/Evil_sheet.PNG", 12, 622, 1299);
         NPC npc3 = new NPC("Npc3", "คุณตา", 1350, 530, 170, 333, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
         NPC npc2 = new NPC("Npc2", "คุณยาย", 1500, 535, 170, 333, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
+        NPC dadGhost = new NPC("dadGhost", "พ่อ", 1350, 528, 175, 365, "/res/NPC/Dad_sheet.PNG", 12, 622, 1299);
         NPC playerSit = new NPC("PlayerSit", "ตุลย์", 842, 535, 170, 333, "/res/NPC/Sit_sheet.PNG", 12, 622, 1299);
 
         DialogueLine[] npcGirlScript = {
@@ -762,6 +855,16 @@ public class SceneManager {
         npc2.setVNDialogue(npc2Script, overlay);
         npc2.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
 
+        DialogueLine[] dadScript = {
+                new DialogueLine("พระเอก", "พ่อหรอ....", dadIdle, mainTalk),
+                new DialogueLine("พ่อ", "ใช่แล้วละ... อยากจะได้เลขรึป่าวละลูกเอ๊ย", dadTalk, mainIdle),
+                new DialogueLine("พระเอก", "เอาาาาาาาาา", dadIdle, mainTalk)
+        };
+        dadGhost.setVNDialogue(dadScript, overlay, () -> {
+            startEndingSequence();
+        });
+        dadGhost.setDialogTransform(50, 0, 746, 1000, 1200, 0, 706, 941);
+
         //พิธีกรรม
         Item slot0 = createRitualSlot(0, 959, 466, "วางของชิ้นที่หนึ่ง");
         Item slot1 = createRitualSlot(1, 959, 653, "วางของชิ้นที่สอง");
@@ -776,14 +879,13 @@ public class SceneManager {
         Scene scene_6 = scenes.get("scene_6");
         Scene scene_7 = scenes.get("scene_7");
         Scene scene_8 = scenes.get("scene_8");
+        Scene scene_11 = scenes.get("scene_11");
         Scene scene_15 = scenes.get("scene_15");
         Scene scene_17 = scenes.get("scene_17");
         Scene scene_18 = scenes.get("scene_18");
+        Scene scene_22 = scenes.get("scene_22");
 
         if (scene_1 != null) {
-            scene_1.addGameObject(EmptyPicture);
-            scene_1.addGameObject(PictureFrame);
-
             scene_1.addGameObject(Daddy_Pic);
             scene_1.addGameObject(npcGirl);
             scene_1.addGameObject(evil);
@@ -819,6 +921,13 @@ public class SceneManager {
             scene_8.addGameObject(EmptyPicture);
             scene_8.addGameObject(PictureFrame);
         }
+        if (scene_11 != null) {
+            scene_11.addGameObject(kaFak1);
+            scene_11.addGameObject(kaFak2);
+            scene_11.addGameObject(kaFak3);
+            scene_11.addGameObject(kaFak4);
+            scene_11.addGameObject(kaFak5);
+        }
         if (scene_15 != null) {
             scene_15.addGameObject(Door);
         }
@@ -828,6 +937,9 @@ public class SceneManager {
         if (scene_18 != null) {
             scene_18.addGameObject(Chest);
             scene_18.addGameObject(Locker);
+        }
+        if (scene_22 != null) {
+            scene_22.addGameObject(dadGhost);
         }
     }
 

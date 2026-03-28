@@ -10,9 +10,6 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class FinalBossFight extends JPanel implements Runnable {
     private JPanel comboBox, timer ,firseGroupPhase, secondGroupPhase;
@@ -176,13 +173,10 @@ public class FinalBossFight extends JPanel implements Runnable {
         timer1.setInitialDelay(500);
         timer1.start();
     }
-    public boolean isTimeOut(){
-        return timeout;
-    }
-    public void increaseTimerStep(){
+    public void decreaseTimer(){
         timerStep = 180;
     }
-    public void decreaseTimerStep(){
+    public void increaseTimer(){
         timerStep = -50;
     }
     public void setDefaultTimer(){
@@ -194,7 +188,7 @@ public class FinalBossFight extends JPanel implements Runnable {
         Stage previousStage = allStage[0];
         while(!finished && !timeout){
             if(nowStage.isFinished()){
-                decreaseTimerStep();
+                increaseTimer();
                 stageCnt++;
                 if (stageCnt < allStage.length) {
                     previousStage = nowStage;
@@ -288,7 +282,6 @@ public class FinalBossFight extends JPanel implements Runnable {
                     new Color(150 * (int)(finalAlpha), 0, 0, (int)(finalAlpha * 255))
             };
 
-            // 4. สร้าง Paint และวาดทับลงไป
             RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors);
             g2d.setPaint(p);
             g2d.fillRect(0, 0, getWidth(), getHeight());

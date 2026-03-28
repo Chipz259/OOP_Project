@@ -15,6 +15,7 @@ public class NPC extends GameObject implements Interactable{
     private int dRightX = 1200, dRightY = 0, dRightW = 700, dRightH = 950;
     private boolean isHovered = false;
     private String npcName;
+    private Runnable onDialogueFinished;
 
     public NPC(String id,String npcName, int x, int y, int with, int height, String idleSpritePath, int frameCount, int frameWidth, int frameHeight) {
         super(id, x, y, with, height);
@@ -30,6 +31,12 @@ public class NPC extends GameObject implements Interactable{
     public void setVNDialogue(system.DialogueLine[] script, ui.DialogueOverlay overlay) {
         this.dialogueScript = script;
         this.overlay = overlay;
+    }
+
+    public void setVNDialogue(system.DialogueLine[] script, ui.DialogueOverlay overlay, Runnable onDialogueFinished) {
+        this.dialogueScript = script;
+        this.overlay = overlay;
+        this.onDialogueFinished = onDialogueFinished;
     }
 
     private void loadAnimation(String idlePath, int frameCount, int frameWidth, int frameHeight) {
@@ -111,9 +118,7 @@ public class NPC extends GameObject implements Interactable{
 
             overlay.setCharacterTransform(dLeftX, dLeftY, dLeftW, dLeftH, dRightX, dRightY, dRightW, dRightH);
 
-            overlay.startDialogue(dialogueScript, () -> {
-                System.out.println("ระบบ: คุยกันจบแล้ว");
-            });
+            overlay.startDialogue(dialogueScript, onDialogueFinished);
         }
         else {
             System.out.println("NPC ตัวนี้ไม่มีบทพูด");
