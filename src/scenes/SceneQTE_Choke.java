@@ -65,7 +65,7 @@ public class SceneQTE_Choke extends Scene {
         this.fadeWhiteAmount = 0;
         this.buttonScale = 200;
         this.fadeAlpha = 0;
-        AudioManager.playPreloadedSFX("src/res/sound/DonPLork.wav", 0.0f);
+        AudioManager.playPreloadedSFX("src/res/sound/DonPLork.wav", -5.0f);
     }
     public void registerClick() {
         if (isQteActive) {
@@ -98,7 +98,7 @@ public class SceneQTE_Choke extends Scene {
                 isWinningFade = true;
                 System.out.println("สวดเก่งนี่ รอด");
                 AudioManager.stopMusic();
-                AudioManager.playSFX("src/res/sound/WinPLork.wav", 10.0f);
+                AudioManager.playSFX("src/res/sound/WinPLork.wav", 5.0f);
             }
         }
         if (buttonScale > 200) {
