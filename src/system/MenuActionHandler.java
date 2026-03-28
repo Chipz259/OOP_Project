@@ -21,6 +21,7 @@ public class MenuActionHandler implements ActionListener, MouseListener {
             action.startCutscene();
         }
         else if (scanAction.equals("Resume")) {
+            action.setIsResumeGame(true);
             action.transitionToGame();
         }
         else if (scanAction.equals("Setting")) {

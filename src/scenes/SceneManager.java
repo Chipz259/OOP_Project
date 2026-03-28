@@ -607,6 +607,7 @@ public class SceneManager {
                         Knife2.setVisible(true);
                     });
                     mainFrame.openMinigame(minigame);
+                    AudioManager.stopMusic();
                 }
             }
 
@@ -954,6 +955,11 @@ public class SceneManager {
     }
 
     private void managePlayBGM(String sceneID) {
+        if (sceneID.equals("scene_2") && !gamePanel.getIsStartGame()) {
+            AudioManager.playMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
+            System.out.println("เข้าเงื่อนไข เริ่มเกมใหม่");
+            return;
+        }
         switch (sceneID) {
             case "scene_1", "scene_2" -> AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
             case "scene_12", "scene_13" -> AudioManager.resumeBGMusic("src/res/sound/BGM2.wav", 0.0f);
