@@ -308,6 +308,13 @@ public class SceneManager {
                         p.getInventory().removeSelectedItem();
 
                         if (isAllSlotsFilled() == true) {
+                            system.DialogueLine[] afterDiaryScript = {
+                                    new system.DialogueLine("ตุลย์", "ของทั้งสี่ครบแล้ว…", null, mainTalk),
+                                    new system.DialogueLine("ตุลย์", "ต่อไปต้องวางของ… เหมือนในสมุดบันทึกน่าจะมีบอกตำแหน่งไว้นะ", null, mainTalk)
+                            };
+                            overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                            overlay.startDialogue(afterDiaryScript, () -> {
+                            });
                             checkRitual(p);
                         }
                     }

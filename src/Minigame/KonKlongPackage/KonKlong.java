@@ -52,6 +52,8 @@ public class KonKlong extends JPanel {
         descriptPanel.setLayout(new GridLayout(1, 2, 20, 0));
         descriptPanel.setSize(540, 90);
         descriptPanel.setOpaque(false);
+        clickDesPanel.setOpaque(false);
+        drageDesPanel.setOpaque(false);
 
         MouseHandler mouseHandler = new MouseHandler();
         DangPanel.addMouseListener(mouseHandler);
