@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class changableImagePanel extends JPanel {
     private BufferedImage active, unactive, img;
-    private boolean isTarget = false;
+    private boolean isTarget = false, isActive = false;
 
     public changableImagePanel(String unactivePath, String activePath){
         try {
@@ -23,24 +23,27 @@ public class changableImagePanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g){
+        int offset = 0;
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g.create();
         if(!isTarget){
-            int offset = 20;
-            g2.drawImage(img,offset, offset, getWidth() - (offset*2), getHeight() - (offset*2), this);
-        } else {
-            g2.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+            offset = 30;
+        }else if(isActive){
+            offset = 20;
         }
+        g2.drawImage(img,offset, offset, getWidth() - (offset*2), getHeight() - (offset*2), this);
         g2.dispose();
     }
 
     public void setUnactive(){
         img = unactive;
+        isActive = false;
         repaint();
     }
     public void setActive(){
         img = active;
+        isActive = true;
         repaint();
     }
     public BufferedImage getImage(){

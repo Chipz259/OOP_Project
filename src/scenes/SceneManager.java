@@ -761,6 +761,7 @@ public class SceneManager {
         NPC npc3 = new NPC("Npc3", "คุณตา", 1350, 530, 170, 333, "/res/NPC/NPC3_sheet.PNG", 12, 622, 1299);
         NPC npc2 = new NPC("Npc2", "คุณยาย", 1500, 535, 170, 333, "/res/NPC/NPC2_sheet.PNG", 12, 622, 1299);
         NPC dadGhost = new NPC("dadGhost", "พ่อ", 1350, 528, 175, 365, "/res/NPC/Dad_sheet.PNG", 12, 622, 1299);
+        NPC playerSit = new NPC("PlayerSit", "ตุลย์", 842, 535, 170, 333, "/res/NPC/Sit_sheet.PNG", 12, 622, 1299);
 
         DialogueLine[] npcGirlScript = {
                 new DialogueLine("เด็กสาวปริศนา", "พ่อตายแล้วน้าฮือๆๆๆ", girlTalk, mainIdle),
@@ -834,6 +835,7 @@ public class SceneManager {
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
+            scene_2.addGameObject(playerSit);
         }
         if (scene_4 != null) {
         }
@@ -1000,7 +1002,7 @@ public class SceneManager {
 
     private void managePlayBGM(String sceneID) {
         switch (sceneID) {
-            case "scene_1", "scene_2" -> AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", -5.0f);
+            case "scene_1", "scene_2" -> AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
             case "scene_12", "scene_13" -> AudioManager.resumeBGMusic("src/res/sound/BGM2.wav", 0.0f);
             case "scene_3" -> AudioManager.playSFX("src/res/sound/StartCar.wav", 0.0f);
             case "qte_choke" -> AudioManager.stopMusic();

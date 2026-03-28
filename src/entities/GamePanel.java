@@ -99,7 +99,7 @@ public class GamePanel extends JPanel implements Runnable {
         isRunning = true;
         gameThread.start();
         this.requestFocusInWindow();
-        AudioManager.playMusic("src/res/sound/PlayingMusicBG.wav", -5.0f);
+        AudioManager.playMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
     }
 
     public void stopGameThread() {

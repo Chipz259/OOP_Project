@@ -77,18 +77,18 @@ public class Tutorial extends JPanel {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
-    private void nextPage(String sceen) {
-        if (sceen.equals("StartGame")) {
+    private void nextPage(String scene) {
+        if (scene.equals("StartGame")) {
             if (currentImage < tutorialStartImage.length - 1) {
                 currentImage++;
-                updateButtonStates(sceen);
+                updateButtonStates(scene);
                 repaint();
             }
         }
-        else if (sceen.equals("Combine")) {
+        else if (scene.equals("Combine")) {
             if (currentImage < tutorialCombineImage.length - 1) {
                 currentImage++;
-                updateButtonStates(sceen);
+                updateButtonStates(scene);
                 repaint();
             }
         }

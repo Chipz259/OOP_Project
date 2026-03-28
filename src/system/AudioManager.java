@@ -57,13 +57,6 @@ public class AudioManager {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    public static void pauseBGMusic() {
-        if (bgMusic != null && bgMusic.isRunning()) {
-            lastPosition = bgMusic.getMicrosecondPosition();
-            bgMusic.stop();
-        }
-    }
-
     public static void resumeBGMusic(String path, float offsetDB) {
         // 1. ถ้า Path ตรงกันเด๊ะๆ
         if (path.equals(currentBgmPath)) {
@@ -154,9 +147,6 @@ public class AudioManager {
         }
     }
 
-    /**
-     * หยุด SFX ทั้งหมด (ใช้ตอน Reset เกม หรือเปลี่ยนฉากใหญ่)
-     */
     public static void stopAllSFX() {
         for (String path : activeSfxMap.keySet()) {
             stopSFX(path);
@@ -201,9 +191,5 @@ public class AudioManager {
                 gainControl.setValue(finalDB);
             }
         } catch (Exception e) { e.printStackTrace(); }
-    }
-
-    public static boolean isSfxRunning() {
-        return !activeSfxMap.isEmpty();
     }
 }
