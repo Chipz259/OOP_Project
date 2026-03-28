@@ -203,6 +203,9 @@ public class MainGameFrame extends JFrame {
         if (isStartGame) {
             buttonResume.setEnabled(true);
         }
+        else {
+            buttonResume.setEnabled(false);
+        }
 
         Runnable action = () -> {
             cardLayout.show(mainCardPanel, "MENU");

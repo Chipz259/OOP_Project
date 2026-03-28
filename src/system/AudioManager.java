@@ -164,7 +164,7 @@ public class AudioManager {
             clip.setFramePosition(0);
             applyVolume(clip, sfxVolume, offsetDB);
             clip.start();
-            
+
             activeSfxMap.put(path, clip);
         } else {
             playSFX(path, offsetDB);
