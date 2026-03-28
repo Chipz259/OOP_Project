@@ -487,6 +487,13 @@ public class SceneManager {
 
                 if (p.getInventory().isItemSelected("flower")) {
 
+                    if (fadeTransition != null && !fadeTransition.isFading()) {
+                        fadeTransition.executeFade(500, 0, 500, () -> {
+                            startGhostAndBossSequence();
+                        });
+                    }
+
+
                     DialogueLine[] flowerScript = {
                             new DialogueLine("พระเอก", "ขอให้ไปสู่สุคตินะครับคุณพ่อ", null, mainTalk),
                             new DialogueLine("พระเอก", "วันนี้เหนื่อยจังเลยนะ...", null, mainTalk),
