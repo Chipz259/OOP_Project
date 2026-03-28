@@ -31,12 +31,13 @@ public class SceneManager {
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
     private BufferedImage girlIdle, girlTalk, mainIdle, mainIdle2, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk, dadIdle, dadTalk;
-    private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true, isFirstTimeScene11 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true, isFirstTimeScene17 = true, isFirstTimeScene19;
+    private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true, isFirstTimeScene11 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true, isFirstTimeScene17 = true, isFirstTimeScene19 = true;
     private String[] ritualItems = {"", "", "", ""};
     private String[] ritualItemNames = {"", "", "", ""};
     private Item[] ritualSlots = new Item[4];
     private final String[] RITUAL_ANSWERS = {"knife", "holyWater", "kafak", "rosary"};
     private int chestopen = 0;
+    private boolean hasSpokenAllItems = false;
 
     public SceneManager(Player player) {
         scenes = new HashMap<>();
@@ -308,13 +309,6 @@ public class SceneManager {
                         p.getInventory().removeSelectedItem();
 
                         if (isAllSlotsFilled() == true) {
-                            system.DialogueLine[] afterDiaryScript = {
-                                    new system.DialogueLine("ตุลย์", "ของทั้งสี่ครบแล้ว…", null, mainTalk),
-                                    new system.DialogueLine("ตุลย์", "ต่อไปต้องวางของ… เหมือนในสมุดบันทึกน่าจะมีบอกตำแหน่งไว้นะ", null, mainTalk)
-                            };
-                            overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
-                            overlay.startDialogue(afterDiaryScript, () -> {
-                            });
                             checkRitual(p);
                         }
                     }
@@ -623,7 +617,6 @@ public class SceneManager {
         Item Bed = new Item("bed", 110, 490, 842, 315, "เตียง", "เตียงนะจ๊ะ", "bed.png", "bed.png") {
             @Override
             public void onInteract(Player p) {
-                //this.setVisible(false);
                 startQTETransition("qte_choke");
             }
         };
@@ -675,7 +668,7 @@ public class SceneManager {
             }
         };
 
-        Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
+        Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอาคม", "knife.png", "knife.png");
         Knife2.setVisible(false);
 
         Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
@@ -1102,6 +1095,23 @@ public class SceneManager {
             overlay.update();
         }
 
+        if (!hasSpokenAllItems && pendingPlayer != null && overlay != null && !overlay.isActive()) {
+            Inventory inv = pendingPlayer.getInventory();
+
+            // เช็คว่ามีของสำหรับทำพิธีครบ 4 ชิ้น (มีด, น้ำมนต์, กาฝาก, ลูกประคำ)
+            if (inv.hasItem("knife") && inv.hasItem("holyWater") && inv.hasItem("kafak") && inv.hasItem("rosary")) {
+
+                hasSpokenAllItems = true;
+                DialogueLine[] allItemsScript = {
+                        new DialogueLine("ตุลย์", "ของทำพิธีน่าจะครบแล้วล่ะ...", null, mainIdle2),
+                        new DialogueLine("ตุลย์", "รีบเอาไปวางที่แท่นพิธีในห้องกันเถอะ", null, mainTalk)
+                };
+
+                overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                overlay.startDialogue(allItemsScript, null);
+            }
+        }
+
     }
 
     public void render(Graphics2D g2d) {
@@ -1146,21 +1156,28 @@ public class SceneManager {
     }
 
     public void resetManagerStates() {
-        System.out.println(">>> ระบบ Reset : SceneManager ยังไม่สมบูรณ์");
         isFirstTimeScene3 = true;
         isFirstTimeScene6 = true;
+        isFirstTimeScene11 = true;
         isFirstTimeScene12 = true;
         isFirstTimeScene14 = true;
         isFirstTimeScene16 = true;
+        isFirstTimeScene17 = true;
         isFirstTimeScene18 = true;
+        isFirstTimeScene19 = true;
 
-        // รีเซ็ตไอเทมในพิธีกรรม (ถ้ามี)
+        retryMode = 1;
+        chestopen = 0;
+
+        //ล้างรายชื่อของในแท่นพิธีกรรมให้กลับมาว่างเปล่า
         for (int i = 0; i < ritualItems.length; i++) {
             ritualItems[i] = "";
-            if (ritualSlots[i] != null) {
-                // คืนค่ารูปแท่นวางให้ว่างเปล่า
-                ritualSlots[i].changeImage(ritualSlots[i].getX(), ritualSlots[i].getY(), 100, 100, "slot_empty.png", "slot_hover.png");
-            }
+            ritualItemNames[i] = "";
+        }
+
+        if (scenes != null) {
+            scenes.clear();
+            initScenes();
         }
     }
 }
