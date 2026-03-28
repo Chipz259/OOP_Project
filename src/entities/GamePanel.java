@@ -66,7 +66,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.add(btnSetting);
         btnSetting.setFocusable(false);
 
-        loadCustomFont();
         inventory = new Inventory("slots.png", tutorialRef);
         mainPlayer = new Player("player", 1650, 530, 180, 360, tutorialRef);
 
@@ -74,18 +73,6 @@ public class GamePanel extends JPanel implements Runnable {
         keyH.setSceneManager(sceneManager);
         sceneManager.setFadeTransition(this.fadeTransition);
         sceneManager.setGamePanel(this);
-    }
-
-    public void loadCustomFont(){
-        try {
-            InputStream is = getClass().getResourceAsStream("/res/Font/DSNSM__.TTF");
-            customFont = Font.createFont(Font.TRUETYPE_FONT, is);
-        }
-        catch (Exception e) {
-            System.err.println("ระบบ: โหลดฟอนต์ไม่ได้");
-            e.printStackTrace();
-            customFont = new Font("Arial", Font.PLAIN, 24);
-        }
     }
 
     public void startGameThread() {

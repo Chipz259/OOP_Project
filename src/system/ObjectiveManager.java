@@ -1,6 +1,7 @@
 package system;
 
 import entities.Inventory;
+import system.FontManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,18 +22,21 @@ public class ObjectiveManager {
     private ObjectiveManager() {
         this.objectives = new ArrayList<Objective>();
 
-        try {
-            InputStream is = getClass().getResourceAsStream("/res/Font/DSNSM__.TTF");
-            Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
+//        try {
+//            InputStream is = getClass().getResourceAsStream("/res/Font/DSNSM__.TTF");
+//            Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
+//
+//            this.headerFont = baseFont.deriveFont(Font.BOLD, 40f);
+//            this.questFont = baseFont.deriveFont(Font.PLAIN, 26f);
+//
+//        } catch (Exception e) {
+//            System.err.println("ระบบ: โหลดฟอนต์ใน ObjectiveManager ไม่ได้ ใช้ Arial แทนนะ");
+//            this.headerFont = new Font("Arial", Font.BOLD, 40);
+//            this.questFont = new Font("Arial", Font.PLAIN, 26);
+//        }
 
-            this.headerFont = baseFont.deriveFont(Font.BOLD, 40f);
-            this.questFont = baseFont.deriveFont(Font.PLAIN, 26f);
-
-        } catch (Exception e) {
-            System.err.println("ระบบ: โหลดฟอนต์ใน ObjectiveManager ไม่ได้ ใช้ Arial แทนนะ");
-            this.headerFont = new Font("Arial", Font.BOLD, 40);
-            this.questFont = new Font("Arial", Font.PLAIN, 26);
-        }
+        headerFont = FontManager.customFont.deriveFont(Font.BOLD, 40f);
+        questFont = FontManager.customFont.deriveFont(Font.PLAIN, 26f);
 
         try {
             int boxSize = 40;

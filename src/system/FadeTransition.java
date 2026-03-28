@@ -92,10 +92,10 @@ public class FadeTransition extends JPanel {
         fadeTimer.start();
     }
 
-    //ถ้าไม่กรอกค่าอะไร เรียกเปล่าๆ
-    public void executeFade(Runnable actionAfterFadeOut){
-        executeFade(500, 200, 500, actionAfterFadeOut);
-    }
+//    //ถ้าไม่กรอกค่าอะไร เรียกเปล่าๆ
+//    public void executeFade(Runnable actionAfterFadeOut){
+//        executeFade(500, 200, 500, actionAfterFadeOut);
+//    }
 
     @Override
     protected void paintComponent(Graphics g) {

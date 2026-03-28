@@ -1,6 +1,5 @@
 package system;
 import entities.*;
-import scenes.Door;
 
 import java.awt.event.*;
 import java.awt.*;
