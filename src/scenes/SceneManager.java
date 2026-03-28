@@ -409,6 +409,7 @@ public class SceneManager {
     public void startGhostAndBossSequence() {
         this.retryMode = 2;
 
+        AudioManager.stopMusic();
         AudioManager.playSFX("src/res/sound/MinigameBossBefore.wav", -5.0f);
         ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
         CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
@@ -1126,13 +1127,16 @@ public class SceneManager {
         }
         switch (sceneID) {
             case "scene_1", "scene_2" -> AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
-            case "scene_12", "scene_13" -> AudioManager.resumeBGMusic("src/res/sound/BGM2.wav", 0.0f);
+            case "scene_12", "scene_13", "scene_4" -> AudioManager.resumeBGMusic("src/res/sound/BGM2.wav", 0.0f);
             case "scene_3" -> AudioManager.playSFX("src/res/sound/StartCar.wav", 0.0f);
             case "qte_choke" -> AudioManager.stopMusic();
-            case "scene_15" -> {
-                // ในห้องก่อนแปะประตู
+            case "scene_14", "scene_15", "scene_17", "scene_18", "scene_6", "scene_8", "scene_7"
+                    -> AudioManager.resumeBGMusic("src/res/sound/BGM14.wav", 0.0f);
+            case "scene_16" -> {
+                AudioManager.playSFX("src/res/sound/ItemDropSound.wav", 10.0f);
+                AudioManager.resumeBGMusic("src/res/sound/BGM14.wav", 0.0f);
             }
-            case "scene_16" -> AudioManager.playSFX("src/res/sound/ItemDropSound.wav", 5.0f);
+            case "scene_9", "scene_10", "scene_11" -> AudioManager.resumeBGMusic("src/res/sound/BGM9.wav", 0.0f);
             default -> System.out.println("ระบบ PhayBGM at SceneManager : ยังไม่ได้ตั้งค่า " + sceneID);
         }
     }
