@@ -73,16 +73,6 @@ public class Inventory {
         hoveredSlot = -1;
         isShowCombine = false;
     }
-    public boolean removeItemId(String itemName) {
-        for (int i = 0; i < slots.length; i++) {
-            if (slots[i] != null) {
-                if (slots[i].getObjectId().equals(itemName)) {
-                    slots[i] = null;
-                    return true;
-                }
-            }
-        } return false;
-    }
     public boolean hasItem(String itemName) {
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] != null) {
