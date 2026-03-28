@@ -47,7 +47,7 @@ public class YanKeys {
         container.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e){
-                normalH = (int)(0.72 * container.getHeight());
+                normalH = (int)(0.71 * container.getHeight());
                 targetH = (int)(0.78 * container.getHeight());
                 alpha.setSize(container.getWidth(),container.getHeight());
                 keyLabel.setSize(container.getWidth(), textH);

@@ -22,13 +22,13 @@ public class changableImagePanel extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g){
+    public void paintComponent(Graphics g){
         int offset = 0;
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g.create();
         if(!isTarget){
-            offset = 30;
+            offset = 40;
         }else if(isActive){
             offset = 20;
         }
