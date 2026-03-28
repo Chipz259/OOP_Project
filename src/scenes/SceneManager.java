@@ -31,7 +31,7 @@ public class SceneManager {
     private GamePanel gamePanel;
     private BufferedImage girlIdle, girlTalk, mainIdle, mainIdle2, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk, dadIdle, dadTalk;
     private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true, isFirstTimeScene11 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true, isFirstTimeScene17 = true, isFirstTimeScene19 = true;
-    private String[] ritualItems = {"", "", "", ""};
+    public static String[] ritualItems = {"", "", "", ""};
     private String[] ritualItemNames = {"", "", "", ""};
     private Item[] ritualSlots = new Item[4];
     private final String[] RITUAL_ANSWERS = {"knife", "holyWater", "kafak", "rosary"};
@@ -1004,11 +1004,11 @@ public class SceneManager {
             case "scene_11" : return "ป่า";
             case "scene_12" : return "หน้าเมรุ";
             case "scene_13" : return "ด้านข้างเมรุ";
-            case "scene_14" : return "ห้องนอน14";
-            case "scene_15" : return "ห้องโถง15";
-            case "scene_16" : return "ห้องโถง16";
-            case "scene_17" : return "ห้องนอน17";
-            case "scene_18" : return "ห้องนอน18";
+            case "scene_14" : return "ห้องนอน";
+            case "scene_15" : return "ห้องโถง";
+            case "scene_16" : return "ห้องโถง";
+            case "scene_17" : return "ห้องนอน";
+            case "scene_18" : return "ห้องนอน";
             case "scene_19" : return "ห้องทำพิธี";
             case "scene_20" : return "ห้องนอน";
             case "scene_21" : return "ห้องโถง";
