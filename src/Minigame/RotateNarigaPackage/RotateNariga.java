@@ -5,6 +5,7 @@ import ui.MainGameFrame;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -92,9 +93,9 @@ public class RotateNariga extends JPanel{
         nariga.add(kemSmall); nariga.add(kemBig);
         this.add(nariga, BorderLayout.CENTER);
 
-        nariga.addComponentListener(new java.awt.event.ComponentAdapter() {
+        nariga.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
+            public void componentResized(ComponentEvent e) {
                 kemSmall.setLocation(nariga.getWidth() / 2 - (kemSmall.getWidth() / 2), nariga.getHeight() / 2 - (kemSmall.getHeight() / 2));
                 kemBig.setLocation(nariga.getWidth() / 2 - (kemBig.getWidth() / 2), nariga.getHeight() / 2 - (kemBig.getHeight() / 2));
 
