@@ -99,7 +99,6 @@ public class GamePanel extends JPanel implements Runnable {
         isRunning = true;
         gameThread.start();
         this.requestFocusInWindow();
-        AudioManager.playMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
     }
 
     public void stopGameThread() {
@@ -123,6 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // 4. รีเซ็ตสถานะเหตุการณ์ใน SceneManager
         sceneManager.resetManagerStates();
+        parentFrame.setIsStartGame(false);
 
         // 5. รีเซ็ตภารกิจ (Objective)
         system.ObjectiveManager.getInstance().resetObjective(); // มั่นใจว่าใน ObjectiveManager มีเมธอด reset() นะครับ
@@ -327,5 +327,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void triggerDeath() {
         parentFrame.showGameOver(true);
+    }
+
+    public Boolean getIsStartGame() {
+        return parentFrame.getIsStartGame();
     }
 }
