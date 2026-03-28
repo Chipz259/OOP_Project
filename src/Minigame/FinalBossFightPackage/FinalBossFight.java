@@ -1,9 +1,12 @@
 package Minigame.FinalBossFightPackage;
 
+import ui.MainGameFrame;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -18,8 +21,15 @@ public class FinalBossFight extends JPanel implements Runnable {
     private BufferedImage timerImage, background;
     private changableImagePanel phase1, phase2, phase3, phase4;
 
+    private MainGameFrame mainGameFrame;
+    private Runnable onWinCallback, onLoseCallback;
 
-    public FinalBossFight(){
+
+    public FinalBossFight(MainGameFrame mainGameFrame, Runnable onWinCallback, Runnable onLoseCallback){
+        this.mainGameFrame = mainGameFrame;
+        this.onWinCallback = onWinCallback;
+        this.onLoseCallback = onLoseCallback;
+
         //Set Key For Each Stage
         allStage = new Stage[]{
                 new Stage(false),
@@ -42,10 +52,10 @@ public class FinalBossFight extends JPanel implements Runnable {
             e.printStackTrace();
             timerImage = null;
         }
-        phase1 = new changableImagePanel("Image/Yan_Phase1_default.png", "Image/Yan_Phase1_hover.png");
-        phase2 = new changableImagePanel("Image/Yan_Phase2_default.png", "Image/Yan_Phase2_hover.png");
-        phase3 = new changableImagePanel("Image/Yan_Phase3_default.png", "Image/Yan_Phase3_hover.png");
-        phase4 = new changableImagePanel("Image/Yan_Phase4_default.png", "Image/Yan_Phase4_hover.png");
+        phase1 = new changableImagePanel("Image/Yan_Phase1_default.PNG", "Image/Yan_Phase1_hover.PNG");
+        phase2 = new changableImagePanel("Image/Yan_Phase2_default.PNG", "Image/Yan_Phase2_hover.PNG");
+        phase3 = new changableImagePanel("Image/Yan_Phase3_default.PNG", "Image/Yan_Phase3_hover.PNG");
+        phase4 = new changableImagePanel("Image/Yan_Phase4_default.PNG", "Image/Yan_Phase4_hover.PNG");
 
 
         firseGroupPhase = new JPanel();
@@ -66,11 +76,6 @@ public class FinalBossFight extends JPanel implements Runnable {
             }
         };
 
-        phase1.setSize(200, 250);
-        phase2.setSize(200, 250);
-        phase3.setSize(200, 250);
-        phase4.setSize(200, 250);
-
         phase1.setOpaque(false);
         phase2.setOpaque(false);
         phase3.setOpaque(false);
@@ -81,15 +86,19 @@ public class FinalBossFight extends JPanel implements Runnable {
         comboBox.setBackground(new Color(217, 217, 217, 255));
         comboBox.setOpaque(false);
 
-        timer.setSize(1260, timerImage.getHeight());
+        if (timerImage != null) {
+            timer.setSize(1260, timerImage.getHeight());
+        } else {
+            timer.setSize(1260, 50);
+        }
         timer.setOpaque(false);
 
-        firseGroupPhase.setSize(1580, 250);
+        firseGroupPhase.setSize(1520, 345);
         firseGroupPhase.setLayout(new GridLayout(1, 2, 1180, 0));
         firseGroupPhase.setOpaque(false);
         firseGroupPhase.add(phase1); firseGroupPhase.add(phase2);
 
-        secondGroupPhase.setSize(1100, 250);
+        secondGroupPhase.setSize(1040, 345);
         secondGroupPhase.setLayout(new GridLayout(1, 2, 700, 0));
         secondGroupPhase.setOpaque(false);
         secondGroupPhase.add(phase3); secondGroupPhase.add(phase4);
@@ -111,19 +120,22 @@ public class FinalBossFight extends JPanel implements Runnable {
             public void componentResized(ComponentEvent e){
                 comboBox.setLocation(getWidth() / 2 - (comboBox.getWidth() / 2), (int)(0.18 * getHeight()));
                 timer.setLocation(getWidth() / 2 - (timer.getWidth() / 2), (int)(0.1 * getHeight()));
-                firseGroupPhase.setLocation(getWidth() / 2 - (firseGroupPhase.getWidth() / 2), (int)(0.6 * getHeight()));
-                secondGroupPhase.setLocation(getWidth() / 2 - (secondGroupPhase.getWidth() / 2), (int)(0.8 * getHeight()));
+                firseGroupPhase.setLocation(getWidth() / 2 - (firseGroupPhase.getWidth() / 2), (int)(0.5 * getHeight()));
+                secondGroupPhase.setLocation(getWidth() / 2 - (secondGroupPhase.getWidth() / 2), (int)(0.7 * getHeight()));
             }
         });
+
         SwingUtilities.invokeLater(() ->{
             kh = new KeyHandler(nowStage, this);
             this.addKeyListener(kh);
+            this.requestFocusInWindow();
+            comboBox.repaint();
+            comboBox.revalidate();
             startTimer();
+            new Thread(this).start();
         });
     }
-    public boolean isFinished() {
-        return finished;
-    }
+
     public void startTimer(){
         int start = timer.getWidth();
         int timerH = timer.getHeight();
@@ -139,11 +151,13 @@ public class FinalBossFight extends JPanel implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 step += timerStep;
+                if (step < 0) step = 0;
                 double t = (double) step / steps;
 
                 timer.setSize((int) (start + (end - start) * t), timerH);
                 timer.repaint();
                 timer.revalidate();
+                repaint();
                 if(step >= steps){
                     timer.setSize(end , timerH);
                     timer.revalidate();
@@ -155,6 +169,9 @@ public class FinalBossFight extends JPanel implements Runnable {
                     timer1.stop();
                     return;
                 }
+                if(timerStep != 1){
+                    setDefaultTimer();
+                }
             }
         });
         timer1.setInitialDelay(500);
@@ -164,13 +181,20 @@ public class FinalBossFight extends JPanel implements Runnable {
         return timeout;
     }
     public void increaseTimerStep(){
-        timerStep++;
+        timerStep = 180;
+    }
+    public void decreaseTimerStep(){
+        timerStep = -50;
+    }
+    public void setDefaultTimer(){
+        timerStep = 1;
     }
     @Override
     public void run(){
         Stage previousStage = allStage[0];
         while(!finished && !timeout){
             if(nowStage.isFinished()){
+                decreaseTimerStep();
                 stageCnt++;
                 if (stageCnt < allStage.length) {
                     previousStage = nowStage;
@@ -182,10 +206,10 @@ public class FinalBossFight extends JPanel implements Runnable {
             }
             if(nowStage != previousStage && !finished){
                 kh.setNewStage(nowStage);
+                nowStage.setDefault();
                 SwingUtilities.invokeLater(() -> {
                     comboBox.removeAll();
                     for (YanKeys yanKeys : nowStage.getYanKeysArray()) {
-                        yanKeys.setUnactive();
                         comboBox.add(yanKeys.getContainer());
                     }
                     comboBox.revalidate();
@@ -216,11 +240,54 @@ public class FinalBossFight extends JPanel implements Runnable {
 
             System.out.println("You Losed!!");
         }
-    }
 
+        SwingUtilities.invokeLater(() -> {
+            if(finished){
+                System.out.println("ระบบ: ชนะบอสแล้ว!");
+                mainGameFrame.closeMinigame();
+                if(onWinCallback != null) onWinCallback.run();
+            } else {
+                System.out.println("ระบบ: แพ้บอส! ");
+                //ถ้าแพ้เด้งออกไปเฉยๆ
+                mainGameFrame.closeMinigame();
+                if (onLoseCallback != null) onLoseCallback.run();
+                // หากต้องการให้ตัวละครตาย หรือให้เล่นซ้ำ สามารถเขียนเพิ่มตรงนี้ได้เลยครับ
+            }
+        });
+
+    }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        Graphics2D g2d = (Graphics2D) g.create();
+        if (background != null) {
+            g2d.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        }
+
+        double timePercent = (double) timer.getWidth() / 1260;
+        if (timePercent < 0.5) {
+            Point2D center = new Point2D.Float(getWidth() / 2, getHeight() / 2);
+            float radius = (float) Math.sqrt(Math.pow(getWidth(), 2) + Math.pow(getHeight(), 2)) / 2;
+
+            float[] dist = {0.0f, 0.6f, 1.0f};
+            double pulse = (Math.sin(System.currentTimeMillis() * 0.005) + 1.0) / 2.0;
+            float baseAlpha = (float) (1.0 - (timePercent / 0.5));
+
+            float finalAlpha = (float) (baseAlpha * (0.5 + 0.5 * pulse));
+            finalAlpha = Math.min(0.8f, Math.max(0.0f, finalAlpha)); // ป้องกัน Error
+
+            Color[] colors = {
+                    new Color(0, 0, 0, 0),
+                    new Color(255, 0, 0, (int)(baseAlpha * 50)),
+                    new Color(150 * (int)(finalAlpha), 0, 0, (int)(finalAlpha * 255))
+            };
+
+            // 4. สร้าง Paint และวาดทับลงไป
+            RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors);
+            g2d.setPaint(p);
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+        }
+
+        g2d.dispose();
     }
 }

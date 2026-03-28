@@ -286,16 +286,22 @@ public class MainGameFrame extends JFrame {
 
     public void closeMinigame() {
         cardLayout.show(mainCardPanel, "GAME");
+        JPanel panelToRemove = currentMinigamePanel;
+        currentMinigamePanel = null;
         SwingUtilities.invokeLater(() -> {
-            if (currentMinigamePanel != null) {
-                mainCardPanel.remove(currentMinigamePanel);
-                currentMinigamePanel = null;
+            if (panelToRemove != null) {
+                mainCardPanel.remove(panelToRemove);
             }
+
+//            if (currentMinigamePanel != null) {
+//                mainCardPanel.remove(currentMinigamePanel);
+//                currentMinigamePanel = null;
+//            }
 
             mainCardPanel.revalidate();
             mainCardPanel.repaint();
 
-            if (gamePanel != null) {
+            if (currentMinigamePanel == null && gamePanel != null) {
                 gamePanel.requestFocusInWindow();
             }
         });

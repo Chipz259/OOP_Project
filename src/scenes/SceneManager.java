@@ -1,5 +1,6 @@
 package scenes;
 
+import Minigame.FinalBossFightPackage.FinalBossFight;
 import Minigame.JigsawPackage.JigsawFrame;
 import Minigame.KonKlongPackage.KonKlong;
 import Minigame.RotateNarigaPackage.RotateNariga;
@@ -28,7 +29,7 @@ public class SceneManager {
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
     private BufferedImage girlIdle, girlTalk, mainIdle, mainIdle2, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk;
-    private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true;
+    private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true, isFirstTimeScene19;
     private String[] ritualItems = {"", "", "", ""};
     private String[] ritualItemNames = {"", "", "", ""};
     private Item[] ritualSlots = new Item[4];
@@ -84,6 +85,7 @@ public class SceneManager {
                 else if (sceneId.equals("scene_16") && isFirstTimeScene16) {}
                 else if (sceneId.equals("scene_18") && isFirstTimeScene18) {}
                 else if (sceneId.equals("scene_6") && isFirstTimeScene6) {}
+                else if (sceneId.equals("scene_19") && isFirstTimeScene19) {}
                 else {
                     String thName = getSceneDisplayName(sceneId);
                     titleOverlay.showTitle(thName);
@@ -151,6 +153,11 @@ public class SceneManager {
         else if (sceneId.equals("scene_18")) {
             if (isFirstTimeScene18) {
                 isFirstTimeScene18 = false;
+            }
+        }
+        else if (sceneId.equals("scene_19")) {
+            if (isFirstTimeScene19) {
+                isFirstTimeScene19 = false;
             }
         }
     }
@@ -282,14 +289,10 @@ public class SceneManager {
             }, () -> {
                 system.ObjectiveManager.getInstance().advanceObjective();
                 if (fadeTransition != null && !fadeTransition.isFading()) {
-                    fadeTransition.executeFade(700, 0, 500, () -> {
-                        ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
-                        CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
-                        });
-                        mainFrame.openCutscene(cutsceneGhost);
+                    fadeTransition.executeFade(500, 0, 500, () -> {
+                        startGhostAndBossSequence();
                     });
                 }
-//                startTransition("scene_final", p, 960, 540);
             });
         } else {
             // ผิด
@@ -352,6 +355,58 @@ public class SceneManager {
                 overlay.startDialogue(script, null);
             }
         };
+    }
+
+    private void startGhostAndBossSequence() {
+        ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
+        CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
+            if (fadeTransition != null && !fadeTransition.isFading()) {
+                fadeTransition.executeFade(200, 0, 200, () -> {
+
+                    //จะถูกเรียกตอนที่หน้าจอมืดสนิทพอดี
+                    FinalBossFight bossFight = new FinalBossFight(mainFrame,
+                            () -> {
+                                if (fadeTransition != null && !fadeTransition.isFading()) {
+                                    fadeTransition.executeFade(500, 0, 500, () -> {
+                                        loadScene("scene_19");
+                                        DialogueLine[] winScript = {
+                                                new DialogueLine("พระเอก", "แฮ่ก... แฮ่ก... จบสักทีนะ", null, mainTalk)
+                                        };
+                                        overlay.startDialogue(winScript, () -> {
+                                        });
+                                    });
+                                } else {
+                                    //กันพัง
+                                    loadScene("scene_19");
+                                }
+                            },
+                            () -> {
+                                System.out.println("ระบบ: เล่นแพ้! กำลังวนลูปเหตุการณ์...");
+                                startGhostAndBossSequence(); // เรียกตัวเองซ้ำ วนลูปผีหลอกใหม่!
+                            }
+                    );
+                    mainFrame.openMinigame(bossFight);
+
+                });
+            } else {
+                // กันเหนียว ถ้าระบบเฟดไม่ว่าง ให้โหลดบอสไฟต์เลยไม่ต้องรอจอมืด
+                FinalBossFight bossFight = new FinalBossFight(mainFrame,
+                        () -> {
+                            loadScene("scene_19");
+                            DialogueLine[] winScript = {
+                                    new DialogueLine("พระเอก", "แฮ่ก... แฮ่ก... จบสักทีนะ", null, mainTalk)
+                            };
+                            overlay.startDialogue(winScript, () -> {});
+                        },
+                        () -> {
+                            startGhostAndBossSequence();
+                        }
+                );
+                mainFrame.openMinigame(bossFight);
+            }
+        });
+
+        mainFrame.openCutscene(cutsceneGhost);
     }
 
     private Item createStoryItem(String id, int x, int y, int w, int h, String name, String desc, String img, String hoverImg, DialogueLine[] customScript) {
@@ -431,10 +486,14 @@ public class SceneManager {
                 if (isFlower) return;
 
                 if (p.getInventory().isItemSelected("flower")) {
-                    ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
-                    CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
-                    });
-                    mainFrame.openCutscene(cutsceneGhost);
+
+                    if (fadeTransition != null && !fadeTransition.isFading()) {
+                        fadeTransition.executeFade(500, 0, 500, () -> {
+                            startGhostAndBossSequence();
+                        });
+                    }
+
+
                     DialogueLine[] flowerScript = {
                             new DialogueLine("พระเอก", "ขอให้ไปสู่สุคตินะครับคุณพ่อ", null, mainTalk),
                             new DialogueLine("พระเอก", "วันนี้เหนื่อยจังเลยนะ...", null, mainTalk),
