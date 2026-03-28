@@ -507,10 +507,14 @@ public class SceneManager {
         }
 
         //scene_1
-        Item Candle = createPickUpItem("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleHover.png");
-        Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "water.png", "waterHover.png");
-        Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "rosary.png", "rosaryHover.png");
-        Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.png", "kafakHover.png");
+        Item Candle = createPickUpItem("candle", 625, 567, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleHover.png");
+        Item Water = createPickUpItem("water", 1165, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "water.png", "waterHover.png");
+        DialogueLine[] rosaryScript = {
+                new DialogueLine("ระบบ", "คุณได้รับ [ลูกประคำ]", null, null),
+                new DialogueLine("ตุลย์", "ลูกประคำ...", null, mainTalk),
+                new DialogueLine("ตุลย์", "มันมาอยู่ตรงนี้ตั้งแต่เมื่อไหร่กันนะ", null, mainTalk)
+        };
+        Item Rosary = createStoryItem("rosary", 425, 550, 100, 100, "ลูกประคำ", "ลูกประคำ", "rosary.png", "rosaryHover.png", rosaryScript);
         DialogueLine[] flowerScript = {
                 new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
                 new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
@@ -625,7 +629,7 @@ public class SceneManager {
         };
 
         Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
-        Knife2.setVisible(true);
+        Knife2.setVisible(false);
 
         Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
             private boolean[] isSolved = {false};
@@ -896,13 +900,12 @@ public class SceneManager {
             scene_2.addGameObject(Flower);
             scene_2.addGameObject(playerSit);
         }
-        if (scene_4 != null) {
-        }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
         }
         if (scene_6 != null) {
             scene_6.addGameObject(ChestOpen);
+            scene_6.addGameObject(Rosary);
         }
         if (scene_7 != null) {
             scene_7.addGameObject(slot0);
@@ -910,12 +913,9 @@ public class SceneManager {
             scene_7.addGameObject(slot2);
             scene_7.addGameObject(slot3);
             scene_7.addGameObject(Candle);
-            scene_7.addGameObject(Water);
-            scene_7.addGameObject(Knife2);
-            scene_7.addGameObject(Rosary);
-            scene_7.addGameObject(Parasite);
         }
         if (scene_8 != null) {
+            scene_8.addGameObject(Water);
             scene_8.addGameObject(miniGameClock);
             scene_8.addGameObject(Knife2);
             scene_8.addGameObject(EmptyPicture);
