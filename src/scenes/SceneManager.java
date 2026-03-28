@@ -826,9 +826,9 @@ public class SceneManager {
 
                                 loadScene("scene_6");
                                 DialogueLine[] PlayerScript = {
-                                        new DialogueLine("ตุลย์", "นี่มันอะไรเนี่ย", null, mainTalk),
+                                        new DialogueLine("ตุลย์", "นี่มัน...สมุดบันทึกนี่นา", null, mainTalk),
                                         new DialogueLine("ตุลย์", "พ่อเขียนอะไรไว้กัน", null, mainTalk),
-                                        new DialogueLine("ตุลย์", "มีเลขในนี้รึป่าวนะ เพื่อะเป็นเศรษฐีพันล้าน", null, mainTalk),
+                                        new DialogueLine("ตุลย์", "มีเลขในนี้รึป่าวนะ เผื่อเป็นเศรษฐีพันล้าน อิอิ", null, mainTalk),
                                 };
                                 overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
                                 overlay.startDialogue(PlayerScript, () -> {

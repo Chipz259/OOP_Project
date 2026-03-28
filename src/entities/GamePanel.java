@@ -2,12 +2,10 @@ package entities;
 
 import scenes.SceneQTE_Choke;
 import scenes.SceneManager;
-import system.AudioManager;
-import system.FadeTransition;
-import system.KeyHandler;
-import system.MouseHandler;
+import system.*;
 import ui.MainGameFrame;
 import ui.DiaryUi;
+import ui.SceneTitleOverlay;
 import ui.Tutorial;
 
 import javax.swing.*;

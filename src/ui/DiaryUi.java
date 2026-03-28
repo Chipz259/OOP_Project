@@ -16,7 +16,7 @@ public class DiaryUi extends JPanel {
     private BufferedImage[] bookImage;
     private ImageIcon iconLeftNormal, iconLeftHover, iconRightNormal, iconRightHover, iconCloseNormal, iconCloseHover;
     private JButton btnLeft, btnRight, btnClose;
-    private boolean isFirstTime;
+    private boolean isFirstTime = false;
 
     private DiaryUi() {
         bookImage = new BufferedImage[3];
@@ -119,9 +119,9 @@ public class DiaryUi extends JPanel {
         this.setVisible(false);
         if (MainGameFrame.getInstance() != null && MainGameFrame.getInstance().getGamePanel() != null) {
             MainGameFrame.getInstance().getGamePanel().requestFocusInWindow();
-            isFirstTime = false;
             scenes.SceneManager sm = MainGameFrame.getInstance().getGamePanel().sceneManager;
-            if (sm != null && sm.getOverlay() != null) {
+            if (sm != null && sm.getOverlay() != null && isFirstTime == false) {
+                isFirstTime = true;
                 system.DialogueLine[] afterDiaryScript = {
                         new system.DialogueLine("ตุลย์", " ! ! !", null, null),
                         new system.DialogueLine("ตุลย์", "ที่ทุกคนแปลกไปเพราะงี้เองหรอ", null, null),
