@@ -18,9 +18,6 @@ public class JigsawPartHandler extends MouseAdapter {
 
         int pixel = img.getRGB(offset.x, offset.y);
         int alpha = (pixel >> 24) & 0xff;
-//        int dX = Math.abs(panel.getX() - ((JigsawParts) panel).getTargetX());
-//        int dY = Math.abs(panel.getY() - ((JigsawParts) panel).getTargetY());
-//        int distance = (int) Math.sqrt(dX * dX + dY * dY);
         if (alpha > 10) {
             int newX = panel.getX() + e.getX() - offset.x;
             int newY = panel.getY() + e.getY() - offset.y;
@@ -50,12 +47,7 @@ public class JigsawPartHandler extends MouseAdapter {
             }
         }
     }
-//        } else {
-////            panel.setLocation(((JigsawParts) panel).getTargetX(), ((JigsawParts) panel).getTargetY());
-////            panel.repaint();
-////            System.out.println("this part is already on the right location");
-//        }
-//    }
+
     @Override
     public void mousePressed(MouseEvent e) {
         offset = e.getPoint();

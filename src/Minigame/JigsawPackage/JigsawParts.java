@@ -14,10 +14,6 @@ public class JigsawParts extends JPanel{
     private Boolean reachTartget = false;
     private JigsawFrame jigsawFrame;
 
-//    public JigsawParts(String path){
-//        this(path, 0, 0, 0, 0);
-//    }
-
     public JigsawParts(String path, JigsawFrame jigsawFrame, int x, int y, int targetX, int targetY){
         this.jigsawFrame = jigsawFrame;
 
@@ -53,7 +49,7 @@ public class JigsawParts extends JPanel{
         return targetY;
     }
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(img, 0, 0, this);
     }

@@ -65,9 +65,6 @@ public class YanKeys {
     public JPanel getContainer(){
         return container;
     }
-    public changableImagePanel getAlpha(){
-        return alpha;
-    }
     public void setActive(){
         isTarget = false;
         keyLabel.setLocation(0, normalH);
