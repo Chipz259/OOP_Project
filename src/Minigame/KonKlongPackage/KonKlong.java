@@ -10,8 +10,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class KonKlong extends JPanel {
-    private JPanel konKlongPanel, DangPanel;
-    private BufferedImage background, exit;
+    private JPanel konKlongPanel, DangPanel, descriptPanel, clickDesPanel, drageDesPanel;
+    private BufferedImage background, exit, clickDes, drageDes;
     private MainGameFrame mainGameFrame;
     private JButton closeBtn;
 
@@ -22,12 +22,36 @@ public class KonKlong extends JPanel {
         try{
             background = ImageIO.read(getClass().getResource("Image/BG.png"));
             exit = ImageIO.read(getClass().getResource("Image/Exit_minigame_btn.png"));
+            drageDes = ImageIO.read(getClass().getResource("Image/Hold.PNG"));
+            clickDes = ImageIO.read(getClass().getResource("Image/Click.PNG"));
         } catch (IOException e) {
             e.printStackTrace();
+            background = null;
+            exit = null;
+            drageDes = null;
+            clickDes = null;
         }
         konKlongPanel = new ImagePanel("Image/KonKlong.png");
         DangPanel = new ImagePanel("Image/Dang.png");
+        descriptPanel = new JPanel();
+        clickDesPanel = new JPanel(){
+            @Override
+            public void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(clickDes, 0, 0,getWidth(), getHeight(), this);
+            }
+        };
+        drageDesPanel = new JPanel(){
+            @Override
+            public void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(drageDes, 0, 0,getWidth(), getHeight(), this);
+            }
+        };
 
+        descriptPanel.setLayout(new GridLayout(1, 2, 20, 0));
+        descriptPanel.setSize(540, 90);
+        descriptPanel.setOpaque(false);
 
         MouseHandler mouseHandler = new MouseHandler();
         DangPanel.addMouseListener(mouseHandler);
@@ -45,20 +69,30 @@ public class KonKlong extends JPanel {
         closeBtn.addActionListener(e -> {
             mainGameFrame.closeMinigame();
         });
+
+        descriptPanel.add(clickDesPanel);
+        descriptPanel.add(drageDesPanel);
+
         this.add(konKlongPanel); this.add(DangPanel); this.add(closeBtn);
-        this.setComponentZOrder(konKlongPanel,0);
-        this.setComponentZOrder(DangPanel,1);
-        this.setComponentZOrder(closeBtn,1);
+        this.add(descriptPanel);
+        this.setComponentZOrder(konKlongPanel,1);
+        this.setComponentZOrder(DangPanel,0);
+        this.setComponentZOrder(closeBtn,0);
+        this.setComponentZOrder(descriptPanel,0);
 
         this.addComponentListener(new ComponentAdapter() {
-            private boolean isCenter = false;
-
             @Override
             public void componentResized(ComponentEvent e) {
                 konKlongPanel.setLocation((getWidth() - konKlongPanel.getWidth()) / 2, (getHeight() - konKlongPanel.getHeight()) / 2);
                 DangPanel.setLocation((getWidth() - DangPanel.getWidth()) / 2, (getHeight() - DangPanel.getHeight()) / 2);
                 closeBtn.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
+                descriptPanel.setLocation((getWidth() - descriptPanel.getWidth()) / 2, (int) (0.9 * getHeight()));
             }
         });
+    }
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, this);
     }
 }
