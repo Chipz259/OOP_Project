@@ -95,13 +95,7 @@ public class SceneManager {
         }
     }
     public void checkSceneEnterEvents(String sceneId) {
-        if (sceneId.equals("scene_1")) {
-
-        }
-        else if (sceneId.equals("scene_2")) {
-
-        }
-        else if (sceneId.equals("scene_3")) {
+         if (sceneId.equals("scene_3")) {
 
             if (isFirstTimeScene3) {
                 DialogueLine[] scene3Intro = {
@@ -115,12 +109,6 @@ public class SceneManager {
 
                 isFirstTimeScene3 = false;
             }
-
-        }
-        else if (sceneId.equals("scene_4")) {
-
-        }
-        else if (sceneId.equals("scene_5")) {
 
         }
         else if (sceneId.equals("scene_6")) {
@@ -291,7 +279,7 @@ public class SceneManager {
                 if (ritualItems[index].equals("") == false) {
                     String thaiName = ritualItemNames[index];
                     overlay.startDialogue(new DialogueLine[]{
-                            new DialogueLine("พระเอก", "ฉันวาง["+ thaiName +"]ไว้ตรงนี้แล้ว", null, mainTalk)
+                            new DialogueLine("ตุลย์", "ฉันวาง["+ thaiName +"]ไว้ตรงนี้แล้ว", null, mainTalk)
                     }, null);
                     return;
                 }

@@ -195,6 +195,7 @@ public class MainGameFrame extends JFrame {
         layeredPane.repaint();
     }
 
+    //Overloading
     public void returnToMainMenu() {
         returnToMainMenu(true);
     }
