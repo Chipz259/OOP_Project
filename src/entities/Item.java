@@ -1,5 +1,7 @@
 package entities;
 
+import system.FontManager;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -59,8 +61,8 @@ public class Item extends GameObject implements Interactable {
                 g2d.drawImage(imageToDraw, getX(), getY(), getWidth(), getHeight(), null);
             }
             if (isHovered) {
-                if (GamePanel.customFont != null) {
-                    g2d.setFont(GamePanel.customFont.deriveFont(Font.PLAIN, 25));
+                if (FontManager.customFont != null) {
+                    g2d.setFont(FontManager.customFont.deriveFont(Font.PLAIN, 25));
                     FontMetrics fm = g2d.getFontMetrics();
                     int textWidth = fm.stringWidth(itemName);
 
