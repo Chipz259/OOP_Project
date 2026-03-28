@@ -33,10 +33,7 @@ public abstract class GameObject {
         try {
             URL imageUrl = getClass().getResource("/res/" + spriteName);
             if (imageUrl != null) {
-                // 3. ส่ง imageUrl ให้ ImageIO.read ทำงาน
                 this.sprite = ImageIO.read(imageUrl);
-
-                // ปรับขนาดตามที่คุยกันไว้ (ถ้าอยากให้ตัวเล็กลง ให้ใช้ค่าพารามิเตอร์แทน)
                 this.width = width;
                 this.height = height;
             } else {
