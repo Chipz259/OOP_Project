@@ -10,6 +10,9 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class FinalBossFight extends JPanel implements Runnable {
     private JPanel comboBox, timer ,firseGroupPhase, secondGroupPhase;
@@ -32,20 +35,15 @@ public class FinalBossFight extends JPanel implements Runnable {
         this.onLoseCallback = onLoseCallback;
 
         //Set Key For Each Stage
-        allStage = new Stage[]{
-                new Stage(false),
-                new Stage(false),
-                new Stage(false),
-                new Stage(false),
-                new Stage(true),
-                new Stage(true),
-                new Stage(false),
-                new Stage(false),
-                new Stage(true),
-                new Stage(false),
-                new Stage(true),
-                new Stage(false)
-        };
+        allStage = new Stage[12];
+        for(int i = 0; i < 12; i++){
+            int switchOrNot = Math.random() < 0.5 ? 0 : 1;
+            if(switchOrNot == 0){
+                allStage[i] = new Stage(false);
+            } else{
+                allStage[i] = new Stage(true);
+            }
+        }
         try{
             timerImage = ImageIO.read(getClass().getResource("Image/Timer.png"));
             background = ImageIO.read(getClass().getResource("Image/background.png"));
@@ -211,7 +209,11 @@ public class FinalBossFight extends JPanel implements Runnable {
                 nowStage.setDefault();
                 SwingUtilities.invokeLater(() -> {
                     comboBox.removeAll();
-                    for (YanKeys yanKeys : nowStage.getYanKeysArray()) {
+                    YanKeys[] appearYankeys = nowStage.getYanKeysArray();
+                    if(nowStage.isSwitch()){
+                        appearYankeys  = nowStage.getSwitchYanKeysArray();
+                    }
+                    for (YanKeys yanKeys : appearYankeys) {
                         comboBox.add(yanKeys.getContainer());
                     }
                     comboBox.revalidate();
