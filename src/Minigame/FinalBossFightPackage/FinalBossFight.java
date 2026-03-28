@@ -250,11 +250,9 @@ public class FinalBossFight extends JPanel implements Runnable {
                 if(onWinCallback != null) onWinCallback.run();
             } else {
                 System.out.println("ระบบ: แพ้บอส! ");
-                //ถ้าแพ้เด้งออกไปเฉยๆ
                 mainGameFrame.closeMinigame();
-                if (onLoseCallback != null) onLoseCallback.run();
-                // หากต้องการให้ตัวละครตาย หรือให้เล่นซ้ำ สามารถเขียนเพิ่มตรงนี้ได้เลยครับ
                 mainGameFrame.showGameOver(true);
+                if (onLoseCallback != null) onLoseCallback.run();
             }
         });
 

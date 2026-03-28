@@ -269,7 +269,12 @@ public class MainGameFrame extends JFrame {
             gamePanel.startGameThread();
         }
 
-        gamePanel.sceneManager.startTransition("scene_5", gamePanel.mainPlayer, 800, 550);
+        if (gamePanel.sceneManager.retryMode == 1) {
+            gamePanel.sceneManager.startTransition("scene_5", gamePanel.mainPlayer, 800, 550);
+        }
+        else if (gamePanel.sceneManager.retryMode == 2) {
+            gamePanel.sceneManager.startGhostAndBossSequence();
+        }
 
         gamePanel.requestFocusInWindow();
     }

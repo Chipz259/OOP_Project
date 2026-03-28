@@ -25,7 +25,7 @@ public class CutsceneGhost extends JPanel {
         shackTimer = new Timer(30, e -> {
             count++;
 
-            if (count >= 233) {
+            if (count >= 166) {
                 shackTimer.stop();
                 x = 0;
                 y = 0;

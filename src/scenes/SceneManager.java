@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class SceneManager {
+    public int retryMode = 1;
     private FadeTransition fadeTransition;
     private String nextSceneId;
     private Player pendingPlayer;
@@ -357,7 +358,9 @@ public class SceneManager {
         };
     }
 
-    private void startGhostAndBossSequence() {
+    public void startGhostAndBossSequence() {
+        this.retryMode = 2;
+
         ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
         CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
             if (fadeTransition != null && !fadeTransition.isFading()) {
@@ -380,10 +383,7 @@ public class SceneManager {
                                     loadScene("scene_19");
                                 }
                             },
-                            () -> {
-                                System.out.println("ระบบ: เล่นแพ้! กำลังวนลูปเหตุการณ์...");
-                                startGhostAndBossSequence(); // เรียกตัวเองซ้ำ วนลูปผีหลอกใหม่!
-                            }
+                            () -> {}
                     );
                     mainFrame.openMinigame(bossFight);
 
@@ -399,7 +399,6 @@ public class SceneManager {
                             overlay.startDialogue(winScript, () -> {});
                         },
                         () -> {
-                            startGhostAndBossSequence();
                         }
                 );
                 mainFrame.openMinigame(bossFight);
@@ -912,6 +911,7 @@ public class SceneManager {
     }
 
     public void startQTETransition(String targetScene) {
+        this.retryMode = 1;
         if (fadeTransition != null && !fadeTransition.isFading()) {
             fadeTransition.executeFade(200, 200, 0, () -> {
                 system.ObjectiveManager.getInstance().advanceObjective();
