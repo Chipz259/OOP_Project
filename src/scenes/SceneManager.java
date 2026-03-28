@@ -362,6 +362,7 @@ public class SceneManager {
     public void startGhostAndBossSequence() {
         this.retryMode = 2;
 
+        AudioManager.playSFX("src/res/sound/MinigameBossBefore.wav", -5.0f);
         ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
         CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
             if (fadeTransition != null && !fadeTransition.isFading()) {
@@ -386,6 +387,7 @@ public class SceneManager {
                             },
                             () -> {}
                     );
+                    AudioManager.stopAllSFX();
                     mainFrame.openMinigame(bossFight);
 
                 });
@@ -1080,7 +1082,7 @@ public class SceneManager {
             case "scene_15" -> {
                 // ในห้องก่อนแปะประตู
             }
-            case "scene_16" -> AudioManager.playSFX("src/res/sound/ItemDropSound.wav", -5.0f);
+            case "scene_16" -> AudioManager.playSFX("src/res/sound/ItemDropSound.wav", 5.0f);
             default -> System.out.println("ระบบ PhayBGM at SceneManager : ยังไม่ได้ตั้งค่า " + sceneID);
         }
     }
