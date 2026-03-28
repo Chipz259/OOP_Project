@@ -16,13 +16,6 @@ public class Scene {
         this.objectsInScene = new ArrayList<>();
     }
 
-    public String getSceneId() {
-        return sceneId;
-    }
-
-    public BufferedImage getBackgroundImage() {
-        return backgroundImage;
-    }
     public void setBackgroundImage(BufferedImage bg) {
         this.backgroundImage = bg;
     }
@@ -33,12 +26,6 @@ public class Scene {
     public void addGameObject(GameObject obj) {
         if (obj != null) {
             objectsInScene.add(obj);
-        }
-    }
-
-    public void removeGameObject(GameObject obj) {
-        if (obj != null) {
-            objectsInScene.remove(obj);
         }
     }
 

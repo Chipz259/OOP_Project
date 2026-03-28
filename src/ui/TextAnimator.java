@@ -114,14 +114,6 @@ public class TextAnimator {
         return isActive;
     }
 
-    public boolean isLineFinished() {
-        return isLineFinished;
-    }
-
-    public String getCurrentDisplay() {
-        return currentDisplay;
-    }
-
     public int getCurrentLineIndex() {
         return currentLineIndex;
     }

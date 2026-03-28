@@ -196,8 +196,6 @@ public class Inventory {
             }
             if (i == selectedSlot) {
                 g2d.drawImage(slotHoverSprite, x, y, slotSize, slotSize, null);
-//                g2d.setColor(new Color(255, 0, 0, 100));
-//                g2d.fillRect(x, y, slotSize, slotSize);
             }
             if (slots[i] != null) {
                 int padding = 15;
