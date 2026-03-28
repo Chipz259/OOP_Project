@@ -98,9 +98,9 @@ public class UnlockBox extends JPanel implements Runnable {
         mainPanel.add(downButtonPanel,BorderLayout.SOUTH);
         this.add(exitButton);
         this.add(mainPanel);
-        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+        this.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
+            public void componentResized(ComponentEvent e) {
                 mainPanel.setLocation(getWidth() / 2 - (mainPanel.getWidth() / 2), getHeight() / 2 - (mainPanel.getHeight() / 2));
                 exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
             }

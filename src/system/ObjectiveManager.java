@@ -63,8 +63,7 @@ public class ObjectiveManager {
         };
 
         objectives.add(new Objective("obj6", "หาของมาทำพิธี", ritualItems));
-        objectives.add(new Objective("obj7", "เอาชนะสิ่งชั่วร้าย"));
-        objectives.add(new Objective("obj8", "ไปหน้าบ้าน"));
+        objectives.add(new Objective("obj7", "สำรวจพื้นที่รอบๆ"));
     }
 
     public void advanceObjective() {
