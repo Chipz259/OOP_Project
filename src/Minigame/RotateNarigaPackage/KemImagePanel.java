@@ -30,7 +30,7 @@ public class KemImagePanel extends JPanel {
     public int getAngle(){return angle;}
     public BufferedImage getImg(){return  img;}
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g.create();
@@ -46,33 +46,5 @@ public class KemImagePanel extends JPanel {
         g2.drawImage(img, -imgW / 2, 0,img.getWidth(), img.getHeight(), this);
 
         g2.dispose();
-    }
-    @Override
-    public boolean contains(int x, int y) {
-
-        double centerX = getWidth() / 2.0;
-        double centerY = getHeight() / 2.0;
-
-        // แปลงพิกัดเมาส์ให้ย้อนการหมุนกลับ
-        double dx = x - centerX;
-        double dy = y - centerY;
-
-        double rad = Math.toRadians(-angle);
-
-        double rotatedX = dx * Math.cos(rad) - dy * Math.sin(rad);
-        double rotatedY = dx * Math.sin(rad) + dy * Math.cos(rad);
-
-        int imgX = (int) (rotatedX + img.getWidth() / 2);
-        int imgY = (int) (rotatedY);
-
-        if (imgX >= 0 && imgX < img.getWidth()
-                && imgY >= 0 && imgY < img.getHeight()) {
-
-            int alpha = (img.getRGB(imgX, imgY) >> 24) & 0xff;
-
-            return alpha > 0; // true เฉพาะพิกเซลที่ไม่โปร่งใส
-        }
-
-        return false;
     }
 }
