@@ -2,6 +2,7 @@ package entities;
 
 import scenes.SceneQTE_Choke;
 import scenes.SceneManager;
+import system.AudioManager;
 import system.FadeTransition;
 import system.KeyHandler;
 import system.MouseHandler;
@@ -98,11 +99,13 @@ public class GamePanel extends JPanel implements Runnable {
         isRunning = true;
         gameThread.start();
         this.requestFocusInWindow();
+        AudioManager.playMusic("src/res/sound/PlayingMusicBG.wav", -5.0f);
     }
 
     public void stopGameThread() {
         isRunning = false;
         gameThread = null;
+        AudioManager.stopMusic();
     }
 
     public void resetGame() {

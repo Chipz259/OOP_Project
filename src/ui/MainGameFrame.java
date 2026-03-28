@@ -77,7 +77,7 @@ public class MainGameFrame extends JFrame {
         this.revalidate();
         this.repaint();
 
-        AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", -16.0f);
+        AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", -5.0f);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         try {
@@ -209,8 +209,8 @@ public class MainGameFrame extends JFrame {
             cardLayout.show(mainCardPanel, "MENU");
             gamePanel.stopGameThread();
             imageBg.requestFocusInWindow();
+            AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", -5.0f);
         });
-        AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", -16.0f);
     }
 
     public void showGameOver(boolean show) {
@@ -227,6 +227,7 @@ public class MainGameFrame extends JFrame {
     }
 
     public void startCutscene() {
+        AudioManager.stopMusic();
         String[] introStory = {
                 "กริ๊งๆๆๆ น้ำตาลโทรมา",
                 "รับสายโทรศัพท์น้ำตาล",
@@ -256,7 +257,7 @@ public class MainGameFrame extends JFrame {
             gamePanel.requestFocusInWindow();
 
             if (!isStartGame) {
-                tutorial.showTutorial("StartGame");
+//                tutorial.showTutorial("StartGame");
             }
         });
     }
@@ -268,7 +269,12 @@ public class MainGameFrame extends JFrame {
             gamePanel.startGameThread();
         }
 
-        gamePanel.sceneManager.startTransition("scene_5", gamePanel.mainPlayer, 800, 550);
+        if (gamePanel.sceneManager.retryMode == 1) {
+            gamePanel.sceneManager.startTransition("scene_5", gamePanel.mainPlayer, 800, 550);
+        }
+        else if (gamePanel.sceneManager.retryMode == 2) {
+            gamePanel.sceneManager.startGhostAndBossSequence();
+        }
 
         gamePanel.requestFocusInWindow();
     }
@@ -285,19 +291,33 @@ public class MainGameFrame extends JFrame {
 
     public void closeMinigame() {
         cardLayout.show(mainCardPanel, "GAME");
+        JPanel panelToRemove = currentMinigamePanel;
+        currentMinigamePanel = null;
         SwingUtilities.invokeLater(() -> {
-            if (currentMinigamePanel != null) {
-                mainCardPanel.remove(currentMinigamePanel);
-                currentMinigamePanel = null;
+            if (panelToRemove != null) {
+                mainCardPanel.remove(panelToRemove);
             }
+
+//            if (currentMinigamePanel != null) {
+//                mainCardPanel.remove(currentMinigamePanel);
+//                currentMinigamePanel = null;
+//            }
 
             mainCardPanel.revalidate();
             mainCardPanel.repaint();
 
-            if (gamePanel != null) {
+            if (currentMinigamePanel == null && gamePanel != null) {
                 gamePanel.requestFocusInWindow();
             }
         });
+    }
+
+    public void openCutscene(JPanel cutscenePanel) {
+        openMinigame(cutscenePanel);
+    }
+
+    public void closeCutscene() {
+        closeMinigame();
     }
 
     public GamePanel getGamePanel() {

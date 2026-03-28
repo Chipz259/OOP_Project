@@ -3,6 +3,7 @@ package ui;
 import system.FontManager;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,32 +12,29 @@ public class DiaryUi extends JPanel {
     private static DiaryUi instance;
     private boolean isVisible = false;
     private int currentPage = 0;
-
-    private String[] pages = {
-            "วันที่ 26 มีนาคม 2569\nนักศึกษากลุ่มต่อไปนี้ ผมรบกวนย้ายเวลาจองคิวนำเสนอใน Jlearn\nให้อาจารย์หน่อยครับ  VAULT, Phawang, P'J Cafe และ Tower Debug \nพอดีผมติดธุระช่วง 08:45 - 10:15 น. นะครับ",
-            "วันที่ 32 ธันกรายน 2568\nอุอิอิอา",
-            "วันที่ 0 มีฤศิราคม 0001\nว้ากๆๆๆๆ",
-            "เทสๆๆๆ\nเทส12321321321312"
-    };
-
+    private BufferedImage[] bookImage;
     private Image bookImg;
     private ImageIcon iconLeftNormal, iconLeftHover, iconRightNormal, iconRightHover, iconCloseNormal, iconCloseHover;
     private JButton btnLeft, btnRight, btnClose;
     private FontManager diaryFont;
-//    private Font diaryFont;
 
     private DiaryUi() {
+        bookImage = new BufferedImage[4];
+
         try {
+            bookImage[0] = ImageIO.read(getClass().getResource("/res/DiaryBG1.png"));
+            bookImage[1] = ImageIO.read(getClass().getResource("/res/DiaryBG2.png"));
+            bookImage[2] = ImageIO.read(getClass().getResource("/res/DiaryBG3.png"));
+            bookImage[3] = ImageIO.read(getClass().getResource("/res/DiaryBG.png"));
 
-            bookImg = ImageIO.read(getClass().getResource("/res/DiaryBG.png"));
-
-            iconLeftNormal = new ImageIcon(new ImageIcon("src/res/Left_Default.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
-            iconLeftHover = new ImageIcon(new ImageIcon("src/res/Left_Hover.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
-            iconRightNormal = new ImageIcon(new ImageIcon("src/res/Right_Default.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
-            iconRightHover = new ImageIcon(new ImageIcon("src/res/Right_Hover.png").getImage().getScaledInstance(35, 76, Image.SCALE_SMOOTH));
-            iconCloseNormal = new ImageIcon(new ImageIcon("src/res/DiaryExitBtn.png").getImage().getScaledInstance(25, 26, Image.SCALE_SMOOTH));
+            iconLeftNormal = new ImageIcon(new ImageIcon("src/res/Left_Default.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconLeftHover = new ImageIcon(new ImageIcon("src/res/Left_Hover.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconRightNormal = new ImageIcon(new ImageIcon("src/res/Right_Default.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconRightHover = new ImageIcon(new ImageIcon("src/res/Right_Hover.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconCloseNormal = new ImageIcon(new ImageIcon("src/res/DiaryExitBtn.png").getImage().getScaledInstance(35, 36, Image.SCALE_SMOOTH));
 //            iconCloseHover = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
         } catch (Exception ex) {
+            System.out.println("ระบบ Diary : โหลดไม่ขึ้น");
             ex.printStackTrace();
         }
 
@@ -78,7 +76,7 @@ public class DiaryUi extends JPanel {
     }
 
     private void nextPage() {
-        if (currentPage < pages.length - 1) {
+        if (currentPage < bookImage.length - 1) {
             currentPage++;
             updateButtonLayout(); // อัปเดตการแสดงผลปุ่ม
             repaint(); // สั่งให้วาดข้อความใหม่ของหน้าที่เลือก
@@ -95,16 +93,16 @@ public class DiaryUi extends JPanel {
 
     private void updateButtonLayout() {
         // คำนวณตำแหน่งปุ่มให้สัมพันธ์กับตัวสมุดกึ่งกลางจอ
-        int startX = (getWidth() - 800) / 2;
-        int startY = (getHeight() - 600) / 2;
+        int startX = getWidth() - 1600;
+        int startY = getHeight() - 906;
 
-        btnLeft.setBounds(startX + 50, startY + 250, iconLeftNormal.getIconWidth(), iconLeftNormal.getIconHeight());
-        btnRight.setBounds(startX + 713, startY + 250, iconRightNormal.getIconWidth(), iconRightNormal.getIconHeight());
-        btnClose.setBounds(startX + 725, startY + 40, iconCloseNormal.getIconWidth(), iconCloseNormal.getIconHeight());
+        btnLeft.setBounds(startX, startY + 300, iconLeftNormal.getIconWidth(), iconLeftNormal.getIconHeight());
+        btnRight.setBounds(startX + 1220, startY + 300, iconRightNormal.getIconWidth(), iconRightNormal.getIconHeight());
+        btnClose.setBounds(startX + 1080, startY + 28, iconCloseNormal.getIconWidth(), iconCloseNormal.getIconHeight());
 
         // ซ่อน/โชว์ตามจำนวนหน้า
         btnLeft.setVisible(currentPage > 0);
-        btnRight.setVisible(currentPage < pages.length - 1);
+        btnRight.setVisible(currentPage < bookImage.length - 1);
     }
 
     public static DiaryUi getInstance() {
@@ -141,25 +139,22 @@ public class DiaryUi extends JPanel {
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
         // 2. Draw Book
-        int bookWidth = 800;
-        int bookHeight = 600;
-        int startX = (getWidth() - bookWidth) / 2;
-        int startY = (getHeight() - bookHeight) / 2;
+        if (bookImage != null && bookImage[currentPage] != null) {
+            BufferedImage img = bookImage[currentPage];
 
-        if (bookImg != null) {
-            g2d.drawImage(bookImg, startX, startY, bookWidth, bookHeight, null);
-        }
+            // ขนาด 80%
+            int newW = (int) (getWidth() * 0.75);
+            int newH = (int) (newW * ((double) img.getHeight() / img.getWidth()));
 
-        // 3. Draw Text
-        g2d.setFont(diaryFont.monkeyRegular.deriveFont(20f));
-        g2d.setColor(Color.BLACK); // สีหมึกปากกา
-        int textX = startX + 100;
-        int textY = startY + 120;
+            if (newH > getHeight() * 0.75) {
+                newH = (int) (getHeight() * 0.75);
+                newW = (int) (newH * ((double) img.getWidth() / img.getHeight()));
+            }
 
-        String[] lines = pages[currentPage].split("\n");
-        for (String line : lines) {
-            g2d.drawString(line, textX, textY);
-            textY += 45; // ระยะบรรทัด
+            int x = (getWidth() - newW) / 2;
+            int y = (getHeight() - newH) / 2;
+
+            g2d.drawImage(img, x, y, newW, newH, null);
         }
     }
 }

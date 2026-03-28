@@ -1,5 +1,7 @@
 package Minigame.FinalBossFightPackage;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -14,15 +16,14 @@ public class KeyHandler extends KeyAdapter {
     }
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if(key == YanKeysArray[nowStage.getCnt()].getKeyButton()){
-            YanKeysArray[nowStage.getCnt()].setAsActive();
-            nowStage.updateCNT();
-        } else{
-            for(YanKeys yanKeys : nowStage.getYanKeysArray()){
-                yanKeys.setAsUnactive();
+        if(!nowStage.isFinished()) {
+            if (key == YanKeysArray[nowStage.getCnt()].getKeyButton()) {
+                YanKeysArray[nowStage.getCnt()].setActive();
+                nowStage.updateCNT();
+            } else {
+                nowStage.setDefault();
+                fbf.increaseTimerStep();
             }
-            nowStage.resetCNT();
-            fbf.increaseTimerStep();
         }
     }
     public void setNewStage(Stage newStage){

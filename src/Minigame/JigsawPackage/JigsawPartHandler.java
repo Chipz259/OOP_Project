@@ -10,35 +10,52 @@ public class JigsawPartHandler extends MouseAdapter {
     private Point offset;
     @Override
     public void mouseDragged(MouseEvent e) {
-        JPanel panel = (JPanel) e.getSource();
-        BufferedImage img = ((JigsawParts) panel).getImg();
-        int dX = Math.abs(panel.getX() - ((JigsawParts) panel).getTargetX());
-        int dY = Math.abs(panel.getY() - ((JigsawParts) panel).getTargetY());
-        int distance = (int) Math.sqrt(dX * dX + dY * dY);
-        if ( distance > 10){
-            int pixel = img.getRGB(offset.x, offset.y);
-            int alpha = (pixel >> 24) & 0xff;
-            if (alpha > 0){
-                int newX = panel.getX() + e.getX() - offset.x;
-                int newY = panel.getY() + e.getY() - offset.y;
-                Container parent = panel.getParent();
-                if (parent != null) {
-                    int maxX = parent.getWidth() - panel.getWidth();
-                    int maxY = parent.getHeight() - panel.getHeight();
-                    newX = Math.max(0, Math.min(newX, maxX));
-                    newY = Math.max(0, Math.min(newY, maxY));
-                }
-                panel.setLocation(newX, newY );
-                panel.repaint();
-                ((JigsawParts) panel).setReachTartget(true);
-            }
-        } else {
-            panel.setLocation(((JigsawParts) panel).getTargetX(), ((JigsawParts) panel).getTargetY());
-            panel.repaint();
-            System.out.println("this part is already on the right location");
-        }
+        JigsawParts panel = (JigsawParts) e.getSource();
+        if (panel.isReachTarget()) return;
 
+        BufferedImage img = panel.getImg();
+        if (img == null) return;
+
+        int pixel = img.getRGB(offset.x, offset.y);
+        int alpha = (pixel >> 24) & 0xff;
+//        int dX = Math.abs(panel.getX() - ((JigsawParts) panel).getTargetX());
+//        int dY = Math.abs(panel.getY() - ((JigsawParts) panel).getTargetY());
+//        int distance = (int) Math.sqrt(dX * dX + dY * dY);
+        if (alpha > 10) {
+            int newX = panel.getX() + e.getX() - offset.x;
+            int newY = panel.getY() + e.getY() - offset.y;
+
+            Container parent = panel.getParent();
+            if (parent != null) {
+                int maxX = parent.getWidth() - panel.getWidth();
+                int maxY = parent.getHeight() - panel.getHeight();
+                newX = Math.max(0, Math.min(newX, maxX));
+                newY = Math.max(0, Math.min(newY, maxY));
+            }
+            panel.setLocation(newX, newY);
+            panel.repaint();
+
+            //คำนวณระยะห่างรอบเดียวตอนที่ลาก (ไม่ต้องประกาศ int ซ้ำ)
+            int dX = Math.abs(panel.getX() - panel.getTargetX());
+            int dY = Math.abs(panel.getY() - panel.getTargetY());
+            int distance = (int) Math.sqrt(dX * dX + dY * dY);
+
+            // ถ้าระยะห่างน้อยกว่า 15 Pixel ให้ "ดูด" เข้าที่
+            if (distance < 15) {
+                panel.setLocation(panel.getTargetX(), panel.getTargetY());
+                panel.repaint();
+
+                //เรียกคำสั่งได้ตรงๆ เลย เพราะ panel เป็น JigsawParts แล้ว
+                panel.setReachTartget(true);
+            }
+        }
     }
+//        } else {
+////            panel.setLocation(((JigsawParts) panel).getTargetX(), ((JigsawParts) panel).getTargetY());
+////            panel.repaint();
+////            System.out.println("this part is already on the right location");
+//        }
+//    }
     @Override
     public void mousePressed(MouseEvent e) {
         offset = e.getPoint();

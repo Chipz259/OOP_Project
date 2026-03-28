@@ -1,6 +1,9 @@
 package Minigame.JigsawPackage;
 
+import ui.MainGameFrame;
+
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -11,7 +14,13 @@ public class JigsawFrame extends JPanel {
     private JigsawParts jigsawPart[];
     private JButton exitButton;
     private BufferedImage background, exit;
-    public JigsawFrame(){
+    private MainGameFrame mainGameFrame;
+    private Runnable onWinCallback;
+
+    public JigsawFrame(MainGameFrame mainGameFrame, Runnable onWinCallback){
+        this.mainGameFrame = mainGameFrame;
+        this.onWinCallback = onWinCallback;
+
         try{
             background = ImageIO.read(getClass().getResource("Image/BG pic.png"));
             exit = ImageIO.read(getClass().getResource("Image/Exit_minigame_btn.png"));
@@ -31,22 +40,29 @@ public class JigsawFrame extends JPanel {
         exitButton.setContentAreaFilled(false);
         exitButton.setFocusPainted(false);
         exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        exitButton.setOpaque(false);
+        exitButton.setSize(exit.getWidth(), exit.getHeight());
+        exitButton.setRolloverEnabled(false);
+        exitButton.addActionListener(e -> {
+            mainGameFrame.closeMinigame();
+        });
 
         sup.setSize(background.getWidth(), background.getHeight());
         this.setLayout(null);
         this.setBackground(new Color(26,26,26,177));
 
         //JigsawPart create
-        jigsawPart = new JigsawParts[]{new JigsawParts("Image/jigsaw1.png", 670, 500, 86,70),
-                new JigsawParts("Image/jigsaw2.png", 670, 500, 115,70),
-                new JigsawParts("Image/jigsaw3.png", 670, 500, 442,70),
-                new JigsawParts("Image/jigsaw4.png", 670, 500, 86,541),
-                new JigsawParts("Image/jigsaw5.png", 670, 500, 171,456),
-                new JigsawParts("Image/jigsaw6.png", 670, 500, 312,476),
-                new JigsawParts("Image/jigsaw7.png", 670, 500, 86,727),
-                new JigsawParts("Image/jigsaw8.png", 670, 500, 299,659),
-                new JigsawParts("Image/jigsaw9.png", 670, 500, 363,872),
-                new JigsawParts("Image/jigsaw10.png", 670, 500, 616,569)
+        jigsawPart = new JigsawParts[]{
+                new JigsawParts("Image/jigsaw1.png", this, 800, 450, 86, 70),
+                new JigsawParts("Image/jigsaw2.png", this, 750, 180, 115, 70),
+                new JigsawParts("Image/jigsaw3.png", this, 800, 130, 442, 70),
+                new JigsawParts("Image/jigsaw4.png", this, 750, 40, 86, 541),
+                new JigsawParts("Image/jigsaw5.png", this, 1150, 700, 171, 456),
+                new JigsawParts("Image/jigsaw6.png", this, 1000, 30, 312, 476),
+                new JigsawParts("Image/jigsaw7.png", this, 1080, 480, 86, 727),
+                new JigsawParts("Image/jigsaw8.png", this, 1250, 520, 299, 659),
+                new JigsawParts("Image/jigsaw9.png", this, 950,  600, 363, 872),
+                new JigsawParts("Image/jigsaw10.png", this, 900, 650, 616, 569)
         };
 
         sup.setLayout(null);
@@ -57,12 +73,43 @@ public class JigsawFrame extends JPanel {
 
         this.add(sup);
         this.add(exitButton);
-        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+
+        this.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
+            public void componentResized(ComponentEvent e) {
                 sup.setLocation(getWidth() / 2 - (sup.getWidth() / 2), getHeight() / 2 - (sup.getHeight() / 2));
                 exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
             }
         });
+    }
+
+    @Override
+    public void doLayout() {
+        super.doLayout();
+        if (sup != null) {
+            sup.setLocation(getWidth() / 2 - sup.getWidth() / 2, getHeight() / 2 - sup.getHeight() / 2);
+        }
+        if (exitButton != null) {
+            exitButton.setLocation((int) (0.05 * getWidth()), (int) (0.05 * getHeight()));
+        }
+    }
+
+    public void checkWinCondition() {
+        boolean allFinished = true;
+        for (JigsawParts jp : jigsawPart) {
+            if (!jp.isReachTarget()) {
+                allFinished = false;
+                break;
+            }
+        }
+
+        if (allFinished) {
+            Timer winTimer = new Timer(1000, evt -> {
+               if (onWinCallback != null) onWinCallback.run();
+               mainGameFrame.closeMinigame();
+            });
+            winTimer.setRepeats(false);
+            winTimer.start();
+        }
     }
 }
