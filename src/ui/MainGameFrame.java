@@ -202,15 +202,35 @@ public class MainGameFrame extends JFrame {
     }
 
     public void returnToMainMenu() {
+        returnToMainMenu(true);
+    }
+
+    public void returnToMainMenu(boolean withFade) {
         if (isStartGame) {
             buttonResume.setEnabled(true);
         }
-        fadeTransition.executeFade(600, 100, 600, () -> {
+
+        Runnable action = () -> {
             cardLayout.show(mainCardPanel, "MENU");
             gamePanel.stopGameThread();
-            imageBg.requestFocusInWindow();
+
+            if (currentMinigamePanel != null) {
+                mainCardPanel.remove(currentMinigamePanel);
+                currentMinigamePanel = null;
+            }
+
+            SwingUtilities.invokeLater(() -> {
+                imageBg.requestFocusInWindow();
+            });
             AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", -5.0f);
-        });
+        };
+
+        if (withFade && fadeTransition != null) {
+            fadeTransition.executeFade(600, 100, 600, action);
+        } else {
+            action.run();
+        }
+
     }
 
     public void showGameOver(boolean show) {
