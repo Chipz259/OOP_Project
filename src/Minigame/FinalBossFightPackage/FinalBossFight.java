@@ -184,7 +184,7 @@ public class FinalBossFight extends JPanel implements Runnable {
     }
     @Override
     public void run(){
-        AudioManager.playMusic("src/res/sound/MinigameBossBGM.wav", 0.0f);
+        AudioManager.playMusic("src/res/sound/MinigameBossBGM.wav", -1.0f);
         Stage previousStage = allStage[0];
         while(!finished && !timeout){
             if(nowStage.isFinished()){

@@ -26,11 +26,12 @@ public class MainGameFrame extends JFrame {
     private GameOverPanel gameOverPanel;
     private Tutorial tutorial;
     private static MainGameFrame instance;
-    private Boolean isStartGame;
+    private Boolean isStartGame, isResumeGame;
 
     public MainGameFrame() {
         instance = this;
         isStartGame = false;
+        isResumeGame = false;
         this.setUndecorated(true);
         layeredPane = new JLayeredPane();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -255,10 +256,6 @@ public class MainGameFrame extends JFrame {
                 "ไปงานศพด้วยจ้าเพื่อน"
         };
 
-        if (isStartGame) {
-            gamePanel.resetGame();
-        }
-
         fadeTransition.executeFade(350, 0, 350, () -> {
             cardLayout.show(mainCardPanel, "CUTSCENE"); // สลับเป็นหน้าเล่นเกม
 
@@ -277,7 +274,15 @@ public class MainGameFrame extends JFrame {
             gamePanel.requestFocusInWindow();
 
             if (!isStartGame) {
-//                tutorial.showTutorial("StartGame");
+                tutorial.showTutorial("StartGame");
+                AudioManager.playMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
+            }
+            else if (!isResumeGame) {
+                gamePanel.resetGame();
+            }
+            else {
+                isResumeGame = false;
+                AudioManager.stopMusic();
             }
         });
     }
@@ -354,6 +359,15 @@ public class MainGameFrame extends JFrame {
 
     public void setIsStartGame(Boolean bool) {
         isStartGame = bool;
+    }
+
+    public Boolean getIsStartGame(){
+        return isStartGame;
+    }
+
+    public void setIsResumeGame(Boolean bool) {
+        isResumeGame = bool;
+        AudioManager.stopMusic();
     }
 
     public static void main (String args[]){

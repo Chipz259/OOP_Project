@@ -26,7 +26,7 @@ public class RotateNarigaHandler extends MouseAdapter {
             ((KemImagePanel) panel).rotate(deg);
             int nowAngle [] = (rn.getKemAngle());
             if (Arrays.equals(targetAngle, nowAngle)) {
-                AudioManager.playSFX("src/res/sound/MinigameRotateClockFinish.wav", 0.0f);
+                AudioManager.playSFX("src/res/sound/MinigameRotateClockFinish.wav", -9.0f);
                 rn.winClose();
                 System.out.println("You win");
             }

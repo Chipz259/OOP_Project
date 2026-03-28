@@ -503,10 +503,14 @@ public class SceneManager {
         }
 
         //scene_1
-        Item Candle = createPickUpItem("candle", 900, 700, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleHover.png");
-        Item Water = createPickUpItem("water", 300, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "water.png", "waterHover.png");
-        Item Rosary = createPickUpItem("rosary", 100, 700, 100, 100, "ลูกประคำ", "ลูกประคำ", "rosary.png", "rosaryHover.png");
-        Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.png", "kafakHover.png");
+        Item Candle = createPickUpItem("candle", 625, 567, 100, 100, "เทียนไข", "เทียนไขที่ยังไม่จุด", "candle.png", "candleHover.png");
+        Item Water = createPickUpItem("water", 1165, 700, 100, 100, "ขวดน้ำ", "ขวดน้ำ kmitl", "water.png", "waterHover.png");
+        DialogueLine[] rosaryScript = {
+                new DialogueLine("ระบบ", "คุณได้รับ [ลูกประคำ]", null, null),
+                new DialogueLine("ตุลย์", "ลูกประคำ...", null, mainTalk),
+                new DialogueLine("ตุลย์", "มันมาอยู่ตรงนี้ตั้งแต่เมื่อไหร่กันนะ", null, mainTalk)
+        };
+        Item Rosary = createStoryItem("rosary", 425, 550, 100, 100, "ลูกประคำ", "ลูกประคำ", "rosary.png", "rosaryHover.png", rosaryScript);
         DialogueLine[] flowerScript = {
                 new DialogueLine("ระบบ", "คุณได้รับ [ดอกไม้จันทน์]", null, null),
                 new DialogueLine("พระเอก", "ถึงเวลาที่ต้องไปอำลาพ่อแล้วสินะ...", null, mainTalk)
@@ -621,7 +625,7 @@ public class SceneManager {
         };
 
         Item Knife2 = createPickUpItem("knife", 400, 530, 70, 70, "มีดอาคม", "มีดอวยคม", "knife.png", "knife.png");
-        Knife2.setVisible(true);
+        Knife2.setVisible(false);
 
         Item miniGameClock = new Item("miniGameClock", 340, 220, 169, 593, "นาฬิกา", "", "picClock.png", "picClock.png") {
             private boolean[] isSolved = {false};
@@ -638,12 +642,70 @@ public class SceneManager {
                         Knife2.setVisible(true);
                     });
                     mainFrame.openMinigame(minigame);
+                    AudioManager.stopMusic();
                 }
             }
 
             @Override
             public boolean isInteractable() {
                 return !isSolved[0];
+            }
+        };
+
+        //scene_11
+        Item kaFak1 = new Item("kaFak1", 10, 200, 424, 600,"ต้นกาฝาก", "", "kaFak1.png", "kaFak1.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak2 = new Item("kaFak2", 925, 245, 382, 548,"ต้นกาฝาก", "", "kaFak2.png", "kaFak2.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak3 = new Item("kaFak4", 1200, 290, 358, 508,"ต้นกาฝาก", "", "kaFak4.png", "kaFak4.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak4 = new Item("kaFak3", 625, 315, 323, 462,"ต้นกาฝาก", "", "kaFak3.png", "kaFak3.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak5 = new Item("kaFak5", 1500, 200, 421, 598,"ต้นกาฝาก", "", "kaFak5.png", "kaFak5.png") {
+            private boolean isPlucked = false;
+
+            @Override
+            public void onInteract(Player p) {
+                if (isPlucked) {
+                    overlay.startDialogue(new DialogueLine[] {
+                            new DialogueLine("ตุลย์", "ฉันเด็ดกาฝากมาแล้ว ไม่ต้องเอาไปเยอะหรอก", null, mainTalk)
+                    }, null);
+                    return;
+                }
+
+                Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.png", "kafakHover.png");
+                boolean success = p.getInventory().addItem(Parasite);
+
+                if (success) {
+                    isPlucked = true;
+                    DialogueLine[] script = {
+                            new DialogueLine("ระบบ", "คุณได้รับ [กาฝากไม้คูณตายพราย]", null, null)
+                    };
+                    overlay.setCharacterTransform(0, 0, 0, 0, 0, 0, 0, 0);
+                    overlay.startDialogue(script, null);
+                } else {
+                    System.out.println("กระเป๋าเต็ม");
+                }
+            }
+            @Override
+            public boolean isInteractable() {
+                return !isPlucked;
             }
         };
 
@@ -817,6 +879,7 @@ public class SceneManager {
         Scene scene_6 = scenes.get("scene_6");
         Scene scene_7 = scenes.get("scene_7");
         Scene scene_8 = scenes.get("scene_8");
+        Scene scene_11 = scenes.get("scene_11");
         Scene scene_15 = scenes.get("scene_15");
         Scene scene_17 = scenes.get("scene_17");
         Scene scene_18 = scenes.get("scene_18");
@@ -833,13 +896,12 @@ public class SceneManager {
             scene_2.addGameObject(Flower);
             scene_2.addGameObject(playerSit);
         }
-        if (scene_4 != null) {
-        }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
         }
         if (scene_6 != null) {
             scene_6.addGameObject(ChestOpen);
+            scene_6.addGameObject(Rosary);
         }
         if (scene_7 != null) {
             scene_7.addGameObject(slot0);
@@ -847,16 +909,20 @@ public class SceneManager {
             scene_7.addGameObject(slot2);
             scene_7.addGameObject(slot3);
             scene_7.addGameObject(Candle);
-            scene_7.addGameObject(Water);
-            scene_7.addGameObject(Knife2);
-            scene_7.addGameObject(Rosary);
-            scene_7.addGameObject(Parasite);
         }
         if (scene_8 != null) {
+            scene_8.addGameObject(Water);
             scene_8.addGameObject(miniGameClock);
             scene_8.addGameObject(Knife2);
             scene_8.addGameObject(EmptyPicture);
             scene_8.addGameObject(PictureFrame);
+        }
+        if (scene_11 != null) {
+            scene_11.addGameObject(kaFak1);
+            scene_11.addGameObject(kaFak2);
+            scene_11.addGameObject(kaFak3);
+            scene_11.addGameObject(kaFak4);
+            scene_11.addGameObject(kaFak5);
         }
         if (scene_15 != null) {
             scene_15.addGameObject(Door);
@@ -997,6 +1063,11 @@ public class SceneManager {
     }
 
     private void managePlayBGM(String sceneID) {
+        if (sceneID.equals("scene_2") && !gamePanel.getIsStartGame()) {
+            AudioManager.playMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
+            System.out.println("เข้าเงื่อนไข เริ่มเกมใหม่");
+            return;
+        }
         switch (sceneID) {
             case "scene_1", "scene_2" -> AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
             case "scene_12", "scene_13" -> AudioManager.resumeBGMusic("src/res/sound/BGM2.wav", 0.0f);
