@@ -651,6 +651,63 @@ public class SceneManager {
             }
         };
 
+        //scene_11
+        Item kaFak1 = new Item("kaFak1", 10, 200, 424, 600,"ต้นกาฝาก", "", "kaFak1.png", "kaFak1.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak2 = new Item("kaFak2", 925, 245, 382, 548,"ต้นกาฝาก", "", "kaFak2.png", "kaFak2.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak3 = new Item("kaFak4", 1200, 290, 358, 508,"ต้นกาฝาก", "", "kaFak4.png", "kaFak4.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak4 = new Item("kaFak3", 625, 315, 323, 462,"ต้นกาฝาก", "", "kaFak3.png", "kaFak3.png") {
+            @Override
+            public void onInteract(Player p) {
+            }
+        };
+
+        Item kaFak5 = new Item("kaFak5", 1500, 200, 421, 598,"ต้นกาฝาก", "", "kaFak5.png", "kaFak5.png") {
+            private boolean isPlucked = false;
+
+            @Override
+            public void onInteract(Player p) {
+                if (isPlucked) {
+                    overlay.startDialogue(new DialogueLine[] {
+                            new DialogueLine("ตุลย์", "ฉันเด็ดกาฝากมาแล้ว ไม่ต้องเอาไปเยอะหรอก", null, mainTalk)
+                    }, null);
+                    return;
+                }
+
+                Item Parasite = createPickUpItem("kafak", 500, 700, 100, 100, "กาฝากไม้คูณตายพราย", "กาฝากไม้คูณตายพราย", "kafak.png", "kafakHover.png");
+                boolean success = p.getInventory().addItem(Parasite);
+
+                if (success) {
+                    isPlucked = true;
+                    DialogueLine[] script = {
+                            new DialogueLine("ระบบ", "คุณได้รับ [กาฝากไม้คูณตายพราย]", null, null)
+                    };
+                    overlay.setCharacterTransform(0, 0, 0, 0, 0, 0, 0, 0);
+                    overlay.startDialogue(script, null);
+                } else {
+                    System.out.println("กระเป๋าเต็ม");
+                }
+            }
+            @Override
+            public boolean isInteractable() {
+                return !isPlucked;
+            }
+        };
+
         //scene_15
         Item Door = new Item("miniGameYan", 1850, 365, 72, 708,"ประตู", "", "DoorPic.png", "DoorPic.png") {
             private boolean isSolved = false;
@@ -821,6 +878,7 @@ public class SceneManager {
         Scene scene_6 = scenes.get("scene_6");
         Scene scene_7 = scenes.get("scene_7");
         Scene scene_8 = scenes.get("scene_8");
+        Scene scene_11 = scenes.get("scene_11");
         Scene scene_15 = scenes.get("scene_15");
         Scene scene_17 = scenes.get("scene_17");
         Scene scene_18 = scenes.get("scene_18");
@@ -861,6 +919,13 @@ public class SceneManager {
             scene_8.addGameObject(Knife2);
             scene_8.addGameObject(EmptyPicture);
             scene_8.addGameObject(PictureFrame);
+        }
+        if (scene_11 != null) {
+            scene_11.addGameObject(kaFak1);
+            scene_11.addGameObject(kaFak2);
+            scene_11.addGameObject(kaFak3);
+            scene_11.addGameObject(kaFak4);
+            scene_11.addGameObject(kaFak5);
         }
         if (scene_15 != null) {
             scene_15.addGameObject(Door);

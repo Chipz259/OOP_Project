@@ -47,7 +47,7 @@ public class TestScene {
         if (gamePanel.sceneManager != null) {
 
             // สั่งโหลดฉาก 15 ทันที
-            gamePanel.sceneManager.loadScene("scene_22");
+            gamePanel.sceneManager.loadScene("scene_11");
 
             // 💡 (แถม) ถ้าอยากให้พระเอกไปยืนตรงจุดใดจุดหนึ่งของจอเพื่อเทสต์ไอเทมใกล้ๆ
             // เอาคอมเมนต์ออกแล้วแก้เลขพิกัดได้เลยครับ
