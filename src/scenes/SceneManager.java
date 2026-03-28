@@ -894,7 +894,6 @@ public class SceneManager {
         }
         if (scene_2 != null) {
             scene_2.addGameObject(Flower);
-            scene_2.addGameObject(playerSit);
         }
         if (scene_5 != null) {
             scene_5.addGameObject(Bed);
