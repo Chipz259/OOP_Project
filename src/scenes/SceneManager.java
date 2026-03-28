@@ -31,7 +31,7 @@ public class SceneManager {
     private SceneTitleOverlay titleOverlay;
     private GamePanel gamePanel;
     private BufferedImage girlIdle, girlTalk, mainIdle, mainIdle2, mainTalk, evilIdle, evilTalk, npc3Idle, npc3Talk, npc2Idle, npc2Talk, dadIdle, dadTalk;
-    private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true, isFirstTimeScene17 = true, isFirstTimeScene19;
+    private boolean isFirstTimeScene3 = true, isFirstTimeScene6 = true, isFirstTimeScene11 = true , isFirstTimeScene14 = true, isFirstTimeScene12 = true, isFirstTimeScene16 = true, isFirstTimeScene18 = true, isFirstTimeScene17 = true, isFirstTimeScene19;
     private String[] ritualItems = {"", "", "", ""};
     private String[] ritualItemNames = {"", "", "", ""};
     private Item[] ritualSlots = new Item[4];
@@ -134,6 +134,19 @@ public class SceneManager {
 
                 isFirstTimeScene6 = false;
             }
+        }
+        else if (sceneId.equals("scene_11")) {
+            if (isFirstTimeScene11) {
+                DialogueLine[] scene11Intro = {
+                        new DialogueLine("ตุลย์", "กาฝากไม้คูณตายพราย…", null, mainIdle2),
+                        new DialogueLine("ตุลย์", "ฉันน่าจะต้องหาต้นไม้ที่เหมือนกับในสมุดบันทึกนะ…", null, mainIdle2),
+                        new DialogueLine("ตุลย์", "จากที่ดู… ต้นนั้นน่าจะพอมีจุดสังเกตุอยู่", null, mainIdle2)
+                };
+                overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                overlay.startDialogue(scene11Intro, () -> {
+                });
+            }
+            isFirstTimeScene11 = false;
         }
         else if (sceneId.equals("scene_12")) {
             if (isFirstTimeScene12) {
@@ -314,7 +327,7 @@ public class SceneManager {
         if (isCorrect == true) {
             // ถ้าถูก
             overlay.startDialogue(new DialogueLine[]{
-                    new DialogueLine("พระเอก", "พิธีกรรมสมบูรณ์แบบ... แสงสว่างจ้าออกมาจากแท่น!", null, mainTalk)
+                    new DialogueLine("ตุลย์", "พิธีกรรมสมบูรณ์แบบ... แสงสว่างจ้าออกมาจากแท่นแล้ว!", null, mainTalk)
             }, () -> {
                 system.ObjectiveManager.getInstance().advanceObjective();
                 if (fadeTransition != null && !fadeTransition.isFading()) {
@@ -326,7 +339,7 @@ public class SceneManager {
         } else {
             // ผิด
             overlay.startDialogue(new DialogueLine[]{
-                    new DialogueLine("พระเอก", "อึก! พลังงานตีกลับ! ของพวกนี้เด้งกลับเข้ากระเป๋าฉันหมดเลย!", null, mainTalk)
+                    new DialogueLine("ตุลย์", "ดูเหมือนจะไม่ใช่นะ ลองวางใหม่อีกที", null, mainIdle2)
             }, () -> {
                 // คืนของ
                 for (int i = 0; i < ritualItems.length; i = i + 1) {
@@ -402,7 +415,7 @@ public class SceneManager {
                                     fadeTransition.executeFade(500, 0, 500, () -> {
                                         loadScene("scene_19");
                                         DialogueLine[] winScript = {
-                                                new DialogueLine("พระเอก", "แฮ่ก... แฮ่ก... จบสักทีนะ", null, mainTalk)
+                                                new DialogueLine("ตุลย์", "แฮ่ก... แฮ่ก... จบสักทีนะ", null, mainTalk)
                                         };
                                         overlay.startDialogue(winScript, () -> {
                                         });
@@ -424,7 +437,7 @@ public class SceneManager {
                         () -> {
                             loadScene("scene_19");
                             DialogueLine[] winScript = {
-                                    new DialogueLine("พระเอก", "แฮ่ก... แฮ่ก... จบสักทีนะ", null, mainTalk)
+                                    new DialogueLine("ตุลย์", "สำเร็จ ! ! ! มันจบแล้ว", null, mainTalk)
                             };
                             overlay.startDialogue(winScript, () -> {});
                         },

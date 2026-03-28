@@ -1,5 +1,6 @@
 package ui;
 
+import scenes.SceneManager;
 import system.FontManager;
 
 import java.awt.*;
@@ -17,6 +18,7 @@ public class DiaryUi extends JPanel {
     private ImageIcon iconLeftNormal, iconLeftHover, iconRightNormal, iconRightHover, iconCloseNormal, iconCloseHover;
     private JButton btnLeft, btnRight, btnClose;
     private FontManager diaryFont;
+    private boolean isFirstTime;
 
     private DiaryUi() {
         bookImage = new BufferedImage[3];
@@ -116,6 +118,7 @@ public class DiaryUi extends JPanel {
         updateButtonLayout();
         this.requestFocusInWindow();
         repaint();
+
     }
 
     public void closeDiary() {
@@ -123,6 +126,19 @@ public class DiaryUi extends JPanel {
         this.setVisible(false);
         if (MainGameFrame.getInstance() != null && MainGameFrame.getInstance().getGamePanel() != null) {
             MainGameFrame.getInstance().getGamePanel().requestFocusInWindow();
+            isFirstTime = false;
+            scenes.SceneManager sm = MainGameFrame.getInstance().getGamePanel().sceneManager;
+            if (sm != null && sm.getOverlay() != null) {
+                system.DialogueLine[] afterDiaryScript = {
+                        new system.DialogueLine("ตุลย์", " ! ! !", null, null),
+                        new system.DialogueLine("ตุลย์", "ที่ทุกคนแปลกไปเพราะงี้เองหรอ", null, null),
+                        new system.DialogueLine("ตุลย์", "ตอนนี้คงต้องเริ่มหาของมาทำพิธีแล้วล่ะ", null, null)
+                };
+
+                sm.getOverlay().setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                sm.getOverlay().startDialogue(afterDiaryScript, () -> {
+                });
+            }
         }
     }
 

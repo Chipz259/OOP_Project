@@ -1,13 +1,14 @@
 package entities;
 
+import system.DialogueLine;
 import ui.MainGameFrame;
 import ui.Tutorial;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+
 public class Inventory {
     private int selectedSlot = -1;
     private int hoveredSlot = -1;
@@ -63,6 +64,21 @@ public class Inventory {
         if (!isShowCombine && hasItem("candle") && hasItem("water")) {
             tutorial.showTutorial("Combine");
             isShowCombine = true;
+        }
+        if (hasItem("rosary") && hasItem("kafak") && hasItem("holyWater") && hasItem("knife")) {
+            DialogueLine[] script = {
+                    new DialogueLine("ระบบ", "คุณได้รับ [กาฝากไม้คูณตายพราย]", null, null)
+            };
+            scenes.SceneManager sm = MainGameFrame.getInstance().getGamePanel().sceneManager;
+            if (sm != null && sm.getOverlay() != null) {
+                system.DialogueLine[] afterDiaryScript = {
+                        new system.DialogueLine("ตุลย์", "ของทั้งสี่ครบแล้ว…", null, null),
+                        new system.DialogueLine("ตุลย์", "ต่อไปต้องวางของ… เหมือนในสมุดบันทึกน่าจะมีบอกตำแหน่งไว้นะ", null, null)
+                };
+                sm.getOverlay().setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
+                sm.getOverlay().startDialogue(afterDiaryScript, () -> {
+                });
+            }
         }
     }
     public void resetInventory() {
