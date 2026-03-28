@@ -1,5 +1,6 @@
 package Minigame.FinalBossFightPackage;
 
+import system.AudioManager;
 import ui.MainGameFrame;
 
 import javax.imageio.ImageIO;
@@ -191,6 +192,7 @@ public class FinalBossFight extends JPanel implements Runnable {
     }
     @Override
     public void run(){
+        AudioManager.playMusic("src/res/sound/MinigameBossBGM.wav", 0.0f);
         Stage previousStage = allStage[0];
         while(!finished && !timeout){
             if(nowStage.isFinished()){
@@ -243,10 +245,13 @@ public class FinalBossFight extends JPanel implements Runnable {
 
         SwingUtilities.invokeLater(() -> {
             if(finished){
+                AudioManager.stopMusic();
                 System.out.println("ระบบ: ชนะบอสแล้ว!");
                 mainGameFrame.closeMinigame();
                 if(onWinCallback != null) onWinCallback.run();
             } else {
+                AudioManager.stopMusic();
+                AudioManager.playSFX("src/res/sound/LosePLork.wav", 0.0f);
                 System.out.println("ระบบ: แพ้บอส! ");
                 //ถ้าแพ้เด้งออกไปเฉยๆ
                 mainGameFrame.closeMinigame();
