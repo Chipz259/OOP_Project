@@ -252,6 +252,7 @@ public class FinalBossFight extends JPanel implements Runnable {
                 mainGameFrame.closeMinigame();
                 if (onLoseCallback != null) onLoseCallback.run();
                 // หากต้องการให้ตัวละครตาย หรือให้เล่นซ้ำ สามารถเขียนเพิ่มตรงนี้ได้เลยครับ
+                mainGameFrame.showGameOver(true);
             }
         });
 
