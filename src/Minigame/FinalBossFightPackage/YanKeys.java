@@ -14,6 +14,9 @@ public class YanKeys {
     private changableImagePanel alpha, container;
     private JLabel keyLabel;
     private Color activeColor, unactiveColor;
+    private boolean isTarget = false;
+    private int textH;
+    private int normalH, targetH;
     public YanKeys(int keyButton, String unactive, String active){
         this.keyButton = keyButton;
         activeColor = new Color(239, 154, 7, 255);
@@ -26,11 +29,12 @@ public class YanKeys {
             Font PimdeedIIIFont = Font.createFont(Font.TRUETYPE_FONT, is);
             Font sizeFont =  PimdeedIIIFont.deriveFont(Font.BOLD,32f);
             keyLabel.setFont(sizeFont);
+            FontMetrics fontMetrics = keyLabel.getFontMetrics(sizeFont);
+            textH = fontMetrics.getAscent();
         } catch (IOException | FontFormatException ex){
             ex.printStackTrace();
         }
 
-        keyLabel.setSize(300,25);
         keyLabel.setHorizontalAlignment(JLabel.CENTER);
         alpha.setLocation(0,0);
         container.setLayout(null);
@@ -43,12 +47,17 @@ public class YanKeys {
         container.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e){
+                normalH = (int)(0.73 * container.getHeight());
+                targetH = (int)(0.78 * container.getHeight());
                 alpha.setSize(container.getWidth(),container.getHeight());
-                keyLabel.setLocation(0,(int) (0.8* container.getHeight()));
-                setUnactive();
+                keyLabel.setSize(container.getWidth(), textH);
+                if(!isTarget){
+                    keyLabel.setLocation(0, normalH);
+                } else {
+                    keyLabel.setLocation(0, targetH);
+                }
             }
         });
-
     }
     public int getKeyButton(){
         return  keyButton;
@@ -60,14 +69,29 @@ public class YanKeys {
         return alpha;
     }
     public void setActive(){
+        isTarget = false;
+        keyLabel.setLocation(0, normalH);
         alpha.setActive();
         container.setActive();
         keyLabel.setForeground(activeColor);
+        alpha.setTarget(false);
+        container.setTarget(false);
     }
 
     public void setUnactive(){
+        isTarget = false;
+        keyLabel.setLocation(0, normalH);
         alpha.setUnactive();
+        alpha.setTarget(false);
         container.setUnactive();
+        container.setTarget(false);
         keyLabel.setForeground(unactiveColor);
+    }
+    public void setAsTarget(){
+        isTarget = true;
+        keyLabel.setLocation(0, targetH);
+        container.setTarget(true);
+        alpha.setTarget(true);
+        container.revalidate();
     }
 }

@@ -133,15 +133,12 @@ public class FinalBossFight extends JPanel implements Runnable {
             kh = new KeyHandler(nowStage, this);
             this.addKeyListener(kh);
             this.requestFocusInWindow();
+            comboBox.repaint();
+            comboBox.revalidate();
             startTimer();
             new Thread(this).start();
         });
     }
-
-
-//    public boolean isFinished() {
-//        return finished;
-//    }
 
     public void startTimer(){
         int start = timer.getWidth();
@@ -201,10 +198,10 @@ public class FinalBossFight extends JPanel implements Runnable {
             }
             if(nowStage != previousStage && !finished){
                 kh.setNewStage(nowStage);
+                nowStage.setDefault();
                 SwingUtilities.invokeLater(() -> {
                     comboBox.removeAll();
                     for (YanKeys yanKeys : nowStage.getYanKeysArray()) {
-                        yanKeys.setUnactive();
                         comboBox.add(yanKeys.getContainer());
                     }
                     comboBox.revalidate();
