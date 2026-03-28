@@ -209,8 +209,8 @@ public class MainGameFrame extends JFrame {
             cardLayout.show(mainCardPanel, "MENU");
             gamePanel.stopGameThread();
             imageBg.requestFocusInWindow();
+            AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", -5.0f);
         });
-        AudioManager.playMusic("src/res/sound/MenuBackgroundMusic.wav", -5.0f);
     }
 
     public void showGameOver(boolean show) {
