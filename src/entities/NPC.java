@@ -111,7 +111,6 @@ public class NPC extends GameObject implements Interactable{
         if (overlay != null && dialogueScript != null && !overlay.isActive()) {
 
             overlay.setCharacterTransform(dLeftX, dLeftY, dLeftW, dLeftH, dRightX, dRightY, dRightW, dRightH);
-
             overlay.startDialogue(dialogueScript, onDialogueFinished);
         }
         else {

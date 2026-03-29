@@ -261,7 +261,6 @@ public class MainGameFrame extends JFrame {
                 transitionToGame();
             });
         });
-
     }
 
     public void transitionToGame() {

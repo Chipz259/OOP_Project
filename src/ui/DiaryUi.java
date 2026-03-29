@@ -111,7 +111,6 @@ public class DiaryUi extends JPanel {
         updateButtonLayout();
         this.requestFocusInWindow();
         repaint();
-
     }
 
     public void closeDiary() {

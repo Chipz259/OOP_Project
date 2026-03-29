@@ -29,6 +29,7 @@ public class CutsceneEnd extends JPanel {
 
         timer = new Timer(16, e -> updateCutscene());
         timer.start();
+
     }
 
     private void updateCutscene() {
