@@ -48,14 +48,14 @@ public class SceneQTE_Choke extends Scene {
             e.printStackTrace();
         }
         try {
-            URL btnPressImgURL = getClass().getResource("/res/eButtonPress.png");
+            URL btnPressImgURL = getClass().getResource("/res/eButtonPress.PNG");
             if (btnPressImgURL != null) {
                 this.btnPressImage = ImageIO.read(btnPressImgURL);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        AudioManager.preloadSFX("src/res/sound/DonPLork.wav");
+        AudioManager.preloadSFX("/res/sound/DonPLork.wav");
     }
     public void startQTE() {
         this.clickCount = 0;
@@ -65,7 +65,7 @@ public class SceneQTE_Choke extends Scene {
         this.fadeWhiteAmount = 0;
         this.buttonScale = 200;
         this.fadeAlpha = 0;
-        AudioManager.playPreloadedSFX("src/res/sound/DonPLork.wav", -5.0f);
+        AudioManager.playPreloadedSFX("/res/sound/DonPLork.wav", -5.0f);
     }
     public void registerClick() {
         if (isQteActive) {
@@ -91,14 +91,14 @@ public class SceneQTE_Choke extends Scene {
                 sceneManager.getGamePanel().triggerDeath();
                 System.out.println("ระบบ : แพ้ โดนบีบคอตายไปดิ");
                 AudioManager.stopMusic();
-                AudioManager.playSFX("src/res/sound/LosePLork.wav", 0.0f);
+                AudioManager.playSFX("/res/sound/LosePLork.wav", 0.0f);
             }
             else if (clickCount >= targetClicks) {
                 isQteActive = false;
                 isWinningFade = true;
                 System.out.println("สวดเก่งนี่ รอด");
                 AudioManager.stopMusic();
-                AudioManager.playSFX("src/res/sound/WinPLork.wav", 5.0f);
+                AudioManager.playSFX("/res/sound/WinPLork.wav", 5.0f);
             }
         }
         if (buttonScale > 200) {

@@ -23,17 +23,17 @@ public class SettingPanel extends JPanel {
         sfxLabel = new JLabel();
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 20, 20, 20);
-        trackRed = new ImageIcon("src/res/SettingTrackRed.png").getImage();
-        trackGray = new ImageIcon("src/res/SettingTrackGrey.png").getImage();
-        scorllingImage = new ImageIcon("src/res/SettingScrolling.png").getImage();
-        bgImage = new ImageIcon("src/res/SettingMenuBG.png").getImage();
-        titleImg = new ImageIcon("src/res/SettingTitle.png").getImage();
-        bgmTextImg = new ImageIcon("src/res/SettingBGMText.png").getImage();
-        sfxTextImg = new ImageIcon("src/res/SettingSFXText.png").getImage();
-        backNormalBtnImg = new ImageIcon("src/res/SettingBtnBack01.png").getImage();
-        backHoverBtnImg = new ImageIcon("src/res/SettingBtnBack02.png").getImage();
-        returnNormalBtnImg = new ImageIcon("src/res/SettingBtnReturn01.png").getImage();
-        returnHoverBtnImg = new ImageIcon("src/res/SettingBtnReturn02.png").getImage();
+        trackRed = new ImageIcon(getClass().getResource("/res/SettingTrackRed.png")).getImage();
+        trackGray = new ImageIcon(getClass().getResource("/res/SettingTrackGrey.png")).getImage();
+        scorllingImage = new ImageIcon(getClass().getResource("/res/SettingScrolling.png")).getImage();
+        bgImage = new ImageIcon(getClass().getResource("/res/SettingMenuBG.png")).getImage();
+        titleImg = new ImageIcon(getClass().getResource("/res/SettingTitle.png")).getImage();
+        bgmTextImg = new ImageIcon(getClass().getResource("/res/SettingBGMText.png")).getImage();
+        sfxTextImg = new ImageIcon(getClass().getResource("/res/SettingSFXText.png")).getImage();
+        backNormalBtnImg = new ImageIcon(getClass().getResource("/res/SettingBtnBack01.png")).getImage();
+        backHoverBtnImg = new ImageIcon(getClass().getResource("/res/SettingBtnBack02.png")).getImage();
+        returnNormalBtnImg = new ImageIcon(getClass().getResource("/res/SettingBtnReturn01.png")).getImage();
+        returnHoverBtnImg = new ImageIcon(getClass().getResource("/res/SettingBtnReturn02.png")).getImage();
 
         setBackground(new Color(232, 94, 94, 200));
         setLayout(new GridBagLayout());

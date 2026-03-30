@@ -38,8 +38,8 @@ public class AudioManager {
         if (path.equals(currentBgmPath) && bgMusic != null && bgMusic.isRunning()) return;
 
         try {
-            File musicFile = new File(path);
-            if (musicFile.exists()) {
+            java.net.URL musicFile= AudioManager.class.getResource(path);
+            if (musicFile != null) {
                 stopMusic();
                 currentBgmPath = path;
                 currentBgmOffset = offsetDB;
@@ -52,6 +52,8 @@ public class AudioManager {
 
                 applyVolume(bgMusic, bgmVolume, currentBgmOffset);
                 bgMusic.start();
+            } else{
+                System.err.println("playMusic ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
             }
         } catch (Exception e) { e.printStackTrace(); }
     }
@@ -69,6 +71,8 @@ public class AudioManager {
                     bgMusic.start();
                     return;
                 }
+            } else{
+                System.err.println("resumeBGMusic ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
             }
         }
 
@@ -83,14 +87,16 @@ public class AudioManager {
                 currentBgmOffset = offsetDB;
                 lastPosition = 0;
 
-                File musicFile = new File(path);
-                if (musicFile.exists()) {
+                java.net.URL musicFile = AudioManager.class.getResource(path);
+                if (musicFile != null) {
                     AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
                     bgMusic = AudioSystem.getClip();
                     bgMusic.open(audioInput);
                     bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
                     applyVolume(bgMusic, bgmVolume, currentBgmOffset);
                     bgMusic.start();
+                } else{
+                    System.err.println("resumeBGMusic ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
                 }
             } catch (Exception e) { e.printStackTrace(); }
         });
@@ -99,8 +105,8 @@ public class AudioManager {
     public static void playSFX(String path, float offsetDB) {
         audioExecutor.submit(() -> {
             try {
-                File sfxFile = new File(path);
-                if (sfxFile.exists()) {
+                java.net.URL sfxFile = AudioManager.class.getResource(path);
+                if (sfxFile != null) {
                     AudioInputStream audioInput = AudioSystem.getAudioInputStream(sfxFile);
                     Clip sfxClip = AudioSystem.getClip();
                     sfxClip.open(audioInput);
@@ -115,6 +121,8 @@ public class AudioManager {
                             activeSfxMap.remove(path);
                         }
                     });
+                } else{
+                    System.err.println("playSFX ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
                 }
             } catch (Exception e) { e.printStackTrace(); }
         });
@@ -148,12 +156,14 @@ public class AudioManager {
 
     public static void preloadSFX(String path) {
         try {
-            File file = new File(path);
-            if (file.exists() && !preloadedClips.containsKey(path)) {
-                AudioInputStream ais = AudioSystem.getAudioInputStream(file);
+            java.net.URL sfxURL = AudioManager.class.getResource(path);
+            if (sfxURL != null && !preloadedClips.containsKey(path)) {
+                AudioInputStream ais = AudioSystem.getAudioInputStream(sfxURL);
                 Clip clip = AudioSystem.getClip();
                 clip.open(ais);
                 preloadedClips.put(path, clip);
+            } else{
+                System.err.println("preloadSFX ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
             }
         } catch (Exception e) { e.printStackTrace(); }
     }

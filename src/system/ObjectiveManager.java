@@ -23,7 +23,7 @@ public class ObjectiveManager {
         this.objectives = new ArrayList<Objective>();
 
         headerFont = FontManager.customFont.deriveFont(Font.BOLD, 40f);
-        questFont = FontManager.customFont.deriveFont(Font.PLAIN, 26f);
+        questFont = FontManager.customFont.deriveFont(Font.PLAIN, 32f);
 
         try {
             int boxSize = 40;

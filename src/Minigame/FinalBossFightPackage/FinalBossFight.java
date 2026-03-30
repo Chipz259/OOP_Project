@@ -186,7 +186,7 @@ public class FinalBossFight extends JPanel implements Runnable {
     }
     @Override
     public void run(){
-        AudioManager.playMusic("src/res/sound/MinigameBossBGM.wav", 0.0f);
+        AudioManager.playMusic("/res/sound/MinigameBossBGM.wav", 0.0f);
         Stage previousStage = allStage[0];
         while(!finished && !timeout){
             if (playerSit != null) {
@@ -252,7 +252,7 @@ public class FinalBossFight extends JPanel implements Runnable {
                 if(onWinCallback != null) onWinCallback.run();
             } else {
                 AudioManager.stopMusic();
-                AudioManager.playSFX("src/res/sound/LosePLork.wav", 0.0f);
+                AudioManager.playSFX("/res/sound/LosePLork.wav", 0.0f);
                 System.out.println("ระบบ: แพ้บอส! ");
                 mainGameFrame.closeMinigame();
                 mainGameFrame.showGameOver(true);

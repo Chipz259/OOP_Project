@@ -7,7 +7,7 @@ public class ImageBackground extends JPanel {
         private Image bgImage;
 
         public ImageBackground(String path) {
-            this.bgImage = new ImageIcon(path).getImage();
+            this.bgImage = new ImageIcon(getClass().getResource(path)).getImage();
         }
 
         @Override

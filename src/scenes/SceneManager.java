@@ -162,7 +162,7 @@ public class SceneManager {
         else if (sceneId.equals("scene_17")) {
             if (isFirstTimeScene17) {
                 DialogueLine[] scene17Intro = {
-                        new DialogueLine("ตุลย์", "กล่องหล่นลงลงมาได้ยังไงกันนะ", null, mainIdle2),
+                        new DialogueLine("ตุลย์", "กล่องหล่นลงมาได้ยังไงกันนะ", null, mainIdle2),
                         new DialogueLine("ตุลย์", "เก็บขึ้นมาดีกว่า...", null, mainIdle2)
                 };
                 overlay.setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);
@@ -391,7 +391,7 @@ public class SceneManager {
         this.retryMode = 2;
 
         AudioManager.stopMusic();
-        AudioManager.playSFX("src/res/sound/MinigameBossBefore.wav", -5.0f);
+        AudioManager.playSFX("/res/sound/MinigameBossBefore.wav", -5.0f);
         ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
         CutsceneGhost cutsceneGhost = new CutsceneGhost(mainFrame, "/res/bg/Ghost.png", () -> {
             if (fadeTransition != null && !fadeTransition.isFading()) {
@@ -456,7 +456,7 @@ public class SceneManager {
                     fadeTransition.executeFade(700, 0, 700, () -> {
                         mainFrame.closeCutscene();
 
-                        CutsceneEndCredit cutsceneEndCredit = new CutsceneEndCredit("/res/bg/EndCredit.jpg");
+                        CutsceneEndCredit cutsceneEndCredit = new CutsceneEndCredit("/res/bg/EndCredit.png");
                         mainFrame.openCutscene(cutsceneEndCredit);
                         javax.swing.Timer creditTime = new javax.swing.Timer(5000, e ->{
                             fadeTransition.executeFade(700, 0, 700, () ->{
@@ -854,7 +854,7 @@ public class SceneManager {
         DialogueLine[] npcGirlScript = {
                 new DialogueLine("เด็กสาวในหมู่บ้าน", "เดินทางมาเหนื่อยไหม", girlTalk, mainIdle),
                 new DialogueLine("ตุลย์", "ก็นิดหน่อยครับ", girlIdle, mainTalk),
-                new DialogueLine("เด็กสาวในหมู่บ้าน", "อืม… พักผ่อนให้สบายแล้วกันนะคืนนี้", girlTalk, mainIdle)
+                new DialogueLine("เด็กสาวในหมู่บ้าน", "อืม… พักผ่อนให้สบายแล้วกันนะคืนนี้ ฮึฮึ", girlTalk, mainIdle)
         };
         npcGirl.setVNDialogue(npcGirlScript, overlay);
         npcGirl.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
@@ -1117,22 +1117,22 @@ public class SceneManager {
 
     private void managePlayBGM(String sceneID) {
         if (sceneID.equals("scene_2") && !gamePanel.getIsStartGame()) {
-            AudioManager.playMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
+            AudioManager.playMusic("/res/sound/PlayingMusicBG.wav", -15.0f);
             System.out.println("เข้าเงื่อนไข เริ่มเกมใหม่");
             return;
         }
         switch (sceneID) {
-            case "scene_1", "scene_2" -> AudioManager.resumeBGMusic("src/res/sound/PlayingMusicBG.wav", -15.0f);
-            case "scene_12", "scene_13", "scene_4" -> AudioManager.resumeBGMusic("src/res/sound/BGM2.wav", 0.0f);
-            case "scene_3" -> AudioManager.playSFX("src/res/sound/StartCar.wav", 0.0f);
+            case "scene_1", "scene_2" -> AudioManager.resumeBGMusic("/res/sound/PlayingMusicBG.wav", -15.0f);
+            case "scene_12", "scene_13", "scene_4" -> AudioManager.resumeBGMusic("/res/sound/BGM2.wav", 0.0f);
+            case "scene_3" -> AudioManager.playSFX("/res/sound/StartCar.wav", 0.0f);
             case "qte_choke" -> AudioManager.stopMusic();
             case "scene_14", "scene_15", "scene_17", "scene_18", "scene_6", "scene_8", "scene_7"
-                    -> AudioManager.resumeBGMusic("src/res/sound/BGM14.wav", 0.0f);
+                    -> AudioManager.resumeBGMusic("/res/sound/BGM14.wav", 0.0f);
             case "scene_16" -> {
-                AudioManager.playSFX("src/res/sound/ItemDropSound.wav", 10.0f);
-                AudioManager.resumeBGMusic("src/res/sound/BGM14.wav", 0.0f);
+                AudioManager.playSFX("/res/sound/ItemDropSound.wav", 10.0f);
+                AudioManager.resumeBGMusic("/res/sound/BGM14.wav", 0.0f);
             }
-            case "scene_9", "scene_10", "scene_11" -> AudioManager.resumeBGMusic("src/res/sound/BGM9.wav", 0.0f);
+            case "scene_9", "scene_10", "scene_11" -> AudioManager.resumeBGMusic("/res/sound/BGM9.wav", 0.0f);
             default -> System.out.println("ระบบ PhayBGM at SceneManager : ยังไม่ได้ตั้งค่า " + sceneID);
         }
     }

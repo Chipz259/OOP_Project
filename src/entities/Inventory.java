@@ -32,7 +32,7 @@ public class Inventory {
             e.printStackTrace();
         }
         try {
-            URL slotHoverURL = getClass().getResource("/res/slotsHover.png");
+            URL slotHoverURL = getClass().getResource("/res/slotsHover.PNG");
             if  (slotHoverURL != null) {
                 this.slotHoverSprite = ImageIO.read(slotHoverURL);
             }

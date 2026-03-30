@@ -29,10 +29,10 @@ public class Tutorial extends JPanel {
             tutorialCombineImage[0] = ImageIO.read(getClass().getResource("/res/Tutorial5.png"));
             tutorialCombineImage[1] = ImageIO.read(getClass().getResource("/res/Tutorial6.png"));
 
-            iconLeft = new ImageIcon(new ImageIcon("src/res/TutorialBtnLeft.png").getImage().getScaledInstance(110, 74, Image.SCALE_SMOOTH));
-            iconRight = new ImageIcon(new ImageIcon("src/res/TutorialBtnRight.png").getImage().getScaledInstance(110, 74, Image.SCALE_SMOOTH));
-            iconCloseNormal = new ImageIcon(new ImageIcon("src/res/TutorialBtnOK1.png").getImage().getScaledInstance(190, 72, Image.SCALE_SMOOTH));
-            iconCloseHover = new ImageIcon(new ImageIcon("src/res/TutorialBtnOK2.png").getImage().getScaledInstance(190, 72, Image.SCALE_SMOOTH));
+            iconLeft = new ImageIcon(new ImageIcon(getClass().getResource("/res/TutorialBtnLeft.png")).getImage().getScaledInstance(110, 74, Image.SCALE_SMOOTH));
+            iconRight = new ImageIcon(new ImageIcon(getClass().getResource("/res/TutorialBtnRight.png")).getImage().getScaledInstance(110, 74, Image.SCALE_SMOOTH));
+            iconCloseNormal = new ImageIcon(new ImageIcon(getClass().getResource("/res/TutorialBtnOK1.png")).getImage().getScaledInstance(190, 72, Image.SCALE_SMOOTH));
+            iconCloseHover = new ImageIcon(new ImageIcon(getClass().getResource("/res/TutorialBtnOK2.png")).getImage().getScaledInstance(190, 72, Image.SCALE_SMOOTH));
         }
         catch (IOException e) {
             System.out.println("ระบบ : โหลดรูปไม่ได้จ้า");

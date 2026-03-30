@@ -32,7 +32,7 @@ public class UnlockBox extends JPanel implements Runnable {
             new SlotJPanel("Image/Box4.png"),
         };
         try{
-            background = ImageIO.read(getClass().getResource("Image/BG BOX.png"));
+            background = ImageIO.read(getClass().getResource("Image/BG BOX.PNG"));
             slotBackground = ImageIO.read(getClass().getResource("Image/BoxBox.png"));
             exit = ImageIO.read(getClass().getResource("Image/Exit_minigame_btn.png"));
         } catch (IOException e) {
