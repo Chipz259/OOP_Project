@@ -82,7 +82,7 @@ public class RotateYan extends JPanel{
             }
         });
 
-        AudioManager.preloadSFX("src/res/sound/yanFlip.wav");
+        AudioManager.preloadSFX("/res/sound/yanFlip.wav");
     }
     @Override
     public void paintComponent(Graphics g){

@@ -19,18 +19,18 @@ public class Player extends GameObject {
     private final int ANIMATION_SPEED = 4;
     public Player(String id, int x, int y, int width, int height, Tutorial tutorial) {
         super(id, x, y, width, height);
-        inventory = new Inventory("slots.png", tutorial);
+        inventory = new Inventory("slots.PNG", tutorial);
         loadAnimation();
     }
     private void loadAnimation() {
         try {
-            URL walkUrl = getClass().getResource("/res/pWalk.png");
+            URL walkUrl = getClass().getResource("/res/pWalk.PNG");
             BufferedImage walkSheet = ImageIO.read(walkUrl);
             walkFrames = new BufferedImage[12];
             for (int i = 0; i < walkFrames.length; i++) {
                 walkFrames[i] = walkSheet.getSubimage(i * 622, 0, 622, 1299);;
             }
-            URL idleUrl = getClass().getResource("/res/pIdle.png");
+            URL idleUrl = getClass().getResource("/res/pIdle.PNG");
             BufferedImage idleSheet = ImageIO.read(idleUrl);
             idleFrames = new BufferedImage[12];
             for (int i = 0; i < idleFrames.length; i++) {   

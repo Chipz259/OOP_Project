@@ -22,7 +22,7 @@ public class JigsawFrame extends JPanel {
         this.onWinCallback = onWinCallback;
 
         try{
-            background = ImageIO.read(getClass().getResource("Image/BG pic.png"));
+            background = ImageIO.read(getClass().getResource("Image/BG pic.PNG"));
             exit = ImageIO.read(getClass().getResource("Image/Exit_minigame_btn.png"));
         } catch (IOException e) {
             e.printStackTrace();

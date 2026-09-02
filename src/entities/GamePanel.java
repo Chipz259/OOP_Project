@@ -48,8 +48,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseListener(mouseH);
         this.addMouseMotionListener(mouseH);
 
-        settingIcon = new ImageIcon(new ImageIcon("src/res/GamePanelNormalBtnSetting.png").getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
-        settingHoverIcon = new ImageIcon(new ImageIcon("src/res/GamePanelHoverBtnSetting.png").getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
+        settingIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/GamePanelNormalBtnSetting.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
+        settingHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/GamePanelHoverBtnSetting.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
         btnSetting = new JButton(settingIcon);
         btnSetting.setRolloverIcon(settingHoverIcon);
         btnSetting.setBorderPainted(false);
@@ -64,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.add(btnSetting);
         btnSetting.setFocusable(false);
 
-        inventory = new Inventory("slots.png", tutorialRef);
+        inventory = new Inventory("slots.PNG", tutorialRef);
         mainPlayer = new Player("player", 1650, 530, 180, 360, tutorialRef);
 
         sceneManager = new SceneManager(mainPlayer);

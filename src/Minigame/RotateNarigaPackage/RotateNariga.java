@@ -24,10 +24,10 @@ public class RotateNariga extends JPanel{
         try{
             narigaImage = ImageIO.read(getClass().getResource("Image/Nariga.png"));
             background = ImageIO.read(getClass().getResource("Image/background.png"));
-            long_def = new ImageIcon(getClass().getResource("Image/Long_default.PNG"));
-            long_hover = new ImageIcon(getClass().getResource("Image/Long_hover.PNG"));
-            short_def = new ImageIcon(getClass().getResource("Image/Short_default.PNG"));
-            short_hover = new ImageIcon(getClass().getResource("Image/Short_hover.PNG"));
+            long_def = new ImageIcon(getClass().getResource("Image/Long_default.png"));
+            long_hover = new ImageIcon(getClass().getResource("Image/Long_hover.png"));
+            short_def = new ImageIcon(getClass().getResource("Image/Short_default.png"));
+            short_hover = new ImageIcon(getClass().getResource("Image/Short_Hover.png"));
             exit = new ImageIcon(getClass().getResource("Image/Exit_minigame_btn.png"));
         } catch(IOException e){
             e.printStackTrace();

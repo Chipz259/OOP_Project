@@ -26,11 +26,11 @@ public class DiaryUi extends JPanel {
             bookImage[1] = ImageIO.read(getClass().getResource("/res/DiaryBG2.png"));
             bookImage[2] = ImageIO.read(getClass().getResource("/res/DiaryBG3.png"));
 
-            iconLeftNormal = new ImageIcon(new ImageIcon("src/res/Left_Default.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
-            iconLeftHover = new ImageIcon(new ImageIcon("src/res/Left_Hover.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
-            iconRightNormal = new ImageIcon(new ImageIcon("src/res/Right_Default.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
-            iconRightHover = new ImageIcon(new ImageIcon("src/res/Right_Hover.png").getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
-            iconCloseNormal = new ImageIcon(new ImageIcon("src/res/DiaryExitBtn.png").getImage().getScaledInstance(35, 36, Image.SCALE_SMOOTH));
+            iconLeftNormal = new ImageIcon(new ImageIcon(getClass().getResource("/res/Left_Default.png")).getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconLeftHover = new ImageIcon(new ImageIcon(getClass().getResource("/res/Left_Hover.png")).getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconRightNormal = new ImageIcon(new ImageIcon(getClass().getResource("/res/Right_Default.png")).getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconRightHover = new ImageIcon(new ImageIcon(getClass().getResource("/res/Right_Hover.png")).getImage().getScaledInstance(60, 132, Image.SCALE_SMOOTH));
+            iconCloseNormal = new ImageIcon(new ImageIcon(getClass().getResource("/res/DiaryExitBtn.png")).getImage().getScaledInstance(35, 36, Image.SCALE_SMOOTH));
         } catch (Exception ex) {
             System.out.println("ระบบ Diary : โหลดไม่ขึ้น");
             ex.printStackTrace();

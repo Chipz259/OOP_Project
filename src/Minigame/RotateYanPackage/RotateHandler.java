@@ -31,7 +31,7 @@ public class RotateHandler extends MouseAdapter {
         }
     }
     public void playYanFlipSound(){
-        AudioManager.playPreloadedSFX("src/res/sound/yanFlip.wav", 10.0f);
+        AudioManager.playPreloadedSFX("/res/sound/yanFlip.wav", 10.0f);
     }
 
 }
