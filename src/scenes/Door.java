@@ -65,10 +65,10 @@ public class Door extends GameObject implements Interactable {
                 int textX;
 
                 if (getID().startsWith("right_")) {
-                    textX = getX() - fm.stringWidth(destName) - 20;
+                    textX = getX() - fm.stringWidth(destName);
                 }
                 else {
-                    textX = getX() + getWidth() + 20;
+                    textX = getX() + getWidth();
                 }
 
                 g2d.setColor(Color.WHITE);
@@ -98,3 +98,4 @@ public class Door extends GameObject implements Interactable {
         return true;
     }
 }
+

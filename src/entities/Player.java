@@ -24,13 +24,13 @@ public class Player extends GameObject {
     }
     private void loadAnimation() {
         try {
-            URL walkUrl = getClass().getResource("/res/pWalk.PNG");
+            URL walkUrl = getClass().getResource("/res/Element/pWalk.PNG");
             BufferedImage walkSheet = ImageIO.read(walkUrl);
             walkFrames = new BufferedImage[12];
             for (int i = 0; i < walkFrames.length; i++) {
                 walkFrames[i] = walkSheet.getSubimage(i * 622, 0, 622, 1299);;
             }
-            URL idleUrl = getClass().getResource("/res/pIdle.PNG");
+            URL idleUrl = getClass().getResource("/res/Element/pIdle.PNG");
             BufferedImage idleSheet = ImageIO.read(idleUrl);
             idleFrames = new BufferedImage[12];
             for (int i = 0; i < idleFrames.length; i++) {   

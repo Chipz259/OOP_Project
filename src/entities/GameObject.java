@@ -31,13 +31,13 @@ public abstract class GameObject {
         this.height = height;
         this.isVisible = true;
         try {
-            URL imageUrl = getClass().getResource("/res/" + spriteName);
+            URL imageUrl = getClass().getResource("/res/Element/" + spriteName);
             if (imageUrl != null) {
                 this.sprite = ImageIO.read(imageUrl);
                 this.width = width;
                 this.height = height;
             } else {
-                System.err.println("Error: หาไฟล์ไม่เจอใน Resources: /res/" + spriteName);
+                System.err.println("Error: หาไฟล์ไม่เจอใน Resources: /res/Element/" + spriteName);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,13 +5,10 @@ import scenes.SceneManager;
 import system.*;
 import ui.MainGameFrame;
 import ui.DiaryUi;
-import ui.SceneTitleOverlay;
 import ui.Tutorial;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.InputStream;
 
 public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
@@ -48,8 +45,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseListener(mouseH);
         this.addMouseMotionListener(mouseH);
 
-        settingIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/GamePanelNormalBtnSetting.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
-        settingHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/GamePanelHoverBtnSetting.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
+        settingIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/GamePanelNormalBtnSetting.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
+        settingHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/GamePanelHoverBtnSetting.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH));
         btnSetting = new JButton(settingIcon);
         btnSetting.setRolloverIcon(settingHoverIcon);
         btnSetting.setBorderPainted(false);

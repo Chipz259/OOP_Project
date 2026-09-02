@@ -1,11 +1,9 @@
 package system;
 
 import entities.Inventory;
-import system.FontManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +26,8 @@ public class ObjectiveManager {
         try {
             int boxSize = 40;
 
-            Image rawEmpty = ImageIO.read(getClass().getResource("/res/uncheck.png"));
-            Image rawTicked = ImageIO.read(getClass().getResource("/res/check.png"));
+            Image rawEmpty = ImageIO.read(getClass().getResource("/res/Element/uncheck.png"));
+            Image rawTicked = ImageIO.read(getClass().getResource("/res/Element/check.png"));
 
             this.emptyBoxImg = rawEmpty.getScaledInstance(boxSize, boxSize, Image.SCALE_SMOOTH);
             this.tickedBoxImg = rawTicked.getScaledInstance(boxSize, boxSize, Image.SCALE_SMOOTH);

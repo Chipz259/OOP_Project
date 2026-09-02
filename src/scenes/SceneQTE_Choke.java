@@ -38,7 +38,7 @@ public class SceneQTE_Choke extends Scene {
         this.sceneManager = sm;
         this.player = p;
         try {
-            URL bgImgURL = getClass().getResource("/res/pLork.png");
+            URL bgImgURL = getClass().getResource("/res/Element/pLork.png");
             if (bgImgURL != null) {
                 this.bgImage = ImageIO.read(bgImgURL);
             }
@@ -46,7 +46,7 @@ public class SceneQTE_Choke extends Scene {
             e.printStackTrace();
         }
         try {
-            URL btnImgURL = getClass().getResource("/res/eButton.png");
+            URL btnImgURL = getClass().getResource("/res/Element/eButton.png");
             if (btnImgURL != null) {
                 this.btnImage = ImageIO.read(btnImgURL);
             }
@@ -54,7 +54,7 @@ public class SceneQTE_Choke extends Scene {
             e.printStackTrace();
         }
         try {
-            URL btnPressImgURL = getClass().getResource("/res/eButtonPress.PNG");
+            URL btnPressImgURL = getClass().getResource("/res/Element/eButtonPress.PNG");
             if (btnPressImgURL != null) {
                 this.btnPressImage = ImageIO.read(btnPressImgURL);
             }

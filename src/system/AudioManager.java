@@ -18,6 +18,25 @@ public class AudioManager {
     private static long lastPosition = 0;
     private static final ExecutorService audioExecutor = Executors.newCachedThreadPool();
 
+    /**
+     * Helper Method สำหรับค้นหา URL ของไฟล์เสียงแบบครอบคลุม
+     */
+    private static java.net.URL getResourceURL(String path) {
+        if (path == null || path.isEmpty()) return null;
+
+        // 1. ลองค้นผ่าน ClassLoader โดยตัด / นำหน้าออก (ถ้ามี)
+        String cleanPath = path.startsWith("/") ? path.substring(1) : path;
+        java.net.URL url = AudioManager.class.getClassLoader().getResource(cleanPath);
+
+        // 2. ถ้ายังไม่เจอ ให้ลองค้นผ่าน Class.getResource โดยใส่ / นำหน้าเพื่อบังคับหาจาก Root
+        if (url == null) {
+            String absolutePath = path.startsWith("/") ? path : "/" + path;
+            url = AudioManager.class.getResource(absolutePath);
+        }
+
+        return url;
+    }
+
     public static void setBgmVolume(int volume) {
         bgmVolume = volume;
         if (bgMusic != null && bgMusic.isOpen()) {
@@ -38,12 +57,12 @@ public class AudioManager {
         if (path.equals(currentBgmPath) && bgMusic != null && bgMusic.isRunning()) return;
 
         try {
-            java.net.URL musicFile= AudioManager.class.getResource(path);
+            java.net.URL musicFile = getResourceURL(path);
             if (musicFile != null) {
                 stopMusic();
                 currentBgmPath = path;
                 currentBgmOffset = offsetDB;
-                lastPosition = 0; // รีเซ็ตตำแหน่งใหม่เพราะเป็นการเริ่มเพลงใหม่
+                lastPosition = 0;
 
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
                 bgMusic = AudioSystem.getClip();
@@ -52,7 +71,7 @@ public class AudioManager {
 
                 applyVolume(bgMusic, bgmVolume, currentBgmOffset);
                 bgMusic.start();
-            } else{
+            } else {
                 System.err.println("playMusic ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
             }
         } catch (Exception e) { e.printStackTrace(); }
@@ -71,8 +90,6 @@ public class AudioManager {
                     bgMusic.start();
                     return;
                 }
-            } else{
-                System.err.println("resumeBGMusic ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
             }
         }
 
@@ -87,7 +104,7 @@ public class AudioManager {
                 currentBgmOffset = offsetDB;
                 lastPosition = 0;
 
-                java.net.URL musicFile = AudioManager.class.getResource(path);
+                java.net.URL musicFile = getResourceURL(path);
                 if (musicFile != null) {
                     AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
                     bgMusic = AudioSystem.getClip();
@@ -95,7 +112,7 @@ public class AudioManager {
                     bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
                     applyVolume(bgMusic, bgmVolume, currentBgmOffset);
                     bgMusic.start();
-                } else{
+                } else {
                     System.err.println("resumeBGMusic ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
                 }
             } catch (Exception e) { e.printStackTrace(); }
@@ -105,7 +122,7 @@ public class AudioManager {
     public static void playSFX(String path, float offsetDB) {
         audioExecutor.submit(() -> {
             try {
-                java.net.URL sfxFile = AudioManager.class.getResource(path);
+                java.net.URL sfxFile = getResourceURL(path);
                 if (sfxFile != null) {
                     AudioInputStream audioInput = AudioSystem.getAudioInputStream(sfxFile);
                     Clip sfxClip = AudioSystem.getClip();
@@ -121,7 +138,7 @@ public class AudioManager {
                             activeSfxMap.remove(path);
                         }
                     });
-                } else{
+                } else {
                     System.err.println("playSFX ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
                 }
             } catch (Exception e) { e.printStackTrace(); }
@@ -155,17 +172,24 @@ public class AudioManager {
     }
 
     public static void preloadSFX(String path) {
+        if (preloadedClips.containsKey(path)) {
+            return;
+        }
+
         try {
-            java.net.URL sfxURL = AudioManager.class.getResource(path);
-            if (sfxURL != null && !preloadedClips.containsKey(path)) {
+            java.net.URL sfxURL = getResourceURL(path);
+
+            if (sfxURL != null) {
                 AudioInputStream ais = AudioSystem.getAudioInputStream(sfxURL);
                 Clip clip = AudioSystem.getClip();
                 clip.open(ais);
                 preloadedClips.put(path, clip);
-            } else{
+            } else {
                 System.err.println("preloadSFX ❌ ไม่เจอไฟล์เสียงที่ Path: " + path);
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void playPreloadedSFX(String path, float offsetDB) {
