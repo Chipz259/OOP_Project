@@ -400,6 +400,9 @@ public class SceneManager {
                     //จะถูกเรียกตอนที่หน้าจอมืดสนิทพอดี
                     FinalBossFight bossFight = new FinalBossFight(mainFrame,
                             () -> {
+
+                                system.ObjectiveManager.getInstance().advanceObjective();
+
                                 if (fadeTransition != null && !fadeTransition.isFading()) {
                                     fadeTransition.executeFade(500, 0, 500, () -> {
                                         loadScene("scene_19");
@@ -424,6 +427,9 @@ public class SceneManager {
                 // กันเหนียว ถ้าระบบเฟดไม่ว่าง ให้โหลดบอสไฟต์เลยไม่ต้องรอจอมืด
                 FinalBossFight bossFight = new FinalBossFight(mainFrame,
                         () -> {
+
+                            system.ObjectiveManager.getInstance().advanceObjective();
+
                             loadScene("scene_19");
                             DialogueLine[] winScript = {
                                     new DialogueLine("ตุลย์", "สำเร็จ ! ! ! มันจบแล้ว", null, mainTalk)
@@ -456,9 +462,9 @@ public class SceneManager {
                     fadeTransition.executeFade(700, 0, 700, () -> {
                         mainFrame.closeCutscene();
 
-                        CutsceneEndCredit cutsceneEndCredit = new CutsceneEndCredit("/res/bg/EndCredit.jpg");
+                        CutsceneEndCredit cutsceneEndCredit = new CutsceneEndCredit("/res/bg/EndCredit.png");
                         mainFrame.openCutscene(cutsceneEndCredit);
-                        javax.swing.Timer creditTime = new javax.swing.Timer(5000, e ->{
+                        javax.swing.Timer creditTime = new javax.swing.Timer(10000, e ->{
                             fadeTransition.executeFade(700, 0, 700, () ->{
                                 mainFrame.closeCutscene();
                                 mainFrame.setIsStartGame(false); // จะได้กด Resume ไม่ได้

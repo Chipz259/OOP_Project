@@ -20,7 +20,7 @@ public class RotateNarigaHandler extends MouseAdapter {
     }
     @Override
     public void mouseClicked(MouseEvent e){
-        int targetAngle[] = {270, 108};
+        int targetAngle[] = {270, 48};
         AudioManager.playSFX("src/res/sound/MinigameRotateClock.wav", 0.0f);
         if (!(rn.isFinished())){
             ((KemImagePanel) panel).rotate(deg);

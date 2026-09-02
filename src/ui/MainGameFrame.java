@@ -291,9 +291,11 @@ public class MainGameFrame extends JFrame {
         }
 
         if (gamePanel.sceneManager.retryMode == 1) {
+            system.ObjectiveManager.getInstance().setObjectiveIndex(1);
             gamePanel.sceneManager.startTransition("scene_5", gamePanel.mainPlayer, 800, 550);
         }
         else if (gamePanel.sceneManager.retryMode == 2) {
+            system.ObjectiveManager.getInstance().setObjectiveIndex(5);
             gamePanel.sceneManager.startGhostAndBossSequence();
         }
 

@@ -9,13 +9,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-
 public class SceneQTE_Choke extends Scene {
     private SceneManager sceneManager;
     private int clickCount = 0;
-    private int targetClicks = 20; // กดกี่ครั้ง
+    private int targetClicks = 25; // กดกี่ครั้ง
     private long startTime;
-    private int timeLimit = 5000;
+    private int timeLimit = 8000;
     private boolean isQteActive = false;
     private double fadeWhiteAmount = 0;
     private boolean isWinningFade = false;
@@ -26,6 +25,13 @@ public class SceneQTE_Choke extends Scene {
     private BufferedImage btnPressImage;
     private boolean hasStarted = false;
     private Player player;
+
+    // --- ตัวแปรใหม่ที่เพิ่มเข้ามา ---
+    private long lastClickTime = 0;
+    private int clickCooldown = 120; // ดีเลย์กันกดค้าง (มิลลิวินาที) - ยิ่งมาก ยิ่งต้องกดเว้นจังหวะ
+    private long lastDecayTime = 0;
+    private int decayInterval = 400; // เวลาที่แต้มจะลดลง 1 แต้ม (มิลลิวินาที) - 300ms คือลดประมาณ 3 แต้มต่อวินาที
+    // ----------------------------
 
     public SceneQTE_Choke(String sceneId, SceneManager sm, Player p) {
         super(sceneId);
@@ -57,9 +63,16 @@ public class SceneQTE_Choke extends Scene {
         }
         AudioManager.preloadSFX("src/res/sound/DonPLork.wav");
     }
+
     public void startQTE() {
         this.clickCount = 0;
-        this.startTime = System.currentTimeMillis(); // นับเวลาเป็น ms naja
+        this.startTime = System.currentTimeMillis();
+
+        // --- เซ็ตเวลาเริ่มต้นระบบใหม่ ---
+        this.lastClickTime = this.startTime;
+        this.lastDecayTime = this.startTime;
+        // -----------------------------
+
         this.isQteActive = true;
         this.isWinningFade = false;
         this.fadeWhiteAmount = 0;
@@ -67,12 +80,20 @@ public class SceneQTE_Choke extends Scene {
         this.fadeAlpha = 0;
         AudioManager.playPreloadedSFX("src/res/sound/DonPLork.wav", -5.0f);
     }
+
     public void registerClick() {
         if (isQteActive) {
-            clickCount++;
-            buttonScale = 240;
+            long currentTime = System.currentTimeMillis();
+
+            // --- เช็คดีเลย์ ป้องกันการกดค้างหรือโปรแกรม Auto Clicker ---
+            if (currentTime - lastClickTime >= clickCooldown) {
+                clickCount++;
+                buttonScale = 240;
+                lastClickTime = currentTime; // อัปเดตเวลาการกดล่าสุด
+            }
         }
     }
+
     public void update() {
         if (sceneManager.getFadeTransition() != null && sceneManager.getFadeTransition().isFading()) {
             hasStarted = false;
@@ -83,8 +104,20 @@ public class SceneQTE_Choke extends Scene {
             startQTE();
             hasStarted = true;
         }
+
         if (isQteActive) {
-            long passTime = System.currentTimeMillis() - startTime;
+            long currentTime = System.currentTimeMillis();
+            long passTime = currentTime - startTime;
+
+            // --- ระบบลดแต้ม (Decay) เมื่อเวลาผ่านไปตามรอบที่กำหนด ---
+            if (currentTime - lastDecayTime >= decayInterval) {
+                if (clickCount > 0) {
+                    clickCount--; // ลดแต้มลง 1
+                }
+                lastDecayTime = currentTime; // เริ่มนับเวลารอบการลดแต้มใหม่
+            }
+            // --------------------------------------------------
+
             if (passTime > timeLimit) {
                 isQteActive = false;
 
@@ -101,6 +134,7 @@ public class SceneQTE_Choke extends Scene {
                 AudioManager.playSFX("src/res/sound/WinPLork.wav", 5.0f);
             }
         }
+
         if (buttonScale > 200) {
             buttonScale -= 5;
             if (buttonScale <= 200) {
@@ -109,7 +143,6 @@ public class SceneQTE_Choke extends Scene {
         }
 
         if(isWinningFade) {
-
             fadeWhiteAmount += (fadeWhiteAmount * 0.1) + 0.1;
             if (fadeWhiteAmount >= 1) {
                 fadeWhiteAmount = 1;
@@ -121,6 +154,7 @@ public class SceneQTE_Choke extends Scene {
                 if (fadeAlpha >= 255) {
                     fadeAlpha = 255;
 
+                    // หากมีเรื่อง Objective Manager แบบรอบที่แล้ว อย่าลืมแทรกตรงนี้นะครับ
                     sceneManager.startTransition("scene_14", player, 900, 550);
                 }
             }
