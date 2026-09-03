@@ -168,7 +168,7 @@ public class GamePanel extends JPanel implements Runnable {
                 mainPlayer.update();
             }
 
-            int speed = 100;
+            int speed = 10;
             boolean isWalking = false;
 
             if (keyH.left || keyH.right) {
