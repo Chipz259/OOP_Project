@@ -21,11 +21,11 @@ public class GameOverPanel extends JPanel {
         this.setDoubleBuffered(true);
 
         try {
-            bgNormal = ImageIO.read(getClass().getResourceAsStream("/res/GameOverNormal.png"));
-            bgLight = ImageIO.read(getClass().getResourceAsStream("/res/GameOverLight.png"));
+            bgNormal = ImageIO.read(getClass().getResourceAsStream("/res/Element/GameOverNormal.png"));
+            bgLight = ImageIO.read(getClass().getResourceAsStream("/res/Element/GameOverLight.png"));
             currentBG = bgNormal;
-            retryNormal = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/res/GameOverBtnTryagainNormal.png")));
-            retryHover = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/res/GameOverBtnTryagainHover.png")));
+            retryNormal = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/res/Element/GameOverBtnTryagainNormal.png")));
+            retryHover = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/res/Element/GameOverBtnTryagainHover.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }

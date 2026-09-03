@@ -13,7 +13,7 @@ public class ImageViewer extends JPanel{
 
         try {
             image = ImageIO.read(getClass().getResource(imagePath));
-            exitIcon = ImageIO.read(getClass().getResource("/res/Exit.png"));
+            exitIcon = ImageIO.read(getClass().getResource("/res/Element/Exit.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

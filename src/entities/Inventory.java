@@ -1,8 +1,5 @@
 package entities;
 
-import system.DialogueLine;
-import system.FontManager;
-import ui.MainGameFrame;
 import ui.Tutorial;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,7 +21,7 @@ public class Inventory {
         isShowCombine = false;
         slots = new Item[5];
         try {
-            URL slotURL = getClass().getResource("/res/" + slotSpritePath);
+            URL slotURL = getClass().getResource("/res/Element/" + slotSpritePath);
             if  (slotURL != null) {
                 this.slotSprite = ImageIO.read(slotURL);
             }
@@ -32,7 +29,7 @@ public class Inventory {
             e.printStackTrace();
         }
         try {
-            URL slotHoverURL = getClass().getResource("/res/slotsHover.PNG");
+            URL slotHoverURL = getClass().getResource("/res/Element/slotsHover.PNG");
             if  (slotHoverURL != null) {
                 this.slotHoverSprite = ImageIO.read(slotHoverURL);
             }

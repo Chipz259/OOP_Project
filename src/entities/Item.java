@@ -23,7 +23,7 @@ public class Item extends GameObject implements Interactable {
         this.isHovered = false;
 
         try {
-            URL hoverURL = getClass().getResource("/res/" + hoverSpritePath);
+            URL hoverURL = getClass().getResource("/res/Element/" + hoverSpritePath);
             if (hoverURL != null) {
                 this.hoverSprite = ImageIO.read(hoverURL);
             }
@@ -98,8 +98,8 @@ public class Item extends GameObject implements Interactable {
 
     public void changeImage(int x, int y, int width, int height, String newDefaultImg, String newHoverImg) {
         try {
-            URL defaulUrl = getClass().getResource("/res/" + newDefaultImg);
-            URL hoverUrl = getClass().getResource("/res/" + newHoverImg);
+            URL defaulUrl = getClass().getResource("/res/Element/" + newDefaultImg);
+            URL hoverUrl = getClass().getResource("/res/Element/" + newHoverImg);
 
             if (defaulUrl != null) {
                 BufferedImage image = ImageIO.read(defaulUrl);

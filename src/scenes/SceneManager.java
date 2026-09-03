@@ -202,10 +202,10 @@ public class SceneManager {
 
         // โหลดรูปลูกศร
         try {
-            imgLeftArrow = ImageIO.read(getClass().getResource("/res/Left_Default.png"));
-            imgRightArrow = ImageIO.read(getClass().getResource("/res/Right_Default.png"));
-            imgLeftHover = ImageIO.read(getClass().getResource("/res/Left_Hover.png"));
-            imgRightHover = ImageIO.read(getClass().getResource("/res/Right_Hover.png"));
+            imgLeftArrow = ImageIO.read(getClass().getResource("/res/Element/Left_Default.png"));
+            imgRightArrow = ImageIO.read(getClass().getResource("/res/Element/Right_Default.png"));
+            imgLeftHover = ImageIO.read(getClass().getResource("/res/Element/Left_Hover.png"));
+            imgRightHover = ImageIO.read(getClass().getResource("/res/Element/Right_Hover.png"));
             URL boxUrl = getClass().getResource("/res/NPC/Textbox.png");
             if (boxUrl != null) imgDialogBox = ImageIO.read(boxUrl);
         } catch (IOException e) {
@@ -633,7 +633,7 @@ public class SceneManager {
             @Override
             public void onInteract(Player p) {
                 ui.MainGameFrame mainFrame = (ui.MainGameFrame) SwingUtilities.getWindowAncestor(SceneManager.this.getGamePanel());
-                ImageViewer viewer = new ImageViewer(mainFrame, "/res/familyPic .PNG");
+                ImageViewer viewer = new ImageViewer(mainFrame, "/res/Element/familyPic .PNG");
                 mainFrame.openMinigame(viewer);
             }
         };

@@ -89,17 +89,17 @@ public class MainGameFrame extends JFrame {
     }
 
     private void initMenuPanel() {
-        imageBg = new ImageBackground("/res/MenuBackground.png");
+        imageBg = new ImageBackground("/res/Element/MenuBackground.png");
         leftPanel = new JPanel();
         groupButtonPanel = new JPanel();
-        startNormalIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/MenuStartNormalBtn.png")).getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
-        resumeNormalIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/MenuResumeNormalBtn.png")).getImage().getScaledInstance(354, 59, Image.SCALE_SMOOTH));
-        settingNormalIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/MenuSettingNormalBtn.png")).getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
-        exitNormalIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/MenuExitNormalBtn.png")).getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
-        startHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/MenuStartHoverBtn.png")).getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
-        resumeHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/MenuResumeHoverBtn.png")).getImage().getScaledInstance(354,59, Image.SCALE_SMOOTH));
-        settingHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/MenuSettingHoverBtn.png")).getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
-        exitHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/MenuExitHoverBtn.png")).getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
+        startNormalIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/MenuStartNormalBtn.png")).getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
+        resumeNormalIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/MenuResumeNormalBtn.png")).getImage().getScaledInstance(354, 59, Image.SCALE_SMOOTH));
+        settingNormalIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/MenuSettingNormalBtn.png")).getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
+        exitNormalIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/MenuExitNormalBtn.png")).getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
+        startHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/MenuStartHoverBtn.png")).getImage().getScaledInstance(351, 84, Image.SCALE_SMOOTH));
+        resumeHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/MenuResumeHoverBtn.png")).getImage().getScaledInstance(354,59, Image.SCALE_SMOOTH));
+        settingHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/MenuSettingHoverBtn.png")).getImage().getScaledInstance(294, 84, Image.SCALE_SMOOTH));
+        exitHoverIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/MenuExitHoverBtn.png")).getImage().getScaledInstance(483, 38, Image.SCALE_SMOOTH));
         buttonStart = new JButton(startNormalIcon);
         buttonResume = new JButton(resumeNormalIcon);
         buttonSetting = new JButton(settingNormalIcon);
@@ -118,7 +118,7 @@ public class MainGameFrame extends JFrame {
 
         // Title Game Name
         titleGame = new JLabel();
-        logoIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/MenuLogo.png")).getImage().getScaledInstance(600, 350, Image.SCALE_SMOOTH));
+        logoIcon = new ImageIcon(new ImageIcon(getClass().getResource("/res/Element/MenuLogo.png")).getImage().getScaledInstance(600, 350, Image.SCALE_SMOOTH));
         titleGame.setIcon(logoIcon);
         titleGame.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -248,10 +248,10 @@ public class MainGameFrame extends JFrame {
         AudioManager.stopMusic();
         String[] introStory = {
                 "“ฮัลโหล ใครครับ”",
-                "“เอ็งใช่ลูกตาทิตย์ไหม”",
+                "“เอ็งใช่ลูกตาตฤณไหม”",
                 "“ใช่ครับ... มีอะไรหรือเปล่าครับ”",
                 "“พ่อเอ็ง... เสียแล้ว มางานศพด้วยนะคืนนี้”",
-                "“…รีบมาเถอะ ทุกคนรอเอ็งอยู่ อิอิ”"
+                "“…รีบมาเถอะ ทุกคนรอเอ็งอยู่”"
         };
 
         fadeTransition.executeFade(350, 0, 350, () -> {
