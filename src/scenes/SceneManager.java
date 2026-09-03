@@ -407,7 +407,11 @@ public class SceneManager {
                                     fadeTransition.executeFade(500, 0, 500, () -> {
                                         loadScene("scene_19");
                                         DialogueLine[] winScript = {
-                                                new DialogueLine("ตุลย์", "แฮ่ก... แฮ่ก... จบสักทีนะ", null, mainTalk)
+                                                new DialogueLine("ตุลย์", "แฮ่ก... แฮ่ก... จบแล้วสินะ", null, mainTalk),
+                                                new DialogueLine("ตุลย์", "คนที่ทำเรื่องพวกนี้จะได้รับ \"กรรม\" ที่ตัวเองทำสักที", null, mainTalk),
+                                                new DialogueLine("ตุลย์", "...และพวกชาวบ้านก็คงจะหลุดจาก \"ภวังค์\" นี้", null, mainTalk),
+                                                new DialogueLine("ตุลย์", "แต่ฉันไม่ควรประมาท งั้นฉันไปตรวจสอบนอกบ้านสักหน่อย", null, mainTalk),
+                                                new DialogueLine("ตุลย์", "ไปดูว่าทุกคนกลับมาเป็นปกติจริงๆ หรือยัง", null, mainTalk)
                                         };
                                         overlay.startDialogue(winScript, () -> {
                                         });
@@ -680,7 +684,6 @@ public class SceneManager {
                         Knife2.setVisible(true);
                     });
                     mainFrame.openMinigame(minigame);
-                    AudioManager.stopMusic();
                 }
             }
 
@@ -771,7 +774,6 @@ public class SceneManager {
                     };
                 });
                 mainFrame.openMinigame(minigame);
-                AudioManager.stopMusic();
             }
 
             @Override
@@ -860,7 +862,9 @@ public class SceneManager {
         DialogueLine[] npcGirlScript = {
                 new DialogueLine("เด็กสาวในหมู่บ้าน", "เดินทางมาเหนื่อยไหม", girlTalk, mainIdle),
                 new DialogueLine("ตุลย์", "ก็นิดหน่อยครับ", girlIdle, mainTalk),
-                new DialogueLine("เด็กสาวในหมู่บ้าน", "อืม… พักผ่อนให้สบายแล้วกันนะคืนนี้ ฮึฮึ", girlTalk, mainIdle)
+                new DialogueLine("เด็กสาวในหมู่บ้าน", "อืม… พักผ่อนให้สบายแล้วกันนะคืนนี้ ฮึฮึ", girlTalk, mainIdle),
+                new DialogueLine("ตุลย์", "...",  girlIdle, mainTalk),
+                new DialogueLine("ตุลย์", "...ขอบคุณนะครับ (ไม่ใช่ว่าคำพูดมันดูแปลกๆ ไปหน่อยหรอ ?_? )",girlIdle, mainTalk)
         };
         npcGirl.setVNDialogue(npcGirlScript, overlay);
         npcGirl.setDialogTransform(50, 0, 706, 941, 1200, 0, 706, 941);
@@ -869,7 +873,9 @@ public class SceneManager {
                 new DialogueLine("ผู้ใหญ่บ้าน", "กลับมาแล้วเหรอ… ไม่เห็นหน้านานเลยนะ", evilTalk, mainIdle),
                 new DialogueLine("ตุลย์", "ครับ… ที่นี่มันดูเปลี่ยนไปนะ", evilIdle, mainTalk),
                 new DialogueLine("ผู้ใหญ่บ้าน", "ก็แค่… ทุกอย่างกำลังจะเข้าที่เข้าทางของมันแล้ว", evilTalk, mainIdle),
-                new DialogueLine("ผู้ใหญ่บ้าน", "เดี๋ยวเอ็งก็เข้าใจ… เหมือนกับคนอื่นๆ ที่นี่", evilTalk, mainIdle)
+                new DialogueLine("ผู้ใหญ่บ้าน", "เดี๋ยวเอ็งก็เข้าใจ… เหมือนกับคนอื่นๆ ที่นี่", evilTalk, mainIdle),
+                new DialogueLine("ตุลย์", "(อะไรของเขากันนะ พูดจาแปลกๆ ช่างเถอะ)", evilIdle, mainTalk),
+                new DialogueLine("ตุลย์", "เออ...ครับ งั้นผมขอตัวก่อนนะครับ", evilIdle, mainTalk)
         };
         evil.setVNDialogue(evilScript, overlay);
         evil.setDialogTransform(50, 0, 900, 941, 1200, 0, 706, 941);

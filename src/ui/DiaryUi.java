@@ -119,8 +119,11 @@ public class DiaryUi extends JPanel {
                 isFirstTime = true;
                 system.DialogueLine[] afterDiaryScript = {
                         new system.DialogueLine("ตุลย์", " ! ! !", null, null),
-                        new system.DialogueLine("ตุลย์", "ที่ทุกคนแปลกไปเพราะงี้เองหรอ", null, null),
-                        new system.DialogueLine("ตุลย์", "ตอนนี้คงต้องเริ่มหาของมาทำพิธีแล้วล่ะ", null, null)
+                        new system.DialogueLine("ตุลย์", "ที่ทุกคนแปลกไปเพราะโดน \"ควบคุม\" สินะ", null, null),
+                        new system.DialogueLine("ตุลย์", "และก็เป็นเพราะแบบนี้พ่อของฉันถึงได้...จากไป", null, null),
+                        new system.DialogueLine("ตุลย์", "ถ้าเป็นอย่างนั้น ฉันก็คงไม่สามารถปล่อยผ่านเรื่องนี้ไปได้", null, null),
+                        new system.DialogueLine("ตุลย์", "ไม่อย่างนั้นพ่อที่จากไป คงไม่มีวันได้จากไปอย่างสมบูรณ์ เพราะมี \"ห่วง\"", null, null),
+                        new system.DialogueLine("ตุลย์", "ถ้างั้น ตอนนี้คงต้องเริ่มหาของมาทำพิธีแล้วล่ะ", null, null)
                 };
 
                 sm.getOverlay().setCharacterTransform(50, 0, 706, 941, 1200, 0, 706, 941);

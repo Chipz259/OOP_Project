@@ -12,9 +12,9 @@ import java.net.URL;
 public class SceneQTE_Choke extends Scene {
     private SceneManager sceneManager;
     private int clickCount = 0;
-    private int targetClicks = 25; // กดกี่ครั้ง
+    private int targetClicks = 20; // กดกี่ครั้ง
     private long startTime;
-    private int timeLimit = 8000;
+    private int timeLimit = 5000;
     private boolean isQteActive = false;
     private double fadeWhiteAmount = 0;
     private boolean isWinningFade = false;
@@ -88,6 +88,7 @@ public class SceneQTE_Choke extends Scene {
             // --- เช็คดีเลย์ ป้องกันการกดค้างหรือโปรแกรม Auto Clicker ---
             if (currentTime - lastClickTime >= clickCooldown) {
                 clickCount++;
+                timeLimit += 500;
                 buttonScale = 240;
                 lastClickTime = currentTime; // อัปเดตเวลาการกดล่าสุด
             }

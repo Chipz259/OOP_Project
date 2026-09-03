@@ -1,5 +1,6 @@
 package Minigame.RotateNarigaPackage;
 
+import system.AudioManager;
 import ui.MainGameFrame;
 
 import javax.imageio.ImageIO;
@@ -38,7 +39,6 @@ public class RotateNariga extends JPanel{
             short_def = null;
             short_hover = null;
         }
-
         this.mainGameFrame = mainGameFrame;
         this.saveAngles = saveAngles;
         this.isSolvedState = isSolvedState;
